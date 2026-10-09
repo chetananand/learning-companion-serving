@@ -12,6 +12,7 @@ The app is a learning companion over the Notion Bookmarks database of its owner.
 4. `docs/results.md`: the result tables of the experiments. `tools/report_numbers.py` makes them from `metrics/`.
 5. `docs/spec/09-architecture.md`: the architecture diagrams and the sequence flows.
 6. `docs/spec/00-index.md`: the spec. `docs/decisions/`: the ADRs and the debate log.
+7. `docs/talk/deck.pdf`: the slides of the talk (2026-10-10). `docs/talk/notes.md` has the speaker notes.
 
 ## Architecture
 

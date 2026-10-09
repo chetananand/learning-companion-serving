@@ -57,10 +57,12 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 9 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
 | 10 | `hypothesis` | The decode pod was the limit, not prefill compute | vLLM: prompt tokens each second | 0:32 |
 | 11 | `topology` | For our traffic, two whole pods beat a P/D split | the layout test chart | 0:36 |
-| 12 | `scale` | Scale: the planner names the pool | the scale test chart, clip 2 | 0:35 and 0:34 |
+| 12 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 13 | `changed` | What the data changed in our design | - | 0:42 |
 
-Total: 8 minutes 5 seconds of notes and 61 seconds of clips, so 9 minutes 6 seconds. The appendix has 8 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, and the E4 chart.
+Total: 8 minutes 17 seconds of notes and 61 seconds of clips, so 9 minutes 18 seconds. The appendix has 9 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart.
+
+On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. Slide 12 shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide. `tools/deck_pdf.py` writes the deck to `docs/talk/deck.pdf` and the speaker notes to `docs/talk/notes.md`. Run it after each change to the deck.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 

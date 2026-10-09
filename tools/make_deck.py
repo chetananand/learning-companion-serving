@@ -26,6 +26,19 @@ ASSETS = {
     "tenant": "/_blob/4466d622d255b88d350409463917aaca", "lmcache": "/_blob/bd6b9524acd3f31f149f04f6244c30d7",
     "queues": "/_blob/8bf5df6c9b3ea7d826771b4f749137af", "pd": "/_blob/64db200fb2311fad8d21915521ec3dc8",
     "overflow": "/_blob/88f1f4655c6ae3a220f8d19ddec374ae", "tokens": "/_blob/7dec7da661854b29c57e90efb61cfe72",
+    "replicas": "/_blob/555b51655b33e9258f9abf12f0f93b21",
+}
+# The repo file of each asset (the same bytes, checked by sha256 on 2026-10-09). tools/deck_pdf.py uses them.
+LOCAL = {
+    "e3": "plots/slides/e3.png", "e9": "plots/slides/e9.png", "hop": "plots/slides/hop.png",
+    "warm": "plots/slides/warm.png", "arch": "plots/slides/arch.png",
+    "cluster": "plots/slides/panels/cluster-gpu-use.png", "guard": "plots/slides/panels/gateway-guard-rejects.png",
+    "tenant": "plots/slides/panels/gateway-tenant-rejects.png",
+    "lmcache": "plots/slides/panels/hop-lmcache-lookups.png",
+    "queues": "plots/slides/panels/queues-depth-by-pod.png", "pd": "plots/slides/panels/router-pd-decisions.png",
+    "overflow": "plots/slides/panels/success-overflow-gate.png",
+    "tokens": "plots/slides/panels/vllm-tokens-per-second.png",
+    "replicas": "plots/slides/panels/scaling-desired-replicas.png",
 }
 # Pixel sizes of the images (to keep the aspect ratio).
 SIZES = {"e3": (1760, 980), "e9": (1739, 1035), "hop": (1421, 826), "warm": (1816, 862), "arch": (3400, 1552),
@@ -40,6 +53,7 @@ SANS = "'IBM Plex Sans', Arial, sans-serif"
 MONO = "'JetBrains Mono', 'Courier New', monospace"
 STOPS = ["guard", "stay or leave", "admit", "place", "hop", "warm", "scale"]
 FOOTER = "Chetan Anand · A learning companion on a scarce GPU"
+REPO = "github.com/chetananand/learning-companion-serving"
 
 
 def e(text: str) -> str:
@@ -167,6 +181,7 @@ def slides() -> list[tuple[str, str, str]]:
         '<div style="flex:1"></div>',
         p("Chetan Anand", 32, DARK_TEXT, 600),
         p("2026-10-10", 24, DARK_SOFT),
+        p(REPO, 28, DARK_BLUE),
     ]), "I built a learning companion over my bookmarks, on my own vLLM cluster. I walk one request through the "
         "code, and at each step I show what we measured."))
 
@@ -201,7 +216,7 @@ def slides() -> list[tuple[str, str, str]]:
             p("The laptop reaches the cluster only through an SSH tunnel to ports on 127.0.0.1.", 24, SOFT),
         ], [
             image("cluster", "Grafana panel GPU use: gpu0 and gpu1 at 100%",
-                  "This panel: the use of each engine GPU during a load test at 150% load. Both GPUs are at 100%.",
+                  "Dashboard 1 · Cluster: the use of each engine GPU at 150% load. Both GPUs are at 100%.",
                   896),
         ]),
     ]), "The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine: one prefill pod and one "
@@ -245,9 +260,10 @@ def slides() -> list[tuple[str, str, str]]:
             p("The gate let only the 124 interactive 503 timeout_queue calls go. No 429 left.", 28, INK, 600),
         ], [
             image("guard", "Grafana panel: guard rejects by stage and reason",
-                  "This panel: the guard rejects each second, by stage and reason", 680),
+                  "Dashboard 3 · Gateway + admission: guard rejects by stage and reason", 680),
             image("overflow", "Grafana panel: the leave gate, refused no_provider",
-                  "This panel: the calls that may leave. The overflow key was off, so they got a 503.", 680),
+                  "Dashboard 2 · Success and failures: the calls that may leave. The overflow was off, so they "
+                  "got a 503.", 680),
         ]),
     ]), "Stop one is the guard. inspect() runs fixed rules on the CPU, then Prompt Guard 2 and NeMo Guardrails. "
         "We sent 200 chat turns, 22 of them attacks. The guard blocked all 22 attacks and no normal turn. Stop "
@@ -268,7 +284,8 @@ def slides() -> list[tuple[str, str, str]]:
               600),
         ], [
             image("tenant", "Grafana panel: tenant rate-limit rejects, tenant_tokens",
-                  "This panel: the 429 tenant_tokens rejects each second in the tenant test", 896),
+                  "Dashboard 3 · Gateway + admission: the 429 tenant_tokens rejects each second in the tenant "
+                  "test", 896),
         ]),
     ]), "Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway counts the tokens of each "
         "tenant. The router keeps two priority bands with a time limit, and it stops the dispatch at 90% KV use. In "
@@ -288,9 +305,9 @@ def slides() -> list[tuple[str, str, str]]:
                     "all 15 warm sessions went to that pod again and missed the cache once."),
         ], [
             image("pd", "Grafana panel: P/D decisions, decode-only and prefill-decode",
-                  "This panel: the router decision for each call at 150% load: decode only, or split", 680),
+                  "Dashboard 4 · Router: the decision for each call at 150% load: decode only, or split", 680),
             image("queues", "Grafana panel: queue depth for each pod",
-                  "This panel: the queue depth that the router sees: decode up to 47, prefill up to 2", 680),
+                  "Dashboard 5 · Queue depth by pod: decode up to 47, prefill up to 2", 680),
         ]),
     ]), "Stop four is place. The router scores each pod: the prefix match counts most, then the session, the "
         "queue depth, the KV use, and the ramp. A pod with metrics older than 2 seconds counts as full. In the "
@@ -311,7 +328,8 @@ def slides() -> list[tuple[str, str, str]]:
                     "tries. The barrier now holds the prefill answer until the store ends."),
         ], [
             image("lmcache", "Grafana panel: LMCache lookups, hit and requested tokens",
-                  "This panel: the tokens that the pods ask the LMCache server for, and the hit tokens", 800,
+                  "Dashboard 7 · Hop store: the tokens that the pods ask the LMCache server for, and the hit "
+                  "tokens", 800,
                   "panel_short"),
             p("A hop record, from the Envoy log:", 24, MUTED),
             (f'<div style="background:{CODE_BG};border-radius:12px;padding:14px 20px">'
@@ -362,7 +380,7 @@ def slides() -> list[tuple[str, str, str]]:
             proof("16,200 against 4,550", "on the decode pod and on the prefill pod"),
         ], [
             image("tokens", "Grafana panel: vLLM tokens per second for each pod",
-                  "This panel: the prompt tokens each second for each pod, at 150% load", 860, "panel_short"),
+                  "Dashboard 6 · vLLM: the prompt tokens each second for each pod, at 150% load", 860, "panel_short"),
         ], left_w=760),
     ]), "The handout asked which limit we expected first. We expected prefill compute for the RAG traffic and KV "
         "blocks for the agents. The answer: partly right. The decode pod was the limit. Most agent calls have "
@@ -403,13 +421,16 @@ def slides() -> list[tuple[str, str, str]]:
                     "The prefill capacity value must match the GPU. With the H100 value, the planner asked for no "
                     "second prefill pod on the A100."),
         ], [
-            image("e9", "Chart: the pods that the planner asks for against the pods that KEDA runs",
-                  "The pods that the planner asks for, and the pods that KEDA runs", 860),
+            image("replicas", "Grafana panel: desired against actual replicas in the scale test",
+                  "Dashboard 8 · Pods / replicas / KEDA, in the scale test. Green: the decode pods that the "
+                  "planner asks for. Blue: the ready decode pods, at most 2 in this test.", 896),
         ], left_w=720),
     ]), "Stop seven is scale. The planner rules name the pool: uncached prefill tokens for the prefill pool, and "
-        "running requests for the decode pool. KEDA reads them. In the scale test, KEDA made the new pod 15 "
-        "seconds after the request, in both pools. The pod was warm about 4 minutes later, so on a spike that is "
-        "the real reaction time. The capacity value must match the GPU. Now clip 2, at 8 times speed."))
+        "running requests for the decode pool. KEDA reads them. Dashboard 8 shows the decode pods that the "
+        "planner asks for, and the ready pods. The test allowed at most 2 pods in each pool. In the scale test, "
+        "KEDA made the new pod 15 seconds after the request, in both pools. The pod was warm about 4 minutes "
+        "later, so on a spike that is the real reaction time. The capacity value must match the GPU. Now clip 2, "
+        "at 8 times speed."))
 
     cards = [("Whole pods", "for our traffic. Split only long uncached prompts."),
              ("A store barrier", "for the hop: completion is not visibility."),
@@ -427,7 +448,8 @@ def slides() -> list[tuple[str, str, str]]:
         p("GPU cost: 237 USD of the 400 USD credit. The repo has the report, the notebooks, and each run.", 28,
           DARK_SOFT),
         '<div style="flex:1"></div>',
-        p("Questions?", 56, DARK_ORANGE, 600),
+        (f'<div style="display:flex;flex-direction:row;justify-content:space-between;align-items:baseline">'
+         f'{p("Questions?", 56, DARK_ORANGE, 600)}{p(REPO, 32, DARK_BLUE)}</div>'),
     ]), "Five things changed in the design because of the data. Two whole pods for our traffic. A store barrier "
         "for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU. And the router"
         " must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 "
@@ -543,6 +565,14 @@ def slides() -> list[tuple[str, str, str]]:
         image("hop", "Chart: TTFT median of a split request, LMCache server against NIXL over TCP",
               "The time to the first token of a split request of about 9,000 tokens", 1100),
     ]), "For questions only. NIXL between two pods used TCP, because the nodes have no RDMA."))
+
+    s.append(("a-scale", "".join([
+        p("Appendix", 24, ORANGE_TEXT, 600),
+        title("The scale test: the planner against KEDA, in each pool"),
+        image("e9", "Chart: the pods that the planner asks for against the pods that KEDA runs, in each pool",
+              "The pods that the planner asks for, and the pods that KEDA runs. One pool at a time.", 1000),
+    ]), "For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool "
+        "scaled only after we set its capacity value for the A100."))
     return s
 
 
