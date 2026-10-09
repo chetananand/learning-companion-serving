@@ -1,0 +1,11 @@
+{
+ "pod": "10.42.1.49",
+ "after": "2026-09-30T00:29:24+00:00",
+ "warm_sessions": 69,
+ "eligible": 0,
+ "split": 0,
+ "ghosts": 0,
+ "ghost_ratio": 0.0,
+ "ghost_first_byte_ms_mean": null,
+ "ghost_input_tokens": 0
+}

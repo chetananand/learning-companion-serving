@@ -1,0 +1,33 @@
+{
+ "all": {
+  "requests": 522,
+  "ok": 522,
+  "ttft_p50_s": 0.2471,
+  "ttft_p95_s": 3.2376,
+  "token_hit_ratio": 0.911
+ },
+ "before_clear": {
+  "requests": 264,
+  "ok": 264,
+  "ttft_p50_s": 0.269,
+  "ttft_p95_s": 6.0244,
+  "token_hit_ratio": 0.842
+ },
+ "first_60s_after": {
+  "requests": 89,
+  "ok": 89,
+  "ttft_p50_s": 0.236,
+  "ttft_p95_s": 0.3749,
+  "token_hit_ratio": 0.972
+ },
+ "after_clear": {
+  "requests": 258,
+  "ok": 258,
+  "ttft_p50_s": 0.2269,
+  "ttft_p95_s": 0.3529,
+  "token_hit_ratio": 0.972
+ },
+ "sessions": 24,
+ "sessions_spanning_the_clear": 24,
+ "turns_per_session_median": 22.0
+}

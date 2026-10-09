@@ -1,0 +1,4 @@
+GPU-0512bf6f-d947-eeca-5a1b-843c39d26810: data/sie-embed-66dfff87ff-d2zww, data/sie-ocr-64f688dd75-n9vw5, guard/guard-injection-84865cc688-mptf7, guard/guard-safety-85584cc876-7prw5
+GPU-a4371e81-f664-5ba2-e761-cf17bbeef24c: companion/vllm-prefill-7c9b584f86-rkpkx
+GPU-fb33da42-fc44-6805-6a6f-5374f4cdb83b: companion/vllm-decode-d97df4456-q2w8b
+GPU plan: PASS

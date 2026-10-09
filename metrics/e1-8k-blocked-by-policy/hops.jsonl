@@ -1,0 +1,1 @@
+{"ts": "2026-09-29T17:56:19.875Z", "request_id": "18084395-cc93-477a-a5d2-12574dd7a64b", "src": "10.42.1.21", "dst": "10.42.1.20", "tokens": 2616, "prefix_tokens": 2560, "output_tokens": 91, "backend": "lmcache", "tenant": "sweep", "step": "sweep", "duration_ms": 3027, "first_byte_ms": 3026}

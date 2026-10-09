@@ -1,0 +1,5 @@
+sha256:fde0ceb8e7eaa97980bc89d71dabcf10ef04910c11246c550f500bea0a611d85
+docker.io/companion/guard:dev           	saved	
+application/vnd.oci.image.index.v1+json sha256:fde0ceb8e7eaa97980bc89d71dabcf10ef04910c11246c550f500bea0a611d85
+Importing	elapsed: 14.1s	total:   0.0 B	(0.0 B/s)	
+exit=0

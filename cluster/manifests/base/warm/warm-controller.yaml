@@ -1,0 +1,49 @@
+# warm-controller (system design section 6.5): warmup routine, warm and ramp labels, progress check.
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: warm-controller, namespace: companion}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: warm-controller, namespace: companion}
+rules:
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [get, list, watch, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: warm-controller, namespace: companion}
+subjects: [{kind: ServiceAccount, name: warm-controller, namespace: companion}]
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: warm-controller}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: warm-controller, namespace: companion}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: warm-controller}}
+  template:
+    metadata: {labels: {app: warm-controller}}
+    spec:
+      serviceAccountName: warm-controller
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: warm-controller
+          image: companion/edge:dev          # same image as edge (control/ package)
+          imagePullPolicy: Never
+          command: ["python", "-m", "control.warm.main"]
+          env:
+            - {name: WARM_NAMESPACE, value: companion}
+            - {name: WARM_SELECTOR, value: "app.kubernetes.io/part-of=companion-vllm"}
+            - {name: WARM_BASELINE_TTFT_4K_S, value: "0.35"}
+            - {name: WARM_PROMETHEUS_URL, value: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"}
+          ports: [{name: metrics, containerPort: 9100}]
+          resources: {requests: {cpu: 250m, memory: 256Mi}, limits: {memory: 512Mi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: warm-controller, namespace: companion, labels: {app: warm-controller}}
+spec:
+  selector: {app: warm-controller}
+  ports: [{name: metrics, port: 9100, targetPort: 9100}]

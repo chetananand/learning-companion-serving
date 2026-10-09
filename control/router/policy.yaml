@@ -1,0 +1,69 @@
+# Our router policy (system design sections 6.2 to 6.5). We own these numbers.
+# `python -m control.router.render` turns this file into:
+#   - the llm-d EndpointPickerConfig (flow control, scheduling profiles, P/D decider, warm gate, ramp)
+#   - the InferenceObjectives (priority bands)
+#   - the Agent Router tenant windows (AIGatewayRoute token costs and a BackendTrafficPolicy)
+# Values are start values. The experiments tune them (E3, E5, E10, E11).
+
+model_name: RedHatAI/gemma-4-31B-it-FP8-dynamic
+served_model_name: companion
+namespace: companion
+pool: companion-router   # the router chart names the InferencePool after the Helm release (install.sh, G0)
+gateway: companion-gateway
+
+# prefix_then_load | least_loaded | random (system design section 6.3; E3 switches it)
+policy: prefix_then_load
+# precise: KV events from vLLM (default). approx: request history only (E7 arm A).
+prefix_index: precise
+# decider: option C (default). always: option B. off: option A, one profile with the role prefill-decode.
+pd_mode: decider
+pd_non_cached_tokens: 2048
+
+# Must equal the vLLM --block-size on every pod (issue 52234) and the KV-event block size.
+block_size_tokens: 64
+kv_events:
+  socket_port: 5556
+  replay_socket_port: 5559
+  topic_filter: "kv@"
+render_service_url: http://localhost:8000   # the router chart tokenizer sidecar (tokenizer.enabled); VERIFY at G0
+router_chart:
+  epp_image_tag: v0.11.0                    # fallback v0.10.0 if the G0 smoke test fails
+  failure_mode: FailClose                   # a router outage must not bypass admission and flow control
+  model_server_labels: {app.kubernetes.io/part-of: companion-vllm}
+  target_port: 8000
+
+weights:
+  decode: {prefix: 3, session: 2, queue: 2, kv_util: 2, ramp: 2}
+  prefill: {prefix: 3, token_load: 2, queue: 2, ramp: 2}
+
+warm:
+  label: companion.io/warm
+  ramp_label: companion.io/ramp
+  ramp_weights: {r10: 0.10, r25: 0.25, r50: 0.50, r100: 1.00}
+
+flow_control:
+  default_request_ttl: 60s
+  bands:
+    - {objective: interactive, priority: 10, ttl: 10s}
+    - {objective: batch, priority: 0, ttl: 120s}
+  fairness: round-robin-fairness-policy
+  ordering: fcfs-ordering-policy        # E10 compares edf-ordering-policy
+  usage_limit: priority-holdback-policy
+  # llm-d v0.11 needs minCeiling (G0, 2026-09-28). Batch (the lowest band) waits above 70% saturation;
+  # interactive (the highest band) waits only at 100%.
+  usage_limit_parameters: {minCeiling: 0.7, maxCeiling: 1.0}
+  saturation:
+    queue_depth_threshold: 5
+    kv_cache_util_threshold: 0.90
+    metrics_staleness_threshold: 2s
+    staleness_policy: saturated           # class7 rule: unknown is not idle
+
+tenants:
+  owner: {tokens_per_minute: 600000, requests_per_minute: 300}
+  sweep: {tokens_per_minute: 300000, requests_per_minute: 120}
+  noisy: {tokens_per_minute: 60000, requests_per_minute: 60}
+load_tenants:
+  count: 32                               # load-1 to load-32 (app/loadgen/replay.py LOAD_TENANTS): the load
+                                          # reaches the engine limit before the tenant windows
+  tokens_per_minute: 400000
+  requests_per_minute: 240

@@ -1,0 +1,192 @@
+INFO:     10.42.0.1:37328 - "GET /api?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:37328 - "GET /apis?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:37328 - "GET /api?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:37328 - "GET /apis?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:33850 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:32892 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:32908 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:32914 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44230 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44246 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44260 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56630 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56638 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56652 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56338 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56344 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56356 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43846 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43860 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43876 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55812 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55828 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55830 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54272 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54274 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54290 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47148 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47154 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47168 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35088 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35100 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35108 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.99:35716 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59514 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59526 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59534 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790644261.1218476,"request_id":"9f892aed2f7b488188f846a8957aae4c","tenant":"load-1","request_class":"interactive","step":"capacity","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":1897,"max_tokens":512,"guard_cached":false,"guard_ms":607.3,"ttft_ms":1006.8,"duration_ms":9328.6,"extra":{}}
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.99:35716 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38788 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38792 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790644270.4537585,"request_id":"a1be9d0ac94d42c691a040e6eedcb05f","tenant":"load-1","request_class":"interactive","step":"capacity","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":1948,"max_tokens":512,"guard_cached":false,"guard_ms":510.2,"ttft_ms":800.6,"duration_ms":9064.3,"extra":{}}
+INFO:     10.42.0.1:38796 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52596 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52608 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52624 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790644289.5496361,"request_id":"0d6de8952f3747b7b300819dc07c1d3b","tenant":"load-2","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":2090,"max_tokens":512,"guard_cached":false,"guard_ms":1038.2,"ttft_ms":null,"duration_ms":1047.5,"extra":{}}
+INFO:     10.42.0.99:39420 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+{"ts":1790644289.5595648,"request_id":"72d4cc3aaa8844dea0c8f989eab45108","tenant":"load-3","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":1829,"max_tokens":512,"guard_cached":false,"guard_ms":1050.5,"ttft_ms":null,"duration_ms":1058.0,"extra":{}}
+INFO:     10.42.0.99:39430 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790644290.601285,"request_id":"b7453f626bb7458ea1ce3e038320d7f1","tenant":"load-2","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":1853,"max_tokens":512,"guard_cached":false,"guard_ms":999.7,"ttft_ms":null,"duration_ms":1010.8,"extra":{}}
+INFO:     10.42.0.99:39420 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+{"ts":1790644290.6217065,"request_id":"f0f6d8e2fcf143e6bcc868ab0718d732","tenant":"load-3","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":1899,"max_tokens":512,"guard_cached":false,"guard_ms":1016.3,"ttft_ms":null,"duration_ms":1024.7,"extra":{}}
+INFO:     10.42.0.99:39430 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     10.42.0.1:45028 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45042 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45044 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59102 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59108 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59110 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:42894 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:42910 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:55074 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38692 - "GET /api?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /apis?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /api?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /apis?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /api?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /apis?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /api?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /apis?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /api?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:38692 - "GET /apis?timeout=32s HTTP/1.1" 404 Not Found
+INFO:     10.42.0.1:46936 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60840 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60852 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60864 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35794 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35798 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35804 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:48498 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:48514 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:48520 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:37618 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:37628 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:37632 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33252 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33266 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33268 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43530 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43542 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43546 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56672 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.99:45930 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56680 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56688 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36418 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790644233.1169622,"request_id":"c9145bcef3b74e75aeef40cfbbbc7c4f","tenant":"load-1","request_class":"interactive","step":"capacity","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":1707,"max_tokens":512,"guard_cached":false,"guard_ms":479.5,"ttft_ms":861.9,"duration_ms":9027.1,"extra":{}}
+INFO:     10.42.0.99:45930 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36428 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36438 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790644242.1475515,"request_id":"9be5c609114a442495918f498809bbdf","tenant":"load-1","request_class":"interactive","step":"capacity","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":1728,"max_tokens":512,"guard_cached":false,"guard_ms":468.9,"ttft_ms":723.8,"duration_ms":8952.1,"extra":{}}
+INFO:     10.42.0.1:55830 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55838 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55846 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47920 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790644261.1230378,"request_id":"9453d6f22abd45b4b947f8310c340e12","tenant":"load-2","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":1771,"max_tokens":512,"guard_cached":false,"guard_ms":588.7,"ttft_ms":null,"duration_ms":597.8,"extra":{}}
+INFO:     10.42.0.99:35726 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.99:35726 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47922 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47926 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790644261.725333,"request_id":"7d569b2690124bc698d1a546b04606ca","tenant":"load-2","request_class":"interactive","step":"capacity","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":1770,"max_tokens":512,"guard_cached":false,"guard_ms":399.3,"ttft_ms":727.7,"duration_ms":9038.6,"extra":{}}
+INFO:     10.42.0.1:56728 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56744 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56748 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44068 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44080 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44088 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790644289.55135,"request_id":"4357400ed83d42ccbbbcf5309e4f1207","tenant":"load-4","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":2295,"max_tokens":512,"guard_cached":false,"guard_ms":1019.2,"ttft_ms":null,"duration_ms":1027.3,"extra":{}}
+INFO:     10.42.0.99:39422 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+{"ts":1790644289.5598893,"request_id":"4921a18a800e4df3ad220c6f05ebfbcb","tenant":"load-1","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":1749,"max_tokens":512,"guard_cached":false,"guard_ms":1032.6,"ttft_ms":null,"duration_ms":1041.8,"extra":{}}
+INFO:     10.42.0.99:39442 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+{"ts":1790644290.6077566,"request_id":"d2261871adaf47aaa73c069998a245d9","tenant":"load-1","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":1739,"max_tokens":512,"guard_cached":false,"guard_ms":871.7,"ttft_ms":null,"duration_ms":880.3,"extra":{}}
+INFO:     10.42.0.99:39442 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+{"ts":1790644290.5832484,"request_id":"565978f14b5d46229fc6f61f2dc50e79","tenant":"load-4","request_class":"interactive","step":"capacity","status":503,"reason":"guard_unavailable","stage":"guard","route":"local","prompt_tokens":2328,"max_tokens":512,"guard_cached":false,"guard_ms":959.6,"ttft_ms":null,"duration_ms":968.6,"extra":{}}
+INFO:     10.42.0.99:39422 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+INFO:     10.42.0.1:56988 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56990 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56996 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52460 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52472 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52484 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47958 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47970 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.15:53476 - "GET /metrics HTTP/1.1" 200 OK

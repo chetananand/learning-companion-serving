@@ -1,0 +1,59 @@
+# Planner rules (system design section 8) and alerts (section 10.4). promtool tests: cluster/monitoring/tests.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata: {name: companion-rules, namespace: companion, labels: {release: kube-prometheus-stack}}
+spec:
+  groups:
+    - name: companion-planner
+      interval: 10s
+      rules:
+        - record: companion:uncached_prefill_tokens_per_s
+          expr: |
+            sum(rate(vllm:prefix_cache_queries_total{pod=~"vllm-prefill.*"}[1m]))
+            - sum(rate(vllm:prefix_cache_hits_total{pod=~"vllm-prefill.*"}[1m]))
+        - record: companion:planner_desired_replicas
+          labels: {pool: prefill}
+          # 0.7 x prefill capacity of one pod. E1 (2026-09-29, unique prompts): the prefill pod reached about
+          # 10,500 tokens/s (24K prompts: p95 10,537; 8K: p95 9,648). The paper value was 13,000.
+          expr: clamp_min(ceil(companion:uncached_prefill_tokens_per_s / (0.7 * 10500)), 1)
+        - record: companion:planner_desired_replicas
+          labels: {pool: decode}
+          # 0.6 x max-num-seqs (24): decode scales first (R-07)
+          expr: clamp_min(ceil(sum(vllm:num_requests_running{pod=~"vllm-decode.*"}) / (0.6 * 24)), 1)
+    - name: companion-alerts
+      rules:
+        - alert: InteractiveTTFTBudgetBurn
+          expr: histogram_quantile(0.95, sum by (le) (rate(orch_ttft_seconds_bucket{class="interactive"}[5m]))) > 1.5
+          for: 5m
+          labels: {severity: page}
+          annotations: {summary: "Interactive TTFT p95 above SLO-1 (1.5 s) for 5 minutes"}
+        - alert: ShedRateHigh
+          expr: sum(rate(orch_shed_total[10m])) / clamp_min(sum(rate(orch_requests_total[10m])), 1e-9) > 0.05
+          for: 10m
+          labels: {severity: page}
+          annotations: {summary: "More than 5% of requests shed for 10 minutes"}
+        - alert: KVPressure
+          expr: max(vllm:kv_cache_usage_perc) > 0.92 or sum(rate(vllm:num_preemptions_total[5m])) > 0.1
+          for: 5m
+          labels: {severity: page}
+          annotations: {summary: "KV cache above 92% or preemptions above 0.1/s"}
+        - alert: HopFailures
+          # ADR-002 revision 2: the hop goes through the LMCache tier. A barrier timeout (the store did not end in
+          # 0.5 s) or a fail-open (no LMCache counters) lets the decode pod miss the KV and compute the prompt again.
+          # The NIXL terms cover the preset nixl-hop (E4). R-03: count the hop errors and alert on them.
+          expr: >-
+            sum(rate(barrier_timeouts_total[10m])) / clamp_min(sum(rate(barrier_hold_seconds_count[10m])), 1e-9) > 0.05
+            or increase(barrier_fail_open_total[10m]) > 0
+            or increase(vllm:nixl_num_failed_transfers[10m]) > 0
+          for: 5m
+          labels: {severity: page}
+          annotations: {summary: "Hop failures: store-barrier timeouts above 5% or a fail-open, or NIXL failed transfers"}
+        - alert: GuardUnavailable
+          expr: sum(rate(orch_shed_total{reason="guard_unavailable"}[5m])) > 0
+          for: 2m
+          labels: {severity: page}
+          annotations: {summary: "The guard fails closed: requests get 503 guard_unavailable"}
+        - alert: EngineStalled
+          expr: increase(orch_engine_stall_total[5m]) > 0
+          labels: {severity: page}
+          annotations: {summary: "A vLLM pod stopped making progress (vLLM issue 53130)"}

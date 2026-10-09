@@ -1,0 +1,1071 @@
+{
+  "run_id": "g0",
+  "created_utc": "2026-09-29T02:14:46+00:00",
+  "variant": {
+    "name": "baseline"
+  },
+  "git_commit": "d298e2f28f1fd5590a9bb4bbb0eb33e42b050b82",
+  "git_dirty": true,
+  "loadgen": "",
+  "versions": {
+    "K3S_VERSION": "v1.36.4+k3s1",
+    "HAMI_CHART_VERSION": "2.10.0",
+    "NVIDIA_DEVICE_PLUGIN_VERSION": "v0.18.2",
+    "KEDA_CHART_VERSION": "2.21.0",
+    "KUBE_PROMETHEUS_STACK_VERSION": "91.8.0",
+    "GRAFANA_IMAGE_RENDERER_VERSION": "v5.12.4",
+    "DCGM_EXPORTER_CHART_VERSION": "4.8.4",
+    "GATEWAY_API_VERSION": "v1.5.1",
+    "GAIE_VERSION": "v1.5.0",
+    "ENVOY_GATEWAY_VERSION": "v1.8.4",
+    "ENVOY_AI_GATEWAY_VERSION": "v1.1.0",
+    "ENVOY_AI_GATEWAY_FALLBACK_VERSION": "v0.7.0",
+    "LLMD_ROUTER_VERSION": "v0.11.0",
+    "LLMD_ROUTER_FALLBACK_VERSION": "v0.10.0",
+    "LLMD_ROUTING_SIDECAR_IMAGE": "ghcr.io/llm-d/llm-d-router-disagg-sidecar:v0.11.0",
+    "VLLM_IMAGE": "vllm/vllm-openai:v0.30.0",
+    "VLLM_FALLBACK_IMAGE": "vllm/vllm-openai:v0.26.0",
+    "GUARD_SAFETY_VLLM_FALLBACK_IMAGE": "vllm/vllm-openai:v0.20.2",
+    "LMCACHE_VERSION": "0.5.5",
+    "MAIN_MODEL": "RedHatAI/gemma-4-31B-it-FP8-dynamic",
+    "CHALLENGER_MODEL": "meta-models/Muse-Glimmer-30B",
+    "DEV_MODEL": "google/gemma-4-E4B-it",
+    "NEMO_GUARDRAILS_VERSION": "0.24.1",
+    "GUARD_SAFETY_MODEL": "nvidia/Nemotron-3.5-Content-Safety",
+    "GUARD_INJECTION_MODEL": "meta-llama/Llama-Prompt-Guard-2-86M",
+    "QDRANT_VERSION": "v1.19.1",
+    "REDIS_IMAGE": "redis:8.2-alpine",
+    "SIE_VERSION": "v0.8.3",
+    "SIE_EMBED_IMAGE": "ghcr.io/superlinked/sie-server:v0.8.3-cuda12-default",
+    "SIE_OCR_IMAGE": "ghcr.io/superlinked/sie-server:v0.8.3-cuda12-sglang-vision-extract",
+    "PLAYWRIGHT_IMAGE": "mcr.microsoft.com/playwright/python:v1.63.0-noble",
+    "NGINX_IMAGE": "nginx:1.29-alpine"
+  },
+  "router_policy": "# Our router policy (system design sections 6.2 to 6.5). We own these numbers.\n# `python -m control.router.render` turns this file into:\n#   - the llm-d EndpointPickerConfig (flow control, scheduling profiles, P/D decider, warm gate, ramp)\n#   - the InferenceObjectives (priority bands)\n#   - the Agent Router tenant windows (AIGatewayRoute token costs and a BackendTrafficPolicy)\n# Values are start values. The experiments tune them (E3, E5, E10, E11).\n\nmodel_name: RedHatAI/gemma-4-31B-it-FP8-dynamic\nserved_model_name: companion\nnamespace: companion\npool: companion-router   # the router chart names the InferencePool after the Helm release (install.sh, G0)\ngateway: companion-gateway\n\n# prefix_then_load | least_loaded | random (system design section 6.3; E3 switches it)\npolicy: prefix_then_load\n# precise: KV events from vLLM (default). approx: request history only (E7 arm A).\nprefix_index: precise\n# decider: option C (default). always: option B. off: option A, one profile with the role prefill-decode.\npd_mode: decider\npd_non_cached_tokens: 2048\n\n# Must equal the vLLM --block-size on every pod (issue 52234) and the KV-event block size.\nblock_size_tokens: 64\nkv_events:\n  socket_port: 5556\n  replay_socket_port: 5559\n  topic_filter: \"kv@\"\nrender_service_url: http://localhost:8000   # the router chart tokenizer sidecar (tokenizer.enabled); VERIFY at G0\nrouter_chart:\n  epp_image_tag: v0.11.0                    # fallback v0.10.0 if the G0 smoke test fails\n  failure_mode: FailClose                   # a router outage must not bypass admission and flow control\n  model_server_labels: {app.kubernetes.io/part-of: companion-vllm}\n  target_port: 8000\n\nweights:\n  decode: {prefix: 3, session: 2, queue: 2, kv_util: 2, ramp: 2}\n  prefill: {prefix: 3, token_load: 2, queue: 2, ramp: 2}\n\nwarm:\n  label: companion.io/warm\n  ramp_label: companion.io/ramp\n  ramp_weights: {r10: 0.10, r25: 0.25, r50: 0.50, r100: 1.00}\n\nflow_control:\n  default_request_ttl: 60s\n  bands:\n    - {objective: interactive, priority: 10, ttl: 10s}\n    - {objective: batch, priority: 0, ttl: 120s}\n  fairness: round-robin-fairness-policy\n  ordering: fcfs-ordering-policy        # E10 compares edf-ordering-policy\n  usage_limit: priority-holdback-policy\n  # llm-d v0.11 needs minCeiling (G0, 2026-09-28). Batch (the lowest band) waits above 70% saturation;\n  # interactive (the highest band) waits only at 100%.\n  usage_limit_parameters: {minCeiling: 0.7, maxCeiling: 1.0}\n  saturation:\n    queue_depth_threshold: 5\n    kv_cache_util_threshold: 0.90\n    metrics_staleness_threshold: 2s\n    staleness_policy: saturated           # class7 rule: unknown is not idle\n\ntenants:\n  owner: {tokens_per_minute: 600000, requests_per_minute: 300}\n  sweep: {tokens_per_minute: 300000, requests_per_minute: 120}\n  noisy: {tokens_per_minute: 60000, requests_per_minute: 60}\nload_tenants:\n  count: 32                               # load-1 to load-32 (app/loadgen/replay.py LOAD_TENANTS): the load\n                                          # reaches the engine limit before the tenant windows\n  tokens_per_minute: 400000\n  requests_per_minute: 240\n",
+  "nodes": [
+    {
+      "name": "192-222-52-95",
+      "labels": {
+        "companion.io/node": "control",
+        "kubernetes.io/hostname": "192-222-52-95",
+        "node.kubernetes.io/instance-type": "k3s"
+      },
+      "capacity": {
+        "cpu": "28",
+        "ephemeral-storage": "1040447392Ki",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "206120176Ki",
+        "nvidia.com/gpu": "20",
+        "pods": "110"
+      }
+    }
+  ],
+  "pods": [
+    {
+      "namespace": "companion",
+      "name": "companion-api-6559687f4d-4s7kb",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "companion-api",
+        "companion.io/egress": "web",
+        "pod-template-hash": "6559687f4d"
+      },
+      "containers": [
+        {
+          "name": "api",
+          "image": "companion/app:dev",
+          "image_id": "sha256:5746b95b77741c390aed3c7512615193ab4a2b7c2ab0627f1f459cd9f03310dd",
+          "command": [
+            "uvicorn",
+            "--factory",
+            "app.api:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8000",
+            "--timeout-graceful-shutdown",
+            "30"
+          ],
+          "args": null,
+          "env": {
+            "TAVILY_API_KEY": "<from secretKeyRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "4Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "companion-router-epp-5f56dc49d-22wbh",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "llm-d-router-gateway": "companion-router-epp",
+        "llm-d.ai/igw-mode": "llm-d-router-gateway",
+        "pod-template-hash": "5f56dc49d"
+      },
+      "containers": [
+        {
+          "name": "epp",
+          "image": "ghcr.io/llm-d/llm-d-router-endpoint-picker:v0.11.0",
+          "image_id": "ghcr.io/llm-d/llm-d-router-endpoint-picker@sha256:39257d24552d16d8f215d3de25cc734fd44af3b282b67032db01aff900c610cf",
+          "command": null,
+          "args": [
+            "--pool-name",
+            "companion-router",
+            "--pool-namespace",
+            "companion",
+            "--pool-group",
+            "inference.networking.k8s.io",
+            "--zap-encoder",
+            "json",
+            "--config-file",
+            "/config/companion-plugins.yaml",
+            "--grpc-health-port",
+            "9003",
+            "--allow-experimental-plugins=true",
+            "--ha-enable-leader-election=false",
+            "--tracing=false"
+          ],
+          "env": {
+            "NAMESPACE": "<from fieldRef>",
+            "POD_NAME": "<from fieldRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "8Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "4Gi"
+            }
+          }
+        },
+        {
+          "name": "vllm-render",
+          "image": "docker.io/vllm/vllm-openai-cpu:v0.19.1",
+          "image_id": "docker.io/vllm/vllm-openai-cpu@sha256:b1044e3fbe00b33f456708bbb471c02c9a69df98bf494814e637fb15411c2a24",
+          "command": [
+            "vllm",
+            "launch",
+            "render"
+          ],
+          "args": [
+            "RedHatAI/gemma-4-31B-it-FP8-dynamic",
+            "--port=8000",
+            "--served-model-name",
+            "companion",
+            "RedHatAI/gemma-4-31B-it-FP8-dynamic"
+          ],
+          "env": {
+            "HF_TOKEN": "<from secretKeyRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "8Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "3Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "companion-ui-74cfdbcf6d-2r4kz",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "companion-ui",
+        "pod-template-hash": "74cfdbcf6d"
+      },
+      "containers": [
+        {
+          "name": "ui",
+          "image": "companion/app:dev",
+          "image_id": "sha256:5746b95b77741c390aed3c7512615193ab4a2b7c2ab0627f1f459cd9f03310dd",
+          "command": [
+            "streamlit",
+            "run",
+            "app/ui/streamlit_app.py",
+            "--server.address",
+            "0.0.0.0",
+            "--server.port",
+            "8501",
+            "--server.headless",
+            "true",
+            "--server.maxUploadSize",
+            "4",
+            "--browser.gatherUsageStats",
+            "false"
+          ],
+          "args": null,
+          "env": {
+            "COMPANION_API_URL": "http://companion-api.companion.svc.cluster.local:8000",
+            "HOME": "/tmp"
+          },
+          "resources": {
+            "limits": {
+              "memory": "1Gi"
+            },
+            "requests": {
+              "cpu": "250m",
+              "memory": "256Mi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "edge-6d8f7f64b-5j4fq",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "edge",
+        "pod-template-hash": "6d8f7f64b"
+      },
+      "containers": [
+        {
+          "name": "edge",
+          "image": "companion/edge:dev",
+          "image_id": "sha256:8fde7c1fdeea0a73c3b1021f582838b94ac25a1ae3a4c0072d66f89e0c6b11b5",
+          "command": [
+            "uvicorn",
+            "--factory",
+            "control.edge.server:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8080"
+          ],
+          "args": null,
+          "env": {
+            "EDGE_UPSTREAM_URL": "http://companion-gateway-envoy.envoy-gateway-system.svc.cluster.local",
+            "EDGE_GUARD_URL": "http://guard.guard.svc.cluster.local:8000",
+            "EDGE_INJECTION_URL": "http://guard-injection.guard.svc.cluster.local:8000",
+            "EDGE_REDIS_URL": "redis://redis.platform.svc.cluster.local:6379/0",
+            "EDGE_TOKENIZER_PATH": "/app/tokenizer.json",
+            "EDGE_OVERFLOW_API_KEY": "<from secretKeyRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "2Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "edge-6d8f7f64b-js2hs",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "edge",
+        "pod-template-hash": "6d8f7f64b"
+      },
+      "containers": [
+        {
+          "name": "edge",
+          "image": "companion/edge:dev",
+          "image_id": "sha256:8fde7c1fdeea0a73c3b1021f582838b94ac25a1ae3a4c0072d66f89e0c6b11b5",
+          "command": [
+            "uvicorn",
+            "--factory",
+            "control.edge.server:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8080"
+          ],
+          "args": null,
+          "env": {
+            "EDGE_UPSTREAM_URL": "http://companion-gateway-envoy.envoy-gateway-system.svc.cluster.local",
+            "EDGE_GUARD_URL": "http://guard.guard.svc.cluster.local:8000",
+            "EDGE_INJECTION_URL": "http://guard-injection.guard.svc.cluster.local:8000",
+            "EDGE_REDIS_URL": "redis://redis.platform.svc.cluster.local:6379/0",
+            "EDGE_TOKENIZER_PATH": "/app/tokenizer.json",
+            "EDGE_OVERFLOW_API_KEY": "<from secretKeyRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "2Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "ingest-g0-1790644837-5v8x7",
+      "node": "192-222-52-95",
+      "phase": "Failed",
+      "labels": {
+        "app": "ingest",
+        "batch.kubernetes.io/controller-uid": "91130167-0f7a-4ac1-b10d-ae5803938b46",
+        "batch.kubernetes.io/job-name": "ingest-g0-1790644837",
+        "companion.io/egress": "web",
+        "controller-uid": "91130167-0f7a-4ac1-b10d-ae5803938b46",
+        "job-name": "ingest-g0-1790644837"
+      },
+      "containers": [
+        {
+          "name": "ingest",
+          "image": "companion/app:dev",
+          "image_id": "sha256:11cd4256ba180d08749ed977d3005cde35dee421ee5a8dfe6e79c483a8ad5f39",
+          "command": [
+            "python",
+            "-m",
+            "app.ingest.job",
+            "--seeds",
+            "app/ingest/seeds.yaml",
+            "--report-dir",
+            "/data/ingest"
+          ],
+          "args": null,
+          "env": {
+            "NOTION_API_KEY": "<from secretKeyRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "4Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "lg-g0-load-vbq4t",
+      "node": "192-222-52-95",
+      "phase": "Succeeded",
+      "labels": {
+        "app": "loadgen",
+        "batch.kubernetes.io/controller-uid": "8eb8405b-cfdc-4185-995f-04eaa91ee56b",
+        "batch.kubernetes.io/job-name": "lg-g0-load",
+        "companion.io/egress": "web",
+        "controller-uid": "8eb8405b-cfdc-4185-995f-04eaa91ee56b",
+        "job-name": "lg-g0-load"
+      },
+      "containers": [
+        {
+          "name": "loadgen",
+          "image": "companion/app:dev",
+          "image_id": "sha256:5746b95b77741c390aed3c7512615193ab4a2b7c2ab0627f1f459cd9f03310dd",
+          "command": [
+            "python",
+            "-m",
+            "app.loadgen.capacity",
+            "--tokens",
+            "2000",
+            "--levels",
+            "1,2,4",
+            "--repeats",
+            "2",
+            "--out",
+            "/data/runs/g0-load"
+          ],
+          "args": null,
+          "env": {},
+          "resources": {
+            "limits": {
+              "memory": "8Gi"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "2Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "lmcache-server-ghnbh",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "lmcache-server",
+        "controller-revision-hash": "7cfbd46ff7",
+        "pod-template-generation": "2"
+      },
+      "containers": [
+        {
+          "name": "lmcache",
+          "image": "vllm/vllm-openai:v0.30.0",
+          "image_id": "docker.io/vllm/vllm-openai@sha256:8a69ffad015f138d7170c4ddc429e230a3bc1c1719f67e14324749df200a4b90",
+          "command": [
+            "lmcache",
+            "server",
+            "--l1-size-gb",
+            "20",
+            "--eviction-policy",
+            "LRU",
+            "--port",
+            "5555",
+            "--host",
+            "$(HOST_IP)",
+            "--http-host",
+            "$(HOST_IP)",
+            "--isolated-ipc"
+          ],
+          "args": null,
+          "env": {
+            "HOST_IP": "<from fieldRef>",
+            "NVIDIA_VISIBLE_DEVICES": "all",
+            "PYTHONHASHSEED": "123"
+          },
+          "resources": {
+            "limits": {
+              "memory": "28Gi"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "24Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "vllm-decode-58c5457544-9h58h",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "vllm-decode",
+        "app.kubernetes.io/part-of": "companion-vllm",
+        "companion.io/ramp": "r100",
+        "companion.io/warm": "true",
+        "hami.io/vgpu-node": "192-222-52-95",
+        "llm-d.ai/role": "decode",
+        "pod-template-hash": "58c5457544"
+      },
+      "containers": [
+        {
+          "name": "modelserver",
+          "image": "vllm/vllm-openai:v0.30.0",
+          "image_id": "docker.io/vllm/vllm-openai@sha256:8a69ffad015f138d7170c4ddc429e230a3bc1c1719f67e14324749df200a4b90",
+          "command": [
+            "vllm",
+            "serve"
+          ],
+          "args": [
+            "$(MODEL)",
+            "--served-model-name=companion",
+            "--port=8200",
+            "--max-model-len=32768",
+            "--max-num-seqs=24",
+            "--max-num-batched-tokens=2560",
+            "--block-size=64",
+            "--enable-prefix-caching",
+            "--scheduling-policy=priority",
+            "--gpu-memory-utilization=0.90",
+            "--no-disable-hybrid-kv-cache-manager",
+            "--enable-prompt-tokens-details",
+            "--enable-auto-tool-choice",
+            "--tool-call-parser=gemma4",
+            "--reasoning-parser=gemma4",
+            "--limit-mm-per-prompt={\"image\":2}",
+            "--disable-access-log-for-endpoints=/health,/metrics,/v1/models",
+            "--kv-transfer-config",
+            "{\"kv_connector\":\"LMCacheMPConnector\",\"kv_role\":\"kv_both\",\"kv_connector_extra_config\":{\"lmcache.mp.host\":\"tcp://$(HOST_IP)\",\"lmcache.mp.port\":5555,\"lmcache.mp.isolated_ipc\":true}}",
+            "--kv-events-config",
+            "{\"enable_kv_cache_events\":true,\"publisher\":\"zmq\",\"endpoint\":\"tcp://*:5556\",\"replay_endpoint\":\"tcp://*:5559\",\"topic\":\"kv@$(POD_IP):8000@$(MODEL)\"}"
+          ],
+          "env": {
+            "MODEL": "google/gemma-4-E4B-it",
+            "HF_TOKEN": "<from secretKeyRef>",
+            "POD_IP": "<from fieldRef>",
+            "HOST_IP": "<from fieldRef>",
+            "VLLM_NIXL_SIDE_CHANNEL_HOST": "<from fieldRef>",
+            "VLLM_HTTP_TIMEOUT_KEEP_ALIVE": "120",
+            "PYTHONHASHSEED": "123",
+            "UCX_TLS": "cuda_ipc,cuda_copy,tcp",
+            "HF_HOME": "/models/hf",
+            "VLLM_CACHE_ROOT": "/models/vllm-cache"
+          },
+          "resources": {
+            "limits": {
+              "memory": "32Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "22k"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "16Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "22k"
+            }
+          }
+        }
+      ],
+      "init_containers": [
+        {
+          "name": "routing-proxy",
+          "image": "ghcr.io/llm-d/llm-d-router-disagg-sidecar:v0.11.0",
+          "image_id": null,
+          "command": null,
+          "args": [
+            "--port=8000",
+            "--kv-connector=shared-storage",
+            "--zap-log-level=1",
+            "--secure-proxy=false"
+          ],
+          "env": {},
+          "resources": {}
+        }
+      ]
+    },
+    {
+      "namespace": "companion",
+      "name": "vllm-prefill-6ddb5cdcd8-tssqt",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "vllm-prefill",
+        "app.kubernetes.io/part-of": "companion-vllm",
+        "companion.io/ramp": "r100",
+        "companion.io/warm": "true",
+        "hami.io/vgpu-node": "192-222-52-95",
+        "llm-d.ai/role": "prefill",
+        "pod-template-hash": "6ddb5cdcd8"
+      },
+      "containers": [
+        {
+          "name": "modelserver",
+          "image": "vllm/vllm-openai:v0.30.0",
+          "image_id": "docker.io/vllm/vllm-openai@sha256:8a69ffad015f138d7170c4ddc429e230a3bc1c1719f67e14324749df200a4b90",
+          "command": [
+            "vllm",
+            "serve"
+          ],
+          "args": [
+            "$(MODEL)",
+            "--served-model-name=companion",
+            "--port=8000",
+            "--max-model-len=32768",
+            "--max-num-seqs=8",
+            "--max-num-batched-tokens=16384",
+            "--block-size=64",
+            "--enable-prefix-caching",
+            "--scheduling-policy=priority",
+            "--gpu-memory-utilization=0.90",
+            "--no-disable-hybrid-kv-cache-manager",
+            "--enable-prompt-tokens-details",
+            "--enable-auto-tool-choice",
+            "--tool-call-parser=gemma4",
+            "--reasoning-parser=gemma4",
+            "--limit-mm-per-prompt={\"image\":2}",
+            "--disable-access-log-for-endpoints=/health,/metrics,/v1/models",
+            "--kv-transfer-config",
+            "{\"kv_connector\":\"LMCacheMPConnector\",\"kv_role\":\"kv_both\",\"kv_connector_extra_config\":{\"lmcache.mp.host\":\"tcp://$(HOST_IP)\",\"lmcache.mp.port\":5555,\"lmcache.mp.isolated_ipc\":true}}",
+            "--kv-events-config",
+            "{\"enable_kv_cache_events\":true,\"publisher\":\"zmq\",\"endpoint\":\"tcp://*:5556\",\"replay_endpoint\":\"tcp://*:5559\",\"topic\":\"kv@$(POD_IP):8000@$(MODEL)\"}"
+          ],
+          "env": {
+            "MODEL": "google/gemma-4-E4B-it",
+            "HF_TOKEN": "<from secretKeyRef>",
+            "POD_IP": "<from fieldRef>",
+            "HOST_IP": "<from fieldRef>",
+            "VLLM_NIXL_SIDE_CHANNEL_HOST": "<from fieldRef>",
+            "VLLM_HTTP_TIMEOUT_KEEP_ALIVE": "120",
+            "PYTHONHASHSEED": "123",
+            "UCX_TLS": "cuda_ipc,cuda_copy,tcp",
+            "HF_HOME": "/models/hf",
+            "VLLM_CACHE_ROOT": "/models/vllm-cache"
+          },
+          "resources": {
+            "limits": {
+              "memory": "32Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "22k"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "16Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "22k"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "companion",
+      "name": "warm-controller-564f7b894d-2lr4z",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "warm-controller",
+        "pod-template-hash": "564f7b894d"
+      },
+      "containers": [
+        {
+          "name": "warm-controller",
+          "image": "companion/edge:dev",
+          "image_id": "sha256:8fde7c1fdeea0a73c3b1021f582838b94ac25a1ae3a4c0072d66f89e0c6b11b5",
+          "command": [
+            "python",
+            "-m",
+            "control.warm.main"
+          ],
+          "args": null,
+          "env": {
+            "WARM_NAMESPACE": "companion",
+            "WARM_SELECTOR": "app.kubernetes.io/part-of=companion-vllm",
+            "WARM_BASELINE_TTFT_4K_S": "1.2",
+            "WARM_PROMETHEUS_URL": "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+          },
+          "resources": {
+            "limits": {
+              "memory": "512Mi"
+            },
+            "requests": {
+              "cpu": "250m",
+              "memory": "256Mi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "guard",
+      "name": "guard-ddc6575d4-cn66n",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "guard",
+        "pod-template-hash": "ddc6575d4"
+      },
+      "containers": [
+        {
+          "name": "nemo",
+          "image": "companion/guard:dev",
+          "image_id": "sha256:bdf734ab914da54e85128193a3d9fb2b2ce7fe2bbf95822004f8efe2a6e24c99",
+          "command": [
+            "nemoguardrails",
+            "server",
+            "--config=/config",
+            "--port=8000",
+            "--default-config-id=companion"
+          ],
+          "args": null,
+          "env": {},
+          "resources": {
+            "limits": {
+              "memory": "2Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "guard",
+      "name": "guard-ddc6575d4-sbxqz",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "guard",
+        "pod-template-hash": "ddc6575d4"
+      },
+      "containers": [
+        {
+          "name": "nemo",
+          "image": "companion/guard:dev",
+          "image_id": "sha256:bdf734ab914da54e85128193a3d9fb2b2ce7fe2bbf95822004f8efe2a6e24c99",
+          "command": [
+            "nemoguardrails",
+            "server",
+            "--config=/config",
+            "--port=8000",
+            "--default-config-id=companion"
+          ],
+          "args": null,
+          "env": {},
+          "resources": {
+            "limits": {
+              "memory": "2Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "guard",
+      "name": "guard-injection-57774d5444-vjv46",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "guard-injection",
+        "hami.io/vgpu-node": "192-222-52-95",
+        "pod-template-hash": "57774d5444"
+      },
+      "containers": [
+        {
+          "name": "classifier",
+          "image": "companion/guard-injection:dev",
+          "image_id": "sha256:ae094c269bd7c1b1c73da32067f2e7f6c49811772c98a18ac3804429da67450d",
+          "command": [
+            "uvicorn",
+            "--factory",
+            "control.guard.injection_server:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8000"
+          ],
+          "args": null,
+          "env": {
+            "GUARD_INJECTION_MODEL": "meta-llama/Llama-Prompt-Guard-2-86M",
+            "GUARD_INJECTION_THRESHOLD": "0.5",
+            "HF_TOKEN": "<from secretKeyRef>",
+            "HF_HOME": "/models/hf"
+          },
+          "resources": {
+            "limits": {
+              "memory": "6Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "4k"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "3Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "4k"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "guard",
+      "name": "guard-safety-74595548bf-fllgp",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "guard-safety",
+        "hami.io/vgpu-node": "192-222-52-95",
+        "pod-template-hash": "74595548bf"
+      },
+      "containers": [
+        {
+          "name": "vllm",
+          "image": "vllm/vllm-openai:v0.30.0",
+          "image_id": "docker.io/vllm/vllm-openai@sha256:8a69ffad015f138d7170c4ddc429e230a3bc1c1719f67e14324749df200a4b90",
+          "command": [
+            "vllm",
+            "serve",
+            "nvidia/Nemotron-3.5-Content-Safety"
+          ],
+          "args": [
+            "--port=8000",
+            "--max-model-len=8192",
+            "--enable-prefix-caching",
+            "--gpu-memory-utilization=0.85",
+            "--limit-mm-per-prompt={\"image\":1}"
+          ],
+          "env": {
+            "HF_HOME": "/models/hf"
+          },
+          "resources": {
+            "limits": {
+              "memory": "24Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "16k"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "12Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "16k"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "data",
+      "name": "browser-5c4f87867c-7kpch",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "browser",
+        "companion.io/egress": "web",
+        "pod-template-hash": "5c4f87867c"
+      },
+      "containers": [
+        {
+          "name": "browser",
+          "image": "companion/browser:dev",
+          "image_id": "sha256:b498e8463710ff4bb87cd2f5656d9a37046f65940a82f7d6cc1ba7aea0d4205a",
+          "command": null,
+          "args": null,
+          "env": {
+            "BROWSER_ALLOW_HOSTS": "test-pages.data.svc.cluster.local",
+            "BROWSER_MAX_PAGES": "3"
+          },
+          "resources": {
+            "limits": {
+              "memory": "3Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "data",
+      "name": "qdrant-0",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "qdrant",
+        "apps.kubernetes.io/pod-index": "0",
+        "controller-revision-hash": "qdrant-688b695598",
+        "statefulset.kubernetes.io/pod-name": "qdrant-0"
+      },
+      "containers": [
+        {
+          "name": "qdrant",
+          "image": "qdrant/qdrant:v1.19.1",
+          "image_id": "docker.io/qdrant/qdrant@sha256:12364fe851b9f17356fc88189fc06d1b521262e04659ec7345975b00c9246a10",
+          "command": null,
+          "args": null,
+          "env": {
+            "QDRANT__TELEMETRY_DISABLED": "true",
+            "QDRANT__STORAGE__SNAPSHOTS_PATH": "/qdrant/snapshots"
+          },
+          "resources": {
+            "limits": {
+              "memory": "8Gi"
+            },
+            "requests": {
+              "cpu": "1",
+              "memory": "2Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "data",
+      "name": "sie-embed-57bdd5d7cf-xs5nq",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "sie-embed",
+        "app.kubernetes.io/part-of": "companion-sie",
+        "hami.io/vgpu-node": "192-222-52-95",
+        "pod-template-hash": "57bdd5d7cf"
+      },
+      "containers": [
+        {
+          "name": "sie",
+          "image": "ghcr.io/superlinked/sie-server:v0.8.3-cuda12-default",
+          "image_id": "ghcr.io/superlinked/sie-server@sha256:22969c11255076b35b0f776bbbd23238c05d51dd6fe5c9e53e667e4770858031",
+          "command": [
+            "sie-server",
+            "serve",
+            "--port",
+            "8080",
+            "--json-logs",
+            "--models",
+            "BAAI/bge-m3,Qwen/Qwen3-Reranker-4B",
+            "--preload",
+            "BAAI/bge-m3,Qwen/Qwen3-Reranker-4B"
+          ],
+          "args": null,
+          "env": {
+            "HF_HOME": "/models/hf",
+            "HF_TOKEN": "<from secretKeyRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "16Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "12k"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "8Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "12k"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "data",
+      "name": "sie-ocr-656d7b986d-hklk9",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "sie-ocr",
+        "app.kubernetes.io/part-of": "companion-sie",
+        "hami.io/vgpu-node": "192-222-52-95",
+        "pod-template-hash": "656d7b986d"
+      },
+      "containers": [
+        {
+          "name": "sie",
+          "image": "ghcr.io/superlinked/sie-server:v0.8.3-cuda12-sglang-vision-extract",
+          "image_id": "ghcr.io/superlinked/sie-server@sha256:194b9d396cb8a4569c9bc81e64a68319f4b9f386cf6794acf9d8eb8c1ee4efd5",
+          "command": [
+            "sie-server",
+            "serve",
+            "--port",
+            "8080",
+            "--json-logs",
+            "--models",
+            "lightonai/LightOnOCR-2-1B",
+            "--preload",
+            "lightonai/LightOnOCR-2-1B"
+          ],
+          "args": null,
+          "env": {
+            "HF_HOME": "/models/hf",
+            "HF_TOKEN": "<from secretKeyRef>"
+          },
+          "resources": {
+            "limits": {
+              "memory": "16Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "10k"
+            },
+            "requests": {
+              "cpu": "2",
+              "memory": "8Gi",
+              "nvidia.com/gpu": "1",
+              "nvidia.com/gpumem": "10k"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "data",
+      "name": "test-pages-76796c88-2gxvq",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "test-pages",
+        "pod-template-hash": "76796c88"
+      },
+      "containers": [
+        {
+          "name": "nginx",
+          "image": "nginx:1.29-alpine",
+          "image_id": "docker.io/library/nginx@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de",
+          "command": null,
+          "args": null,
+          "env": {},
+          "resources": {
+            "limits": {
+              "memory": "64Mi"
+            },
+            "requests": {
+              "cpu": "50m",
+              "memory": "32Mi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    },
+    {
+      "namespace": "platform",
+      "name": "redis-5f596f6bc7-sdcpg",
+      "node": "192-222-52-95",
+      "phase": "Running",
+      "labels": {
+        "app": "redis",
+        "pod-template-hash": "5f596f6bc7"
+      },
+      "containers": [
+        {
+          "name": "redis",
+          "image": "redis:8.2-alpine",
+          "image_id": "docker.io/library/redis@sha256:b51665e66f00759be7c3152ad5ac3c66fb2f619c13ef62dea7cc1f9914524635",
+          "command": null,
+          "args": [
+            "--save",
+            "",
+            "--appendonly",
+            "no",
+            "--maxmemory",
+            "2gb",
+            "--maxmemory-policy",
+            "allkeys-lru"
+          ],
+          "env": {},
+          "resources": {
+            "limits": {
+              "memory": "3Gi"
+            },
+            "requests": {
+              "cpu": "500m",
+              "memory": "1Gi"
+            }
+          }
+        }
+      ],
+      "init_containers": []
+    }
+  ]
+}

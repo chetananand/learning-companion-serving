@@ -1,0 +1,70 @@
+{
+  "tokens": 2000,
+  "max_tokens": 512,
+  "levels": {
+    "1": {
+      "t_start": 1790644251.1009657,
+      "calls": 2,
+      "wall_s": 18.0,
+      "by_class": {
+        "interactive": {
+          "calls": 2,
+          "ok": 2,
+          "aborted": 0,
+          "sheds": {},
+          "overflow": 0,
+          "ttft_p50_s": 0.7281,
+          "ttft_p95_s": 0.8767,
+          "latency_p50_s": 8.9552,
+          "latency_p95_s": 9.0415,
+          "output_tokens": 1024,
+          "prompt_tokens": 3445
+        }
+      }
+    },
+    "2": {
+      "t_start": 1790644279.51986,
+      "calls": 4,
+      "wall_s": 18.4,
+      "by_class": {
+        "interactive": {
+          "calls": 4,
+          "ok": 3,
+          "aborted": 0,
+          "sheds": {
+            "503 {\"error\":{\"message\":\"guard_unavailable\",\"type\":\"guard_unavailable\",\"code\":503}}": 1
+          },
+          "overflow": 0,
+          "ttft_p50_s": 0.8042,
+          "ttft_p95_s": 1.0235,
+          "latency_p50_s": 9.0679,
+          "latency_p95_s": 9.3431,
+          "output_tokens": 1536,
+          "prompt_tokens": 5630
+        }
+      }
+    },
+    "4": {
+      "t_start": 1790644291.6484876,
+      "calls": 8,
+      "wall_s": 2.1,
+      "by_class": {
+        "interactive": {
+          "calls": 8,
+          "ok": 0,
+          "aborted": 0,
+          "sheds": {
+            "503 {\"error\":{\"message\":\"guard_unavailable\",\"type\":\"guard_unavailable\",\"code\":503}}": 8
+          },
+          "overflow": 0,
+          "ttft_p50_s": null,
+          "ttft_p95_s": null,
+          "latency_p50_s": null,
+          "latency_p95_s": null,
+          "output_tokens": 0,
+          "prompt_tokens": 0
+        }
+      }
+    }
+  }
+}

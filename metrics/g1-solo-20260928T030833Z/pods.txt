@@ -1,0 +1,8 @@
+NAMESPACE     NAME                                      READY   STATUS    RESTARTS      AGE     IP               NODE            NOMINATED NODE   READINESS GATES
+companion     lmcache-server-p2vs5                      1/1     Running   0             6m46s   172.26.132.208   68-209-75-245   <none>           <none>
+companion     vllm-decode-7b8bddf95c-lhpvn              2/2     Running   0             6m      10.42.0.10       68-209-75-245   <none>           <none>
+companion     vllm-prefill-78f847dbf-5c72m              1/1     Running   0             6m      10.42.0.9        68-209-75-245   <none>           <none>
+kube-system   coredns-54996dc9b4-65nqf                  1/1     Running   0             19m     10.42.0.2        68-209-75-245   <none>           <none>
+kube-system   local-path-provisioner-77b9867795-wv8n4   1/1     Running   5 (15m ago)   19m     10.42.0.3        68-209-75-245   <none>           <none>
+kube-system   metrics-server-6dc596dfb8-7h299           1/1     Running   6 (14m ago)   19m     10.42.0.5        68-209-75-245   <none>           <none>
+kube-system   nvidia-device-plugin-daemonset-2t8kr      1/1     Running   0             19m     10.42.0.4        68-209-75-245   <none>           <none>

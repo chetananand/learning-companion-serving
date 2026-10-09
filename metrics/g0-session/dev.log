@@ -1,0 +1,84 @@
+wrote cluster/manifests/router/generated/epp-config.yaml
+wrote cluster/manifests/router/generated/router-values.yaml
+wrote cluster/manifests/router/generated/inference-objectives.yaml
+wrote cluster/manifests/router/generated/agent-router.yaml
+namespace/companion serverside-applied
+namespace/data serverside-applied
+namespace/guard serverside-applied
+namespace/platform serverside-applied
+serviceaccount/warm-controller serverside-applied
+role.rbac.authorization.k8s.io/warm-controller serverside-applied
+rolebinding.rbac.authorization.k8s.io/warm-controller serverside-applied
+configmap/companion-app serverside-applied
+configmap/test-pages serverside-applied
+configmap/guard-nemo-config serverside-applied
+configmap/companion-dashboards serverside-applied
+service/companion-api serverside-applied
+service/companion-ui serverside-applied
+service/edge serverside-applied
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+service/warm-controller serverside-applied
+service/browser serverside-applied
+service/qdrant serverside-applied
+service/sie-embed serverside-applied
+service/sie-ocr serverside-applied
+service/test-pages serverside-applied
+service/guard serverside-applied
+service/guard-injection serverside-applied
+service/guard-safety serverside-applied
+service/redis serverside-applied
+deployment.apps/companion-api serverside-applied
+deployment.apps/companion-ui serverside-applied
+deployment.apps/edge serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+deployment.apps/warm-controller serverside-applied
+deployment.apps/browser serverside-applied
+deployment.apps/sie-embed serverside-applied
+deployment.apps/sie-ocr serverside-applied
+deployment.apps/test-pages serverside-applied
+deployment.apps/guard serverside-applied
+deployment.apps/guard-injection serverside-applied
+deployment.apps/guard-safety serverside-applied
+deployment.apps/redis serverside-applied
+statefulset.apps/qdrant serverside-applied
+cronjob.batch/ingest serverside-applied
+cronjob.batch/sweep serverside-applied
+aigatewayroute.aigateway.envoyproxy.io/companion serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows serverside-applied
+envoyproxy.gateway.envoyproxy.io/companion-proxy serverside-applied
+gateway.gateway.networking.k8s.io/companion-gateway serverside-applied
+gatewayclass.gateway.networking.k8s.io/companion serverside-applied
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/vllm-decode serverside-applied
+scaledobject.keda.sh/vllm-prefill serverside-applied
+inferenceobjective.llm-d.ai/batch serverside-applied
+inferenceobjective.llm-d.ai/interactive serverside-applied
+podmonitor.monitoring.coreos.com/vllm serverside-applied
+prometheusrule.monitoring.coreos.com/companion-rules serverside-applied
+servicemonitor.monitoring.coreos.com/companion-api serverside-applied
+servicemonitor.monitoring.coreos.com/edge serverside-applied
+servicemonitor.monitoring.coreos.com/warm-controller serverside-applied
+servicemonitor.monitoring.coreos.com/data-plane serverside-applied
+servicemonitor.monitoring.coreos.com/guard-injection serverside-applied
+networkpolicy.networking.k8s.io/web-egress serverside-applied
+networkpolicy.networking.k8s.io/browser-ingress serverside-applied
+networkpolicy.networking.k8s.io/web-egress serverside-applied
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+Waiting for deployment spec update to be observed...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+Waiting for deployment spec update to be observed...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-prefill" successfully rolled out
+deployment "vllm-decode" successfully rolled out
+exit=0

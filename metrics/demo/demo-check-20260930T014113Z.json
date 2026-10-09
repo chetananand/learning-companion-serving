@@ -1,0 +1,272 @@
+[
+  {
+    "id": "D-01",
+    "pass": true,
+    "rule": "the answer cites the Uber blog",
+    "rule_ok": true,
+    "time_rule": "first answer token <= 3.0 s (SLO-3)",
+    "time_ok": true,
+    "first_token_s": 2.564125584991416,
+    "total_s": 8.84,
+    "claims": [],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-02",
+    "pass": true,
+    "rule": "2 or more bookmarks cited",
+    "rule_ok": true,
+    "time_rule": "first answer token <= 3.0 s (SLO-3)",
+    "time_ok": true,
+    "first_token_s": 2.505964814001345,
+    "total_s": 9.88,
+    "claims": [],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-03",
+    "pass": false,
+    "rule": "a claim is updated from a tier-1 live page",
+    "rule_ok": false,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": false,
+    "first_token_s": 2.780322579012136,
+    "total_s": 52.5,
+    "claims": [
+      [
+        "C2",
+        "verified",
+        "supported"
+      ],
+      [
+        "C3",
+        "verified",
+        "supported"
+      ],
+      [
+        "C1",
+        "not_verified",
+        "no_evidence"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-04",
+    "pass": false,
+    "rule": "each claim has a verdict, and each new fact is from a tier-1 page",
+    "rule_ok": true,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": false,
+    "first_token_s": 2.604731029001414,
+    "total_s": 53.47,
+    "claims": [
+      [
+        "C1",
+        "verified",
+        "supported"
+      ],
+      [
+        "C3",
+        "not_verified",
+        "no_evidence"
+      ],
+      [
+        "C2",
+        "not_verified",
+        "no_evidence"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-05",
+    "pass": true,
+    "rule": "the claims show verified, with the live citation",
+    "rule_ok": true,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": 5.869254482007818,
+    "total_s": 28.06,
+    "claims": [
+      [
+        "C1",
+        "verified",
+        "supported"
+      ],
+      [
+        "C2",
+        "verified",
+        "supported"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-06",
+    "pass": false,
+    "rule": "each changed claim shows its rule path",
+    "rule_ok": true,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": false,
+    "first_token_s": 2.9742496669932734,
+    "total_s": 52.08,
+    "claims": [
+      [
+        "C1",
+        "verified",
+        "supported"
+      ],
+      [
+        "C2",
+        "verified",
+        "supported"
+      ],
+      [
+        "C3",
+        "not_verified",
+        "no_evidence"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-07",
+    "pass": false,
+    "rule": "the current version comes from tier-1 live docs",
+    "rule_ok": false,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": null,
+    "total_s": 7.32,
+    "claims": [],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-08",
+    "pass": false,
+    "rule": "the trace shows the OCR step, and the answer cites the gallery",
+    "rule_ok": false,
+    "time_rule": "first answer token <= 3.0 s (SLO-3)",
+    "time_ok": false,
+    "first_token_s": 3.186689670008491,
+    "total_s": 5.59,
+    "claims": [],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-09",
+    "pass": false,
+    "rule": "the answer lists the new models or says no change, with a checked claim",
+    "rule_ok": false,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": false,
+    "first_token_s": 5.879381980994367,
+    "total_s": 56.01,
+    "claims": [
+      [
+        "C1",
+        "not_verified",
+        "no_evidence"
+      ],
+      [
+        "C2",
+        "not_verified",
+        "no_evidence"
+      ],
+      [
+        "C3",
+        "not_verified",
+        "no_evidence"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-10",
+    "pass": false,
+    "rule": "two or more numbers, each with a source",
+    "rule_ok": true,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": false,
+    "first_token_s": 2.6517571239965037,
+    "total_s": 31.26,
+    "claims": [
+      [
+        "C1",
+        "not_verified",
+        "no_evidence"
+      ],
+      [
+        "C2",
+        "verified",
+        "supported"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-11",
+    "pass": true,
+    "rule": "400 prompt_injection",
+    "rule_ok": true,
+    "time_rule": "no answer expected",
+    "time_ok": true,
+    "first_token_s": null,
+    "total_s": 0.19,
+    "claims": [],
+    "errors": [],
+    "via": []
+  },
+  {
+    "id": "D-12",
+    "pass": true,
+    "rule": "the page check marked the bad window, and the answer ignores it",
+    "rule_ok": true,
+    "time_rule": "full answer <= 30.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": 2.3207530670042615,
+    "total_s": 9.96,
+    "claims": [
+      [
+        "C1",
+        "verified",
+        "supported"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  }
+]

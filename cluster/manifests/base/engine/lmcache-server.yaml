@@ -1,0 +1,38 @@
+# LMCache MP server: one for each GPU node, shared by all vLLM pods on the node (ADR-002, K2).
+# The server pulls KV through CUDA IPC, so it shares the host IPC namespace and sees all GPUs
+# without a GPU request (the DCGM exporter uses the same pattern). VERIFY the IPC settings at G1.
+# G1 (2026-09-28): the server binds 127.0.0.1 by default, so the vLLM pods (pod network) could not reach
+# tcp://$(HOST_IP):5555. It now binds the private node IP: the pods reach it, and the public side does not.
+# G1: the default IPC path (torch _share_cuda_) needs one /dev/shm for all processes, and each vLLM pod
+# has its own. Thus --isolated-ipc here and lmcache.mp.isolated_ipc in the connectors of both vLLM pods.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: {name: lmcache-server, namespace: companion, labels: {app: lmcache-server}}
+spec:
+  selector: {matchLabels: {app: lmcache-server}}
+  template:
+    metadata: {labels: {app: lmcache-server}}
+    spec:
+      nodeSelector: {companion.io/node: gpu}
+      hostNetwork: true
+      hostIPC: true
+      containers:
+        - name: lmcache
+          image: VLLM_IMAGE            # the vLLM image ships lmcache (INSTALL_KV_CONNECTORS); VERIFY >= 0.5.5
+          # Session 1 (2026-09-29): LMCache keeps the sliding-window layers of Gemma 4 in full, about 865 KB for
+          # each token (the GPU cache: about 237 KB). 150 GiB with eviction at 80% held about 149K tokens, fewer
+          # than the GPU cache (173,657). 250 GiB with eviction at 90% holds about 280K tokens.
+          command: ["lmcache", "server", "--l1-size-gb", "250", "--eviction-policy", "LRU", "--port", "5555",
+                    "--host", "$(HOST_IP)", "--http-host", "$(HOST_IP)", "--isolated-ipc",
+                    "--eviction-trigger-watermark", "0.9"]
+          env:
+            - {name: HOST_IP, valueFrom: {fieldRef: {fieldPath: status.hostIP}}}
+            - {name: NVIDIA_VISIBLE_DEVICES, value: all}
+            - {name: PYTHONHASHSEED, value: "123"}
+          ports: [{name: lmcache, containerPort: 5555}, {name: metrics, containerPort: 8080}]  # --http-host: /metrics
+          resources:
+            requests: {cpu: "4", memory: 260Gi}
+            limits: {memory: 270Gi}
+          volumeMounts: [{name: shm, mountPath: /dev/shm}]
+      volumes:
+        - {name: shm, hostPath: {path: /dev/shm}}

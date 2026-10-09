@@ -1,0 +1,25 @@
+# Redis: tenant windows (Agent Router), overflow limiter and guard verdict cache (edge), search cache (app).
+# It starts empty in each session (DEBATE-LOG point 12). No persistence.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: redis, namespace: platform}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: redis}}
+  template:
+    metadata: {labels: {app: redis}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: redis
+          image: REDIS_IMAGE
+          args: ["--save", "", "--appendonly", "no", "--maxmemory", "2gb", "--maxmemory-policy", "allkeys-lru"]
+          ports: [{containerPort: 6379}]
+          resources: {requests: {cpu: 500m, memory: 1Gi}, limits: {memory: 3Gi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: redis, namespace: platform}
+spec:
+  selector: {app: redis}
+  ports: [{port: 6379, targetPort: 6379}]

@@ -1,0 +1,109 @@
+{
+  "1": {
+    "interactive": {
+      "calls": 2,
+      "ok": 2,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 3.2638,
+      "ttft_p95_s": 3.6475,
+      "latency_p50_s": 17.8164,
+      "latency_p95_s": 18.8843,
+      "output_tokens": 1024,
+      "prompt_tokens": 52425
+    }
+  },
+  "2": {
+    "interactive": {
+      "calls": 4,
+      "ok": 4,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 3.7085,
+      "ttft_p95_s": 5.7373,
+      "latency_p50_s": 18.6828,
+      "latency_p95_s": 20.5337,
+      "output_tokens": 2048,
+      "prompt_tokens": 96928
+    }
+  },
+  "4": {
+    "interactive": {
+      "calls": 8,
+      "ok": 8,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 3.5978,
+      "ttft_p95_s": 10.9603,
+      "latency_p50_s": 19.1502,
+      "latency_p95_s": 26.8717,
+      "output_tokens": 4096,
+      "prompt_tokens": 196389
+    }
+  },
+  "8": {
+    "interactive": {
+      "calls": 16,
+      "ok": 16,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 4.7532,
+      "ttft_p95_s": 18.4452,
+      "latency_p50_s": 21.1287,
+      "latency_p95_s": 35.4992,
+      "output_tokens": 8192,
+      "prompt_tokens": 392096
+    }
+  },
+  "12": {
+    "interactive": {
+      "calls": 24,
+      "ok": 24,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 11.7723,
+      "ttft_p95_s": 27.3472,
+      "latency_p50_s": 29.1734,
+      "latency_p95_s": 44.8963,
+      "output_tokens": 12288,
+      "prompt_tokens": 578650
+    }
+  },
+  "16": {
+    "interactive": {
+      "calls": 32,
+      "ok": 32,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 20.9398,
+      "ttft_p95_s": 33.1983,
+      "latency_p50_s": 38.2776,
+      "latency_p95_s": 50.5442,
+      "output_tokens": 16384,
+      "prompt_tokens": 760433
+    }
+  },
+  "24": {
+    "interactive": {
+      "calls": 48,
+      "ok": 41,
+      "aborted": 0,
+      "sheds": {
+        "599 RemoteProtocolError": 7
+      },
+      "overflow": 0,
+      "ttft_p50_s": 39.0074,
+      "ttft_p95_s": 45.896,
+      "latency_p50_s": 56.029,
+      "latency_p95_s": 62.2456,
+      "output_tokens": 20992,
+      "prompt_tokens": 985327
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"query": "histogram_quantile(0.95, sum by (mode, phase, le) (rate(companion_turn_seconds_bucket[1m])))", "status": "success", "data": {"resultType": "matrix", "result": []}}

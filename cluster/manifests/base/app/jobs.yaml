@@ -1,0 +1,58 @@
+# Batch jobs (product spec, section 8). Both CronJobs are suspended: run them by hand, for example
+#   kubectl -n companion create job ingest-now --from=cronjob/ingest
+#   kubectl -n companion create job sweep-now --from=cronjob/sweep
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: ingest, namespace: companion}
+spec:
+  schedule: "0 3 * * *"
+  suspend: true
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata: {labels: {app: ingest, companion.io/egress: web}}
+        spec:
+          restartPolicy: Never
+          nodeSelector: {companion.io/node: control}
+          containers:
+            - name: ingest
+              image: companion/app:dev
+              imagePullPolicy: Never
+              command: [python, -m, app.ingest.job, --seeds, app/ingest/seeds.yaml, --report-dir, /data/ingest]
+              envFrom: [{configMapRef: {name: companion-app}}]
+              env:
+                - {name: NOTION_API_KEY, valueFrom: {secretKeyRef: {name: companion-secrets, key: NOTION_API_KEY}}}
+              resources: {requests: {cpu: "1", memory: 1Gi}, limits: {memory: 4Gi}}
+              volumeMounts: [{name: data, mountPath: /data}]
+          volumes:
+            - {name: data, hostPath: {path: /var/lib/companion/app-data, type: DirectoryOrCreate}}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: sweep, namespace: companion}
+spec:
+  schedule: "0 4 * * *"
+  suspend: true
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata: {labels: {app: sweep, companion.io/egress: web}}
+        spec:
+          restartPolicy: Never
+          nodeSelector: {companion.io/node: control}
+          containers:
+            - name: sweep
+              image: companion/app:dev
+              imagePullPolicy: Never
+              command: [python, -m, app.sweep, --count, "20", --report-dir, /data/sweep]
+              envFrom: [{configMapRef: {name: companion-app}}]
+              env:
+                - {name: TAVILY_API_KEY, valueFrom: {secretKeyRef: {name: companion-secrets, key: TAVILY_API_KEY}}}
+              resources: {requests: {cpu: 500m, memory: 1Gi}, limits: {memory: 4Gi}}
+              volumeMounts: [{name: data, mountPath: /data}]
+          volumes:
+            - {name: data, hostPath: {path: /var/lib/companion/app-data, type: DirectoryOrCreate}}

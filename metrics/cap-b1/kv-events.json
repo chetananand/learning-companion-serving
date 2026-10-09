@@ -1,0 +1,1524 @@
+{
+ "evicted_gpu_blocks": 75640,
+ "by_endpoint": {
+  "tcp://10.42.1.17:5556": {
+   "batches": 1471,
+   "stored": {
+    "GPU": 50339
+   },
+   "removed": {
+    "GPU": 50285
+   },
+   "cleared": 0,
+   "missed_batches": 0
+  },
+  "tcp://10.42.1.19:5556": {
+   "batches": 197,
+   "stored": {
+    "GPU": 25916
+   },
+   "removed": {
+    "GPU": 25355
+   },
+   "cleared": 0,
+   "missed_batches": 0
+  }
+ },
+ "per_second": {
+  "1790702982": {
+   "stored_GPU": 10
+  },
+  "1790702983": {
+   "stored_GPU": 482
+  },
+  "1790702984": {
+   "removed_GPU": 212,
+   "stored_GPU": 143
+  },
+  "1790702990": {
+   "removed_GPU": 225,
+   "stored_GPU": 139
+  },
+  "1790702991": {
+   "removed_GPU": 341,
+   "stored_GPU": 170
+  },
+  "1790702993": {
+   "stored_GPU": 209,
+   "removed_GPU": 157
+  },
+  "1790702994": {
+   "removed_GPU": 115,
+   "stored_GPU": 334
+  },
+  "1790702995": {
+   "removed_GPU": 847,
+   "stored_GPU": 532
+  },
+  "1790702996": {
+   "removed_GPU": 245,
+   "stored_GPU": 237
+  },
+  "1790702997": {
+   "removed_GPU": 236,
+   "stored_GPU": 140
+  },
+  "1790702998": {
+   "stored_GPU": 2
+  },
+  "1790702999": {
+   "stored_GPU": 269,
+   "removed_GPU": 64
+  },
+  "1790703000": {
+   "stored_GPU": 268,
+   "removed_GPU": 243
+  },
+  "1790703001": {
+   "stored_GPU": 127,
+   "removed_GPU": 49
+  },
+  "1790703002": {
+   "stored_GPU": 20
+  },
+  "1790703003": {
+   "removed_GPU": 172,
+   "stored_GPU": 234
+  },
+  "1790703004": {
+   "stored_GPU": 174,
+   "removed_GPU": 278
+  },
+  "1790703005": {
+   "stored_GPU": 414,
+   "removed_GPU": 376
+  },
+  "1790703006": {
+   "stored_GPU": 162,
+   "removed_GPU": 140
+  },
+  "1790703007": {
+   "stored_GPU": 126,
+   "removed_GPU": 122
+  },
+  "1790703008": {
+   "stored_GPU": 239,
+   "removed_GPU": 30
+  },
+  "1790703009": {
+   "removed_GPU": 106,
+   "stored_GPU": 90
+  },
+  "1790703010": {
+   "stored_GPU": 120,
+   "removed_GPU": 163
+  },
+  "1790703011": {
+   "stored_GPU": 135,
+   "removed_GPU": 202
+  },
+  "1790703012": {
+   "removed_GPU": 413,
+   "stored_GPU": 256
+  },
+  "1790703013": {
+   "removed_GPU": 160,
+   "stored_GPU": 266
+  },
+  "1790703014": {
+   "stored_GPU": 125,
+   "removed_GPU": 106
+  },
+  "1790703015": {
+   "removed_GPU": 200,
+   "stored_GPU": 244
+  },
+  "1790703016": {
+   "stored_GPU": 283,
+   "removed_GPU": 503
+  },
+  "1790703017": {
+   "stored_GPU": 90
+  },
+  "1790703018": {
+   "stored_GPU": 7
+  },
+  "1790703019": {
+   "stored_GPU": 2
+  },
+  "1790703020": {
+   "stored_GPU": 19
+  },
+  "1790703021": {
+   "removed_GPU": 340,
+   "stored_GPU": 340
+  },
+  "1790703022": {
+   "removed_GPU": 750,
+   "stored_GPU": 515
+  },
+  "1790703023": {
+   "stored_GPU": 297,
+   "removed_GPU": 672
+  },
+  "1790703024": {
+   "removed_GPU": 222,
+   "stored_GPU": 222
+  },
+  "1790703025": {
+   "stored_GPU": 397,
+   "removed_GPU": 273
+  },
+  "1790703026": {
+   "stored_GPU": 332,
+   "removed_GPU": 83
+  },
+  "1790703027": {
+   "removed_GPU": 221,
+   "stored_GPU": 104
+  },
+  "1790703028": {
+   "stored_GPU": 119,
+   "removed_GPU": 107
+  },
+  "1790703029": {
+   "stored_GPU": 234,
+   "removed_GPU": 128
+  },
+  "1790703030": {
+   "stored_GPU": 1
+  },
+  "1790703031": {
+   "stored_GPU": 3
+  },
+  "1790703032": {
+   "stored_GPU": 2
+  },
+  "1790703033": {
+   "stored_GPU": 119,
+   "removed_GPU": 201
+  },
+  "1790703034": {
+   "stored_GPU": 138
+  },
+  "1790703035": {
+   "removed_GPU": 178,
+   "stored_GPU": 226
+  },
+  "1790703036": {
+   "stored_GPU": 246,
+   "removed_GPU": 67
+  },
+  "1790703037": {
+   "stored_GPU": 119,
+   "removed_GPU": 144
+  },
+  "1790703038": {
+   "removed_GPU": 253,
+   "stored_GPU": 322
+  },
+  "1790703039": {
+   "stored_GPU": 545,
+   "removed_GPU": 391
+  },
+  "1790703040": {
+   "removed_GPU": 182,
+   "stored_GPU": 109
+  },
+  "1790703041": {
+   "removed_GPU": 280,
+   "stored_GPU": 236
+  },
+  "1790703042": {
+   "stored_GPU": 3
+  },
+  "1790703043": {
+   "stored_GPU": 22
+  },
+  "1790703044": {
+   "removed_GPU": 274,
+   "stored_GPU": 247
+  },
+  "1790703045": {
+   "stored_GPU": 174,
+   "removed_GPU": 496
+  },
+  "1790703046": {
+   "stored_GPU": 288,
+   "removed_GPU": 372
+  },
+  "1790703047": {
+   "stored_GPU": 348,
+   "removed_GPU": 73
+  },
+  "1790703048": {
+   "stored_GPU": 133,
+   "removed_GPU": 158
+  },
+  "1790703049": {
+   "stored_GPU": 178,
+   "removed_GPU": 211
+  },
+  "1790703050": {
+   "stored_GPU": 291,
+   "removed_GPU": 136
+  },
+  "1790703051": {
+   "stored_GPU": 451,
+   "removed_GPU": 559
+  },
+  "1790703052": {
+   "removed_GPU": 250,
+   "stored_GPU": 126
+  },
+  "1790703053": {
+   "stored_GPU": 2
+  },
+  "1790703054": {
+   "stored_GPU": 5
+  },
+  "1790703055": {
+   "stored_GPU": 1
+  },
+  "1790703056": {
+   "stored_GPU": 1
+  },
+  "1790703057": {
+   "stored_GPU": 122,
+   "removed_GPU": 194
+  },
+  "1790703058": {
+   "stored_GPU": 1
+  },
+  "1790703059": {
+   "stored_GPU": 3
+  },
+  "1790703060": {
+   "stored_GPU": 312,
+   "removed_GPU": 69
+  },
+  "1790703061": {
+   "stored_GPU": 296,
+   "removed_GPU": 148
+  },
+  "1790703062": {
+   "removed_GPU": 275,
+   "stored_GPU": 244
+  },
+  "1790703063": {
+   "removed_GPU": 352,
+   "stored_GPU": 424
+  },
+  "1790703064": {
+   "removed_GPU": 659,
+   "stored_GPU": 263
+  },
+  "1790703065": {
+   "stored_GPU": 151,
+   "removed_GPU": 221
+  },
+  "1790703066": {
+   "stored_GPU": 252,
+   "removed_GPU": 211
+  },
+  "1790703067": {
+   "stored_GPU": 234,
+   "removed_GPU": 51
+  },
+  "1790703068": {
+   "stored_GPU": 128,
+   "removed_GPU": 162
+  },
+  "1790703069": {
+   "stored_GPU": 3
+  },
+  "1790703070": {
+   "stored_GPU": 116,
+   "removed_GPU": 101
+  },
+  "1790703071": {
+   "stored_GPU": 2
+  },
+  "1790703073": {
+   "stored_GPU": 412,
+   "removed_GPU": 1057
+  },
+  "1790703074": {
+   "stored_GPU": 489,
+   "removed_GPU": 709
+  },
+  "1790703075": {
+   "stored_GPU": 374,
+   "removed_GPU": 304
+  },
+  "1790703076": {
+   "stored_GPU": 389,
+   "removed_GPU": 122
+  },
+  "1790703077": {
+   "stored_GPU": 280,
+   "removed_GPU": 134
+  },
+  "1790703078": {
+   "removed_GPU": 296,
+   "stored_GPU": 127
+  },
+  "1790703079": {
+   "stored_GPU": 217,
+   "removed_GPU": 68
+  },
+  "1790703080": {
+   "stored_GPU": 201,
+   "removed_GPU": 238
+  },
+  "1790703081": {
+   "stored_GPU": 349,
+   "removed_GPU": 143
+  },
+  "1790703082": {
+   "stored_GPU": 116,
+   "removed_GPU": 241
+  },
+  "1790703083": {
+   "stored_GPU": 313,
+   "removed_GPU": 20
+  },
+  "1790703084": {
+   "stored_GPU": 265,
+   "removed_GPU": 406
+  },
+  "1790703085": {
+   "stored_GPU": 146,
+   "removed_GPU": 261
+  },
+  "1790703086": {
+   "stored_GPU": 148,
+   "removed_GPU": 140
+  },
+  "1790703087": {
+   "stored_GPU": 148,
+   "removed_GPU": 98
+  },
+  "1790703088": {
+   "stored_GPU": 247,
+   "removed_GPU": 168
+  },
+  "1790703089": {
+   "stored_GPU": 246,
+   "removed_GPU": 137
+  },
+  "1790703090": {
+   "stored_GPU": 394,
+   "removed_GPU": 813
+  },
+  "1790703091": {
+   "stored_GPU": 158,
+   "removed_GPU": 240
+  },
+  "1790703092": {
+   "removed_GPU": 163,
+   "stored_GPU": 303
+  },
+  "1790703093": {
+   "stored_GPU": 150
+  },
+  "1790703094": {
+   "stored_GPU": 204,
+   "removed_GPU": 283
+  },
+  "1790703095": {
+   "stored_GPU": 325,
+   "removed_GPU": 234
+  },
+  "1790703096": {
+   "stored_GPU": 376,
+   "removed_GPU": 240
+  },
+  "1790703097": {
+   "stored_GPU": 162,
+   "removed_GPU": 304
+  },
+  "1790703098": {
+   "removed_GPU": 158,
+   "stored_GPU": 229
+  },
+  "1790703099": {
+   "stored_GPU": 509,
+   "removed_GPU": 475
+  },
+  "1790703100": {
+   "stored_GPU": 159,
+   "removed_GPU": 254
+  },
+  "1790703101": {
+   "removed_GPU": 106,
+   "stored_GPU": 216
+  },
+  "1790703102": {
+   "stored_GPU": 366,
+   "removed_GPU": 296
+  },
+  "1790703103": {
+   "stored_GPU": 165,
+   "removed_GPU": 282
+  },
+  "1790703104": {
+   "removed_GPU": 97,
+   "stored_GPU": 116
+  },
+  "1790703105": {
+   "removed_GPU": 140,
+   "stored_GPU": 165
+  },
+  "1790703106": {
+   "stored_GPU": 197,
+   "removed_GPU": 257
+  },
+  "1790703107": {
+   "stored_GPU": 301,
+   "removed_GPU": 133
+  },
+  "1790703108": {
+   "stored_GPU": 410,
+   "removed_GPU": 777
+  },
+  "1790703109": {
+   "removed_GPU": 368,
+   "stored_GPU": 169
+  },
+  "1790703110": {
+   "stored_GPU": 329,
+   "removed_GPU": 282
+  },
+  "1790703111": {
+   "removed_GPU": 45,
+   "stored_GPU": 236
+  },
+  "1790703112": {
+   "stored_GPU": 373,
+   "removed_GPU": 354
+  },
+  "1790703113": {
+   "stored_GPU": 305,
+   "removed_GPU": 329
+  },
+  "1790703114": {
+   "removed_GPU": 29,
+   "stored_GPU": 252
+  },
+  "1790703115": {
+   "removed_GPU": 20,
+   "stored_GPU": 148
+  },
+  "1790703116": {
+   "stored_GPU": 264,
+   "removed_GPU": 413
+  },
+  "1790703117": {
+   "stored_GPU": 381,
+   "removed_GPU": 381
+  },
+  "1790703118": {
+   "removed_GPU": 6,
+   "stored_GPU": 149
+  },
+  "1790703119": {
+   "removed_GPU": 140,
+   "stored_GPU": 149
+  },
+  "1790703120": {
+   "stored_GPU": 147
+  },
+  "1790703121": {
+   "removed_GPU": 534,
+   "stored_GPU": 289
+  },
+  "1790703122": {
+   "removed_GPU": 351,
+   "stored_GPU": 259
+  },
+  "1790703123": {
+   "stored_GPU": 641,
+   "removed_GPU": 681
+  },
+  "1790703124": {
+   "removed_GPU": 345,
+   "stored_GPU": 390
+  },
+  "1790703125": {
+   "removed_GPU": 339,
+   "stored_GPU": 238
+  },
+  "1790703126": {
+   "stored_GPU": 384,
+   "removed_GPU": 211
+  },
+  "1790703127": {
+   "stored_GPU": 12
+  },
+  "1790703128": {
+   "stored_GPU": 21
+  },
+  "1790703129": {
+   "removed_GPU": 259,
+   "stored_GPU": 336
+  },
+  "1790703130": {
+   "stored_GPU": 255,
+   "removed_GPU": 112
+  },
+  "1790703131": {
+   "removed_GPU": 150,
+   "stored_GPU": 105
+  },
+  "1790703132": {
+   "stored_GPU": 2
+  },
+  "1790703133": {
+   "stored_GPU": 1
+  },
+  "1790703134": {
+   "stored_GPU": 138,
+   "removed_GPU": 84
+  },
+  "1790703135": {
+   "removed_GPU": 375,
+   "stored_GPU": 358
+  },
+  "1790703136": {
+   "stored_GPU": 273,
+   "removed_GPU": 426
+  },
+  "1790703137": {
+   "removed_GPU": 321,
+   "stored_GPU": 363
+  },
+  "1790703138": {
+   "stored_GPU": 319,
+   "removed_GPU": 328
+  },
+  "1790703139": {
+   "stored_GPU": 70
+  },
+  "1790703140": {
+   "stored_GPU": 253,
+   "removed_GPU": 278
+  },
+  "1790703141": {
+   "stored_GPU": 127,
+   "removed_GPU": 124
+  },
+  "1790703142": {
+   "stored_GPU": 110,
+   "removed_GPU": 6
+  },
+  "1790703143": {
+   "stored_GPU": 336,
+   "removed_GPU": 225
+  },
+  "1790703144": {
+   "removed_GPU": 159,
+   "stored_GPU": 139
+  },
+  "1790703145": {
+   "removed_GPU": 395,
+   "stored_GPU": 233
+  },
+  "1790703146": {
+   "removed_GPU": 382,
+   "stored_GPU": 172
+  },
+  "1790703147": {
+   "removed_GPU": 28,
+   "stored_GPU": 96
+  },
+  "1790703148": {
+   "stored_GPU": 2
+  },
+  "1790703149": {
+   "stored_GPU": 60,
+   "removed_GPU": 103
+  },
+  "1790703150": {
+   "stored_GPU": 316,
+   "removed_GPU": 187
+  },
+  "1790703151": {
+   "stored_GPU": 269,
+   "removed_GPU": 245
+  },
+  "1790703152": {
+   "stored_GPU": 106,
+   "removed_GPU": 142
+  },
+  "1790703153": {
+   "stored_GPU": 13
+  },
+  "1790703154": {
+   "stored_GPU": 119,
+   "removed_GPU": 131
+  },
+  "1790703155": {
+   "removed_GPU": 116,
+   "stored_GPU": 238
+  },
+  "1790703156": {
+   "stored_GPU": 180
+  },
+  "1790703157": {
+   "stored_GPU": 129,
+   "removed_GPU": 309
+  },
+  "1790703158": {
+   "removed_GPU": 306,
+   "stored_GPU": 243
+  },
+  "1790703159": {
+   "stored_GPU": 244,
+   "removed_GPU": 182
+  },
+  "1790703160": {
+   "stored_GPU": 116,
+   "removed_GPU": 75
+  },
+  "1790703161": {
+   "stored_GPU": 210,
+   "removed_GPU": 5
+  },
+  "1790703162": {
+   "stored_GPU": 106,
+   "removed_GPU": 102
+  },
+  "1790703163": {
+   "stored_GPU": 138,
+   "removed_GPU": 317
+  },
+  "1790703164": {
+   "removed_GPU": 541,
+   "stored_GPU": 271
+  },
+  "1790703165": {
+   "stored_GPU": 236,
+   "removed_GPU": 183
+  },
+  "1790703166": {
+   "stored_GPU": 357,
+   "removed_GPU": 224
+  },
+  "1790703167": {
+   "stored_GPU": 117,
+   "removed_GPU": 97
+  },
+  "1790703168": {
+   "stored_GPU": 6
+  },
+  "1790703169": {
+   "stored_GPU": 1
+  },
+  "1790703170": {
+   "stored_GPU": 17
+  },
+  "1790703171": {
+   "stored_GPU": 99
+  },
+  "1790703172": {
+   "stored_GPU": 129,
+   "removed_GPU": 268
+  },
+  "1790703173": {
+   "stored_GPU": 241,
+   "removed_GPU": 268
+  },
+  "1790703174": {
+   "stored_GPU": 321,
+   "removed_GPU": 422
+  },
+  "1790703175": {
+   "stored_GPU": 263
+  },
+  "1790703176": {
+   "removed_GPU": 298,
+   "stored_GPU": 231
+  },
+  "1790703177": {
+   "stored_GPU": 480,
+   "removed_GPU": 639
+  },
+  "1790703178": {
+   "stored_GPU": 246,
+   "removed_GPU": 109
+  },
+  "1790703179": {
+   "stored_GPU": 117
+  },
+  "1790703180": {
+   "removed_GPU": 358,
+   "stored_GPU": 236
+  },
+  "1790703181": {
+   "stored_GPU": 120,
+   "removed_GPU": 147
+  },
+  "1790703182": {
+   "stored_GPU": 1
+  },
+  "1790703183": {
+   "stored_GPU": 3
+  },
+  "1790703184": {
+   "stored_GPU": 128,
+   "removed_GPU": 176
+  },
+  "1790703185": {
+   "stored_GPU": 243,
+   "removed_GPU": 301
+  },
+  "1790703186": {
+   "removed_GPU": 310,
+   "stored_GPU": 354
+  },
+  "1790703187": {
+   "stored_GPU": 133,
+   "removed_GPU": 122
+  },
+  "1790703188": {
+   "stored_GPU": 119,
+   "removed_GPU": 81
+  },
+  "1790703189": {
+   "stored_GPU": 246,
+   "removed_GPU": 244
+  },
+  "1790703190": {
+   "stored_GPU": 312,
+   "removed_GPU": 418
+  },
+  "1790703191": {
+   "stored_GPU": 167,
+   "removed_GPU": 48
+  },
+  "1790703192": {
+   "stored_GPU": 226,
+   "removed_GPU": 123
+  },
+  "1790703193": {
+   "stored_GPU": 233,
+   "removed_GPU": 293
+  },
+  "1790703194": {
+   "stored_GPU": 118,
+   "removed_GPU": 134
+  },
+  "1790703195": {
+   "stored_GPU": 2
+  },
+  "1790703196": {
+   "stored_GPU": 1
+  },
+  "1790703197": {
+   "stored_GPU": 118,
+   "removed_GPU": 152
+  },
+  "1790703198": {
+   "stored_GPU": 89,
+   "removed_GPU": 256
+  },
+  "1790703199": {
+   "stored_GPU": 312,
+   "removed_GPU": 162
+  },
+  "1790703200": {
+   "stored_GPU": 131,
+   "removed_GPU": 156
+  },
+  "1790703201": {
+   "removed_GPU": 355,
+   "stored_GPU": 171
+  },
+  "1790703202": {
+   "stored_GPU": 123
+  },
+  "1790703203": {
+   "removed_GPU": 163,
+   "stored_GPU": 327
+  },
+  "1790703204": {
+   "stored_GPU": 347,
+   "removed_GPU": 313
+  },
+  "1790703205": {
+   "stored_GPU": 251,
+   "removed_GPU": 230
+  },
+  "1790703206": {
+   "removed_GPU": 456,
+   "stored_GPU": 242
+  },
+  "1790703207": {
+   "stored_GPU": 149,
+   "removed_GPU": 388
+  },
+  "1790703208": {
+   "stored_GPU": 143,
+   "removed_GPU": 172
+  },
+  "1790703209": {
+   "stored_GPU": 14
+  },
+  "1790703210": {
+   "stored_GPU": 50,
+   "removed_GPU": 62
+  },
+  "1790703211": {
+   "stored_GPU": 207
+  },
+  "1790703212": {
+   "stored_GPU": 246,
+   "removed_GPU": 221
+  },
+  "1790703213": {
+   "stored_GPU": 156,
+   "removed_GPU": 145
+  },
+  "1790703214": {
+   "removed_GPU": 393,
+   "stored_GPU": 352
+  },
+  "1790703215": {
+   "stored_GPU": 140,
+   "removed_GPU": 246
+  },
+  "1790703216": {
+   "stored_GPU": 129,
+   "removed_GPU": 39
+  },
+  "1790703217": {
+   "stored_GPU": 23
+  },
+  "1790703218": {
+   "removed_GPU": 250,
+   "stored_GPU": 217
+  },
+  "1790703219": {
+   "stored_GPU": 370,
+   "removed_GPU": 153
+  },
+  "1790703220": {
+   "removed_GPU": 171,
+   "stored_GPU": 114
+  },
+  "1790703221": {
+   "stored_GPU": 162,
+   "removed_GPU": 532
+  },
+  "1790703222": {
+   "stored_GPU": 40,
+   "removed_GPU": 141
+  },
+  "1790703223": {
+   "removed_GPU": 169,
+   "stored_GPU": 241
+  },
+  "1790703224": {
+   "stored_GPU": 249,
+   "removed_GPU": 123
+  },
+  "1790703225": {
+   "stored_GPU": 317,
+   "removed_GPU": 235
+  },
+  "1790703226": {
+   "stored_GPU": 57
+  },
+  "1790703227": {
+   "stored_GPU": 141,
+   "removed_GPU": 123
+  },
+  "1790703228": {
+   "stored_GPU": 365,
+   "removed_GPU": 232
+  },
+  "1790703229": {
+   "removed_GPU": 536,
+   "stored_GPU": 256
+  },
+  "1790703230": {
+   "removed_GPU": 284,
+   "stored_GPU": 404
+  },
+  "1790703231": {
+   "stored_GPU": 306,
+   "removed_GPU": 297
+  },
+  "1790703232": {
+   "stored_GPU": 69
+  },
+  "1790703233": {
+   "stored_GPU": 2
+  },
+  "1790703234": {
+   "stored_GPU": 3
+  },
+  "1790703235": {
+   "stored_GPU": 3
+  },
+  "1790703236": {
+   "stored_GPU": 69,
+   "removed_GPU": 128
+  },
+  "1790703237": {
+   "stored_GPU": 194,
+   "removed_GPU": 97
+  },
+  "1790703238": {
+   "stored_GPU": 238,
+   "removed_GPU": 200
+  },
+  "1790703239": {
+   "stored_GPU": 232,
+   "removed_GPU": 159
+  },
+  "1790703240": {
+   "removed_GPU": 918,
+   "stored_GPU": 487
+  },
+  "1790703241": {
+   "removed_GPU": 126,
+   "stored_GPU": 465
+  },
+  "1790703242": {
+   "stored_GPU": 149,
+   "removed_GPU": 257
+  },
+  "1790703243": {
+   "removed_GPU": 204,
+   "stored_GPU": 239
+  },
+  "1790703244": {
+   "stored_GPU": 129,
+   "removed_GPU": 150
+  },
+  "1790703245": {
+   "stored_GPU": 3
+  },
+  "1790703246": {
+   "stored_GPU": 2
+  },
+  "1790703247": {
+   "stored_GPU": 1
+  },
+  "1790703248": {
+   "stored_GPU": 4
+  },
+  "1790703249": {
+   "stored_GPU": 3
+  },
+  "1790703251": {
+   "stored_GPU": 20
+  },
+  "1790703252": {
+   "removed_GPU": 310,
+   "stored_GPU": 336
+  },
+  "1790703253": {
+   "removed_GPU": 272,
+   "stored_GPU": 247
+  },
+  "1790703254": {
+   "removed_GPU": 361,
+   "stored_GPU": 476
+  },
+  "1790703255": {
+   "removed_GPU": 1432,
+   "stored_GPU": 476
+  },
+  "1790703256": {
+   "stored_GPU": 351,
+   "removed_GPU": 345
+  },
+  "1790703257": {
+   "stored_GPU": 252
+  },
+  "1790703258": {
+   "stored_GPU": 5
+  },
+  "1790703260": {
+   "stored_GPU": 6
+  },
+  "1790703261": {
+   "removed_GPU": 381,
+   "stored_GPU": 260
+  },
+  "1790703262": {
+   "stored_GPU": 147,
+   "removed_GPU": 124
+  },
+  "1790703263": {
+   "removed_GPU": 84,
+   "stored_GPU": 209
+  },
+  "1790703264": {
+   "stored_GPU": 130,
+   "removed_GPU": 96
+  },
+  "1790703265": {
+   "stored_GPU": 235,
+   "removed_GPU": 134
+  },
+  "1790703266": {
+   "stored_GPU": 228,
+   "removed_GPU": 202
+  },
+  "1790703267": {
+   "stored_GPU": 233,
+   "removed_GPU": 253
+  },
+  "1790703268": {
+   "stored_GPU": 142
+  },
+  "1790703269": {
+   "removed_GPU": 126,
+   "stored_GPU": 101
+  },
+  "1790703270": {
+   "stored_GPU": 4
+  },
+  "1790703271": {
+   "stored_GPU": 125,
+   "removed_GPU": 40
+  },
+  "1790703272": {
+   "stored_GPU": 486,
+   "removed_GPU": 254
+  },
+  "1790703273": {
+   "stored_GPU": 429,
+   "removed_GPU": 388
+  },
+  "1790703274": {
+   "stored_GPU": 160
+  },
+  "1790703275": {
+   "stored_GPU": 21,
+   "removed_GPU": 41
+  },
+  "1790703276": {
+   "removed_GPU": 163,
+   "stored_GPU": 97
+  },
+  "1790703277": {
+   "stored_GPU": 125,
+   "removed_GPU": 94
+  },
+  "1790703278": {
+   "removed_GPU": 274,
+   "stored_GPU": 250
+  },
+  "1790703279": {
+   "removed_GPU": 499,
+   "stored_GPU": 471
+  },
+  "1790703280": {
+   "removed_GPU": 425,
+   "stored_GPU": 354
+  },
+  "1790703281": {
+   "stored_GPU": 343,
+   "removed_GPU": 153
+  },
+  "1790703282": {
+   "removed_GPU": 151,
+   "stored_GPU": 98
+  },
+  "1790703283": {
+   "stored_GPU": 1
+  },
+  "1790703284": {
+   "removed_GPU": 169,
+   "stored_GPU": 114
+  },
+  "1790703285": {
+   "stored_GPU": 3
+  },
+  "1790703286": {
+   "stored_GPU": 6
+  },
+  "1790703287": {
+   "stored_GPU": 67
+  },
+  "1790703288": {
+   "stored_GPU": 257,
+   "removed_GPU": 308
+  },
+  "1790703289": {
+   "stored_GPU": 437,
+   "removed_GPU": 459
+  },
+  "1790703290": {
+   "stored_GPU": 305,
+   "removed_GPU": 263
+  },
+  "1790703291": {
+   "stored_GPU": 348,
+   "removed_GPU": 202
+  },
+  "1790703292": {
+   "stored_GPU": 182,
+   "removed_GPU": 325
+  },
+  "1790703293": {
+   "stored_GPU": 20
+  },
+  "1790703294": {
+   "stored_GPU": 208,
+   "removed_GPU": 201
+  },
+  "1790703295": {
+   "stored_GPU": 115,
+   "removed_GPU": 107
+  },
+  "1790703296": {
+   "stored_GPU": 2
+  },
+  "1790703297": {
+   "stored_GPU": 4
+  },
+  "1790703299": {
+   "stored_GPU": 228,
+   "removed_GPU": 230
+  },
+  "1790703300": {
+   "stored_GPU": 193,
+   "removed_GPU": 407
+  },
+  "1790703301": {
+   "stored_GPU": 435,
+   "removed_GPU": 359
+  },
+  "1790703302": {
+   "removed_GPU": 377,
+   "stored_GPU": 418
+  },
+  "1790703303": {
+   "stored_GPU": 395,
+   "removed_GPU": 320
+  },
+  "1790703304": {
+   "removed_GPU": 352,
+   "stored_GPU": 220
+  },
+  "1790703305": {
+   "stored_GPU": 125,
+   "removed_GPU": 141
+  },
+  "1790703306": {
+   "removed_GPU": 225,
+   "stored_GPU": 259
+  },
+  "1790703307": {
+   "removed_GPU": 223,
+   "stored_GPU": 222
+  },
+  "1790703308": {
+   "stored_GPU": 117,
+   "removed_GPU": 108
+  },
+  "1790703309": {
+   "stored_GPU": 2
+  },
+  "1790703310": {
+   "stored_GPU": 118,
+   "removed_GPU": 135
+  },
+  "1790703311": {
+   "stored_GPU": 14
+  },
+  "1790703312": {
+   "stored_GPU": 121,
+   "removed_GPU": 117
+  },
+  "1790703313": {
+   "stored_GPU": 236,
+   "removed_GPU": 281
+  },
+  "1790703314": {
+   "stored_GPU": 237,
+   "removed_GPU": 215
+  },
+  "1790703315": {
+   "stored_GPU": 226,
+   "removed_GPU": 111
+  },
+  "1790703316": {
+   "removed_GPU": 362,
+   "stored_GPU": 242
+  },
+  "1790703317": {
+   "stored_GPU": 350,
+   "removed_GPU": 307
+  },
+  "1790703318": {
+   "stored_GPU": 349,
+   "removed_GPU": 114
+  },
+  "1790703319": {
+   "removed_GPU": 512,
+   "stored_GPU": 259
+  },
+  "1790703320": {
+   "removed_GPU": 217,
+   "stored_GPU": 221
+  },
+  "1790703321": {
+   "stored_GPU": 120,
+   "removed_GPU": 123
+  },
+  "1790703322": {
+   "stored_GPU": 3
+  },
+  "1790703323": {
+   "stored_GPU": 92,
+   "removed_GPU": 167
+  },
+  "1790703324": {
+   "stored_GPU": 281,
+   "removed_GPU": 301
+  },
+  "1790703325": {
+   "removed_GPU": 236,
+   "stored_GPU": 263
+  },
+  "1790703326": {
+   "removed_GPU": 144,
+   "stored_GPU": 105
+  },
+  "1790703327": {
+   "stored_GPU": 102,
+   "removed_GPU": 114
+  },
+  "1790703328": {
+   "stored_GPU": 264,
+   "removed_GPU": 233
+  },
+  "1790703329": {
+   "stored_GPU": 360,
+   "removed_GPU": 364
+  },
+  "1790703330": {
+   "stored_GPU": 2
+  },
+  "1790703331": {
+   "stored_GPU": 2
+  },
+  "1790703332": {
+   "stored_GPU": 21
+  },
+  "1790703333": {
+   "removed_GPU": 301,
+   "stored_GPU": 324
+  },
+  "1790703334": {
+   "removed_GPU": 90,
+   "stored_GPU": 330
+  },
+  "1790703335": {
+   "removed_GPU": 257,
+   "stored_GPU": 120
+  },
+  "1790703336": {
+   "removed_GPU": 332,
+   "stored_GPU": 239
+  },
+  "1790703337": {
+   "stored_GPU": 233,
+   "removed_GPU": 193
+  },
+  "1790703338": {
+   "stored_GPU": 119,
+   "removed_GPU": 139
+  },
+  "1790703339": {
+   "stored_GPU": 2
+  },
+  "1790703340": {
+   "stored_GPU": 1
+  },
+  "1790703341": {
+   "stored_GPU": 7
+  },
+  "1790703342": {
+   "stored_GPU": 239,
+   "removed_GPU": 236
+  },
+  "1790703343": {
+   "stored_GPU": 480,
+   "removed_GPU": 778
+  },
+  "1790703344": {
+   "removed_GPU": 272,
+   "stored_GPU": 128
+  },
+  "1790703345": {
+   "stored_GPU": 322,
+   "removed_GPU": 268
+  },
+  "1790703346": {
+   "stored_GPU": 223,
+   "removed_GPU": 138
+  },
+  "1790703347": {
+   "stored_GPU": 24
+  },
+  "1790703348": {
+   "stored_GPU": 40,
+   "removed_GPU": 112
+  },
+  "1790703349": {
+   "removed_GPU": 192,
+   "stored_GPU": 238
+  },
+  "1790703350": {
+   "stored_GPU": 250,
+   "removed_GPU": 269
+  },
+  "1790703351": {
+   "stored_GPU": 14
+  },
+  "1790703352": {
+   "stored_GPU": 115,
+   "removed_GPU": 2
+  },
+  "1790703353": {
+   "stored_GPU": 368,
+   "removed_GPU": 398
+  },
+  "1790703354": {
+   "stored_GPU": 139,
+   "removed_GPU": 292
+  },
+  "1790703355": {
+   "stored_GPU": 14
+  },
+  "1790703356": {
+   "stored_GPU": 123,
+   "removed_GPU": 30
+  },
+  "1790703357": {
+   "removed_GPU": 136,
+   "stored_GPU": 130
+  },
+  "1790703358": {
+   "stored_GPU": 389,
+   "removed_GPU": 228
+  },
+  "1790703359": {
+   "removed_GPU": 167,
+   "stored_GPU": 359
+  },
+  "1790703360": {
+   "removed_GPU": 358,
+   "stored_GPU": 240
+  },
+  "1790703361": {
+   "stored_GPU": 142,
+   "removed_GPU": 67
+  },
+  "1790703362": {
+   "removed_GPU": 382,
+   "stored_GPU": 242
+  },
+  "1790703363": {
+   "stored_GPU": 146,
+   "removed_GPU": 403
+  },
+  "1790703364": {
+   "stored_GPU": 145,
+   "removed_GPU": 154
+  },
+  "1790703365": {
+   "stored_GPU": 40,
+   "removed_GPU": 55
+  },
+  "1790703366": {
+   "stored_GPU": 221
+  },
+  "1790703367": {
+   "stored_GPU": 248,
+   "removed_GPU": 265
+  },
+  "1790703368": {
+   "stored_GPU": 232,
+   "removed_GPU": 141
+  },
+  "1790703369": {
+   "stored_GPU": 125,
+   "removed_GPU": 55
+  },
+  "1790703370": {
+   "removed_GPU": 171,
+   "stored_GPU": 230
+  },
+  "1790703371": {
+   "stored_GPU": 115,
+   "removed_GPU": 109
+  },
+  "1790703372": {
+   "stored_GPU": 227,
+   "removed_GPU": 243
+  },
+  "1790703373": {
+   "stored_GPU": 4
+  },
+  "1790703375": {
+   "stored_GPU": 220,
+   "removed_GPU": 258
+  },
+  "1790703376": {
+   "stored_GPU": 259,
+   "removed_GPU": 295
+  },
+  "1790703377": {
+   "removed_GPU": 341,
+   "stored_GPU": 355
+  },
+  "1790703378": {
+   "removed_GPU": 6,
+   "stored_GPU": 3
+  },
+  "1790703379": {
+   "stored_GPU": 116,
+   "removed_GPU": 92
+  },
+  "1790703380": {
+   "stored_GPU": 1
+  },
+  "1790703381": {
+   "stored_GPU": 340,
+   "removed_GPU": 254
+  },
+  "1790703382": {
+   "stored_GPU": 140,
+   "removed_GPU": 233
+  },
+  "1790703383": {
+   "removed_GPU": 470,
+   "stored_GPU": 456
+  },
+  "1790703384": {
+   "removed_GPU": 166,
+   "stored_GPU": 318
+  },
+  "1790703385": {
+   "stored_GPU": 6
+  },
+  "1790703386": {
+   "stored_GPU": 1
+  },
+  "1790703387": {
+   "stored_GPU": 1
+  },
+  "1790703388": {
+   "stored_GPU": 1
+  }
+ }
+}

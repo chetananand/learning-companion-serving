@@ -1,0 +1,14 @@
+# Direct services for the warm-controller and the smoke tests. User traffic goes through the InferencePool.
+apiVersion: v1
+kind: Service
+metadata: {name: vllm-prefill, namespace: companion}
+spec:
+  selector: {app: vllm-prefill}
+  ports: [{name: http, port: 8000, targetPort: 8000}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: vllm-decode, namespace: companion}
+spec:
+  selector: {app: vllm-decode}
+  ports: [{name: http, port: 8000, targetPort: 8000}]

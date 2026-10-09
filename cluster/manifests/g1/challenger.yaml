@@ -1,0 +1,44 @@
+# G1 challenger (ADR-003): Muse Glimmer 30B with online FP8, as one plain vLLM pod on GPU 0.
+# Only for the tool-call suite: no KV connector, no KV events. Glimmer needs vLLM v0.28 or later.
+# The runbook scales vllm-prefill to 0 first, so GPU 0 is free.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: vllm-challenger, namespace: companion}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}         # one GPU for each pod: a rolling update waits for a GPU that never frees
+  selector: {matchLabels: {app: vllm-challenger}}
+  template:
+    metadata: {labels: {app: vllm-challenger, hami.io/webhook: ignore}}  # node 1: not HAMi (fault 24)
+    spec:
+      nodeSelector: {companion.io/node: gpu}
+      containers:
+        - name: modelserver
+          image: vllm/vllm-openai:v0.30.0
+          command: ["vllm", "serve"]
+          args:
+            - meta-models/Muse-Glimmer-30B
+            - --served-model-name=companion
+            - --port=8000
+            - --max-model-len=32768
+            - --quantization=fp8
+            - --gpu-memory-utilization=0.90
+            - --enable-prefix-caching
+            - --enable-auto-tool-choice
+            - --tool-call-parser=muse_glimmer
+            - --reasoning-parser=muse_glimmer
+          env:
+            - {name: HF_TOKEN, valueFrom: {secretKeyRef: {name: companion-secrets, key: HF_TOKEN}}}
+            - {name: HF_HOME, value: /models/hf}
+          ports: [{name: http, containerPort: 8000}]
+          resources:
+            limits: {nvidia.com/gpu: "1", memory: 96Gi}
+            requests: {nvidia.com/gpu: "1", cpu: "8", memory: 48Gi}
+          startupProbe: {httpGet: {path: /health, port: http}, periodSeconds: 10, failureThreshold: 180}
+          readinessProbe: {httpGet: {path: /v1/models, port: http}, periodSeconds: 5}
+          volumeMounts:
+            - {name: shm, mountPath: /dev/shm}
+            - {name: models, mountPath: /models}
+      volumes:
+        - {name: shm, emptyDir: {medium: Memory, sizeLimit: 16Gi}}
+        - {name: models, hostPath: {path: /lambda/nfs/companion-state/models, type: DirectoryOrCreate}}

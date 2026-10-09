@@ -1,0 +1,1 @@
+{"query": "max by (inference_pool) (inference_extension_flow_control_pool_saturation)", "status": "success", "data": {"resultType": "matrix", "result": []}}

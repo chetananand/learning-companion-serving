@@ -1,0 +1,36 @@
+# edge (system design section 4): guard stage 1, stay or leave, streaming. Two replicas, state in Redis.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: edge, namespace: companion}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: edge}}
+  template:
+    metadata: {labels: {app: edge}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: edge
+          image: companion/edge:dev
+          imagePullPolicy: Never           # built on node 2 and loaded into k3s (make deploy)
+          command: ["uvicorn", "--factory", "control.edge.server:app", "--host", "0.0.0.0", "--port", "8080"]
+          env:
+            # Envoy Gateway puts the proxy Service in its own namespace (G0, 2026-09-28: verified).
+            - {name: EDGE_UPSTREAM_URL, value: "http://companion-gateway-envoy.envoy-gateway-system.svc.cluster.local"}
+            - {name: EDGE_GUARD_URL, value: "http://guard.guard.svc.cluster.local:8000"}
+            - {name: EDGE_INJECTION_URL, value: "http://guard-injection.guard.svc.cluster.local:8000"}
+            - {name: EDGE_REDIS_URL, value: "redis://redis.platform.svc.cluster.local:6379/0"}
+            - {name: EDGE_TOKENIZER_PATH, value: /app/tokenizer.json}
+            - {name: EDGE_OVERFLOW_API_KEY, valueFrom: {secretKeyRef: {name: companion-secrets, key: OVERFLOW_API_KEY, optional: true}}}
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /readyz, port: http}, periodSeconds: 5}
+          livenessProbe: {httpGet: {path: /healthz, port: http}, periodSeconds: 10}
+          resources: {requests: {cpu: "1", memory: 1Gi}, limits: {memory: 2Gi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: edge, namespace: companion, labels: {app: edge}}
+spec:
+  type: NodePort                      # NodePorts listen only on 127.0.0.1 (k3s flag); reach it through the SSH tunnel
+  selector: {app: edge}
+  ports: [{name: http, port: 8080, targetPort: 8080, nodePort: 30808}]

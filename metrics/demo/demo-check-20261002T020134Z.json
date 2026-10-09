@@ -1,0 +1,32 @@
+[
+  {
+    "id": "D-07",
+    "pass": false,
+    "rule": "the current version comes from tier-1 live docs",
+    "rule_ok": false,
+    "time_rule": "full answer <= 60.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": null,
+    "total_s": 8.84,
+    "claims": [],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-08",
+    "pass": true,
+    "rule": "the trace shows the OCR step, and the answer cites the gallery",
+    "rule_ok": true,
+    "time_rule": "full answer <= 60.0 s (SLO-4: a quick turn with an OCR step)",
+    "time_ok": true,
+    "first_token_s": 8.26778362999903,
+    "total_s": 11.46,
+    "claims": [],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  }
+]

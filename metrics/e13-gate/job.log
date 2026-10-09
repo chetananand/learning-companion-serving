@@ -1,0 +1,33 @@
+{
+  "batch": {
+    "calls": 122,
+    "ok": 27,
+    "aborted": 0,
+    "sheds": {
+      "503 timeout_queue": 95
+    },
+    "overflow": 0,
+    "ttft_p50_s": null,
+    "ttft_p95_s": null,
+    "latency_p50_s": 1.6933,
+    "latency_p95_s": 56.7909,
+    "output_tokens": 1526,
+    "prompt_tokens": 93301
+  },
+  "interactive": {
+    "calls": 2052,
+    "ok": 1924,
+    "aborted": 0,
+    "sheds": {
+      "400 prompt_injection": 4,
+      "503 timeout_queue": 124
+    },
+    "overflow": 0,
+    "ttft_p50_s": 14.9987,
+    "ttft_p95_s": 22.2896,
+    "latency_p50_s": 13.4729,
+    "latency_p95_s": 33.0369,
+    "output_tokens": 216656,
+    "prompt_tokens": 6655095
+  }
+}

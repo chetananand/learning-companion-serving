@@ -1,0 +1,30 @@
+# Course material. Do not publish. Use it only for line references (L###).
+docs/spec/source/
+
+# Secrets and local state
+.env
+.env.*
+!.env.example
+*.pem
+kubeconfig*
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Large or generated local data
+data/raw/
+data/cache/
+*.safetensors
+
+# Keys and OS files
+id_*
+*.key
+.DS_Store
+
+# Cluster state (IPs, tokens, kubeconfig copies)
+cluster/state/

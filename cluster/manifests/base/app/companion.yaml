@@ -1,0 +1,118 @@
+# The app (ADR-006): the Companion API and the Streamlit UI on node 2. The only LLM URL is edge (H-34).
+# One API replica: the LangGraph checkpointer is in memory in P0 (SQLite on /data in P1).
+# NodePorts listen on 127.0.0.1 only (k3s --kube-proxy-arg nodeport-addresses): use the SSH tunnel.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: companion-api, namespace: companion}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: companion-api}}
+  template:
+    metadata: {labels: {app: companion-api, companion.io/egress: web}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: api
+          image: companion/app:dev
+          imagePullPolicy: Never
+          command: [uvicorn, --factory, app.api:app, --host, 0.0.0.0, --port, "8000", --timeout-graceful-shutdown, "30"]
+          envFrom: [{configMapRef: {name: companion-app}}]
+          env:
+            - {name: TAVILY_API_KEY, valueFrom: {secretKeyRef: {name: companion-secrets, key: TAVILY_API_KEY}}}
+          ports: [{name: http, containerPort: 8000}]
+          readinessProbe: {httpGet: {path: /readyz, port: http}, periodSeconds: 10}
+          livenessProbe: {httpGet: {path: /healthz, port: http}, periodSeconds: 10}
+          resources: {requests: {cpu: "1", memory: 1Gi}, limits: {memory: 4Gi}}
+          volumeMounts: [{name: data, mountPath: /data}]
+      volumes:
+        - {name: data, hostPath: {path: /var/lib/companion/app-data, type: DirectoryOrCreate}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: companion-api, namespace: companion, labels: {app: companion-api}}
+spec:
+  type: NodePort
+  selector: {app: companion-api}
+  ports: [{name: http, port: 8000, targetPort: 8000, nodePort: 30800}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: companion-ui, namespace: companion}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: companion-ui}}
+  template:
+    metadata: {labels: {app: companion-ui}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: ui
+          image: companion/app:dev
+          imagePullPolicy: Never
+          command: [streamlit, run, app/ui/streamlit_app.py, --server.address, 0.0.0.0, --server.port, "8501",
+                    --server.headless, "true", --server.maxUploadSize, "4", --browser.gatherUsageStats, "false"]
+          env:
+            - {name: COMPANION_API_URL, value: "http://companion-api.companion.svc.cluster.local:8000"}
+            - {name: HOME, value: /tmp}
+          ports: [{name: http, containerPort: 8501}]
+          readinessProbe: {httpGet: {path: /_stcore/health, port: http}, periodSeconds: 10}
+          resources: {requests: {cpu: 250m, memory: 256Mi}, limits: {memory: 1Gi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: companion-ui, namespace: companion}
+spec:
+  type: NodePort
+  selector: {app: companion-ui}
+  ports: [{name: http, port: 8501, targetPort: 8501, nodePort: 30851}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: companion-app, namespace: companion}
+data:
+  APP_EDGE_URL: http://edge.companion.svc.cluster.local:8080/v1
+  APP_QDRANT_URL: http://qdrant.data.svc.cluster.local:6333
+  APP_SIE_EMBED_URL: http://sie-embed.data.svc.cluster.local:8080
+  APP_SIE_OCR_URL: http://sie-ocr.data.svc.cluster.local:8080
+  APP_BROWSER_URL: http://browser.data.svc.cluster.local:8000
+  APP_INJECTION_URL: http://guard-injection.guard.svc.cluster.local:8000
+  APP_REDIS_URL: redis://redis.platform.svc.cluster.local:6379/1
+  APP_TRACE_PATH: /data/traces/llm-calls.jsonl
+  APP_CAPTURE_PATH: /data/capture/app-calls.jsonl  # the replayer input (06-experiments.md, section 2)
+  APP_FETCH_ALLOW_HOSTS: '["test-pages.data.svc.cluster.local"]'
+---
+# E1 and E9 send to the gateway and skip edge (runbook note 7). Only the load generator may do that: the app
+# pods keep edge (guard and admission) as their one way to the model. Session 1: web-egress alone gave the E1
+# Job 599 ConnectError for every call. Policies add up, so this one opens only the gateway for app=loadgen.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: loadgen-gateway-egress, namespace: companion}
+spec:
+  podSelector: {matchLabels: {app: loadgen}}
+  policyTypes: [Egress]
+  egress:
+    - to: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: envoy-gateway-system}}}]
+    # E4 reads the LMCache metrics on the engine node ({lmcache}: the node IP, port 8080, host network).
+    - to: [{ipBlock: {cidr: 172.16.0.0/12}}]
+      ports: [{port: 8080, protocol: TCP}]
+---
+# Web egress in the companion namespace: DNS, the cluster services of the app, and public addresses.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: web-egress, namespace: companion}
+spec:
+  podSelector: {matchLabels: {companion.io/egress: web}}
+  policyTypes: [Egress]
+  egress:
+    - to: [{namespaceSelector: {}, podSelector: {matchLabels: {k8s-app: kube-dns}}}]
+      ports: [{port: 53, protocol: UDP}, {port: 53, protocol: TCP}]
+    - to:
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: companion}}
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: data}}
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: guard}}
+        - namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: platform}}
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16, 100.64.0.0/10, 127.0.0.0/8]
+      ports: [{port: 80}, {port: 443}]

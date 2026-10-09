@@ -1,0 +1,1 @@
+{"query": "sum by (pod) (rate(vllm:nixl_xfer_time_seconds_count[1m]))", "status": "success", "data": {"resultType": "matrix", "result": []}}

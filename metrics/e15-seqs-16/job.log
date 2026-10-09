@@ -1,0 +1,33 @@
+{
+  "batch": {
+    "calls": 627,
+    "ok": 615,
+    "aborted": 0,
+    "sheds": {
+      "429 tenant_tokens": 12
+    },
+    "overflow": 0,
+    "ttft_p50_s": null,
+    "ttft_p95_s": null,
+    "latency_p50_s": 15.1117,
+    "latency_p95_s": 40.4693,
+    "output_tokens": 45968,
+    "prompt_tokens": 1567792
+  },
+  "interactive": {
+    "calls": 1371,
+    "ok": 1291,
+    "aborted": 0,
+    "sheds": {
+      "503 no_endpoints": 5,
+      "503 timeout_queue": 75
+    },
+    "overflow": 0,
+    "ttft_p50_s": 5.2545,
+    "ttft_p95_s": 16.6187,
+    "latency_p50_s": 8.0158,
+    "latency_p95_s": 21.7488,
+    "output_tokens": 138075,
+    "prompt_tokens": 4483784
+  }
+}

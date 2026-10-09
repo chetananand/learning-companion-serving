@@ -1,0 +1,125 @@
+{
+  "1": {
+    "interactive": {
+      "calls": 2,
+      "ok": 0,
+      "aborted": 0,
+      "sheds": {
+        "599 ConnectError": 2
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": null,
+      "latency_p95_s": null,
+      "output_tokens": 0,
+      "prompt_tokens": 0
+    }
+  },
+  "2": {
+    "interactive": {
+      "calls": 4,
+      "ok": 0,
+      "aborted": 0,
+      "sheds": {
+        "599 ConnectError": 4
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": null,
+      "latency_p95_s": null,
+      "output_tokens": 0,
+      "prompt_tokens": 0
+    }
+  },
+  "4": {
+    "interactive": {
+      "calls": 8,
+      "ok": 0,
+      "aborted": 0,
+      "sheds": {
+        "599 ConnectError": 8
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": null,
+      "latency_p95_s": null,
+      "output_tokens": 0,
+      "prompt_tokens": 0
+    }
+  },
+  "8": {
+    "interactive": {
+      "calls": 16,
+      "ok": 0,
+      "aborted": 0,
+      "sheds": {
+        "599 ConnectError": 13,
+        "599 ConnectTimeout": 3
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": null,
+      "latency_p95_s": null,
+      "output_tokens": 0,
+      "prompt_tokens": 0
+    }
+  },
+  "12": {
+    "interactive": {
+      "calls": 24,
+      "ok": 0,
+      "aborted": 0,
+      "sheds": {
+        "599 ConnectError": 14,
+        "599 ConnectTimeout": 10
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": null,
+      "latency_p95_s": null,
+      "output_tokens": 0,
+      "prompt_tokens": 0
+    }
+  },
+  "16": {
+    "interactive": {
+      "calls": 32,
+      "ok": 0,
+      "aborted": 0,
+      "sheds": {
+        "599 ConnectError": 15,
+        "599 ConnectTimeout": 17
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": null,
+      "latency_p95_s": null,
+      "output_tokens": 0,
+      "prompt_tokens": 0
+    }
+  },
+  "24": {
+    "interactive": {
+      "calls": 48,
+      "ok": 0,
+      "aborted": 0,
+      "sheds": {
+        "599 ConnectError": 15,
+        "599 ConnectTimeout": 33
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": null,
+      "latency_p95_s": null,
+      "output_tokens": 0,
+      "prompt_tokens": 0
+    }
+  }
+}

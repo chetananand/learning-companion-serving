@@ -1,0 +1,15 @@
+{
+ "turns": 200,
+ "cold": {
+  "p50_s": 0.1918,
+  "p95_s": 0.2792
+ },
+ "warm": {
+  "p50_s": 0.0008,
+  "p95_s": 0.0011
+ },
+ "attacks_blocked": 22,
+ "attacks": 22,
+ "benign_blocked": 0,
+ "benign": 178
+}

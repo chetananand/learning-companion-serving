@@ -1,0 +1,13 @@
+# One node, E9 (ADR-005, revision 2): KEDA may add one pod to each pool, as in t4. The engine has three GPUs
+# (the fourth holds the node 2 pods), so only one pool may grow at a time: cluster/sessions/thu-one.sh holds
+# the other pool at one replica with the KEDA pause annotation.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: [../one]
+patches:
+  - target: {kind: ScaledObject, name: vllm-prefill}
+    patch: |-
+      - {op: replace, path: /spec/maxReplicaCount, value: 2}
+  - target: {kind: ScaledObject, name: vllm-decode}
+    patch: |-
+      - {op: replace, path: /spec/maxReplicaCount, value: 2}

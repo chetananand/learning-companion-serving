@@ -1,0 +1,97 @@
+[
+  {
+    "id": "D-03",
+    "pass": false,
+    "rule": "a claim is updated from a tier-1 live page",
+    "rule_ok": false,
+    "time_rule": "full answer <= 60.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": null,
+    "total_s": 5.52,
+    "claims": [],
+    "errors": [
+      {
+        "event": "error",
+        "code": 500,
+        "reason": "upstream_error",
+        "message": "upstream_error",
+        "retry_after": null
+      }
+    ],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-07",
+    "pass": false,
+    "rule": "the current version comes from tier-1 live docs",
+    "rule_ok": false,
+    "time_rule": "full answer <= 60.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": 18.44340212701354,
+    "total_s": 56.83,
+    "claims": [
+      [
+        "C2",
+        "not_verified",
+        "no_evidence"
+      ],
+      [
+        "C1",
+        "not_verified",
+        "no_evidence"
+      ],
+      [
+        "C3",
+        "not_verified",
+        "timeout"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-08",
+    "pass": true,
+    "rule": "the trace shows the OCR step, and the answer cites the gallery",
+    "rule_ok": true,
+    "time_rule": "full answer <= 60.0 s (SLO-4: a quick turn with an OCR step)",
+    "time_ok": true,
+    "first_token_s": 15.107669222983532,
+    "total_s": 17.18,
+    "claims": [],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  },
+  {
+    "id": "D-09",
+    "pass": false,
+    "rule": "the answer lists the new models or says no change, with a checked claim",
+    "rule_ok": false,
+    "time_rule": "full answer <= 60.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": 13.793520073988475,
+    "total_s": 58.25,
+    "claims": [
+      [
+        "C1",
+        "not_verified",
+        "no_evidence"
+      ],
+      [
+        "C2",
+        "not_verified",
+        "timeout"
+      ]
+    ],
+    "errors": [],
+    "via": [
+      "local"
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+{
+ "run": "e7-precise",
+ "clear": "2026-09-30T00:22:56+00:00",
+ "threshold": 2048,
+ "rule": "a ghost: not split, with 2,048 or more uncached tokens (the router expected cached tokens that were gone)",
+ "before": {
+  "requests": 180,
+  "split": 13,
+  "uncached_ge_2048": 20,
+  "not_split_ghosts": 20,
+  "token_hit_ratio": 0.762
+ },
+ "after_60s": {
+  "requests": 87,
+  "split": 3,
+  "uncached_ge_2048": 7,
+  "not_split_ghosts": 7,
+  "token_hit_ratio": 0.789
+ },
+ "after": {
+  "requests": 179,
+  "split": 4,
+  "uncached_ge_2048": 12,
+  "not_split_ghosts": 12,
+  "token_hit_ratio": 0.813
+ }
+}

@@ -1,0 +1,64 @@
+# Scrape targets (system design section 10.2): 5 s for edge, the router, and vLLM.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata: {name: vllm, namespace: companion, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/part-of: companion-vllm}}
+  podMetricsEndpoints: [{port: http, path: /metrics, interval: 5s},
+                        {port: barrier, path: /barrier/metrics, interval: 5s}]   # the store barrier (prefill pod)
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: {name: edge, namespace: companion, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchLabels: {app: edge}}
+  endpoints: [{port: http, path: /metrics, interval: 5s}]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: {name: warm-controller, namespace: companion, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchLabels: {app: warm-controller}}
+  # honorLabels: the controller labels each series with the engine pod (pod). Without it, Prometheus renames that
+  # label to exported_pod, and a query "by (pod)" merges all engine pods (fault 34, found 2026-09-30 in E8).
+  endpoints: [{port: metrics, interval: 15s, honorLabels: true}]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: {name: guard-injection, namespace: guard, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchLabels: {app: guard-injection}}
+  endpoints: [{port: http, path: /metrics, interval: 15s}]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: {name: companion-api, namespace: companion, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchLabels: {app: companion-api}}
+  endpoints: [{port: http, path: /metrics, interval: 15s}]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: {name: data-plane, namespace: data, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchExpressions: [{key: app, operator: In, values: [qdrant, browser]}]}
+  endpoints: [{port: http, path: /metrics, interval: 15s}]  # SIE v0.8.3 has no /metrics (G0: 404)
+---
+# HAMi (GPU slices on node 2): the device plugin and the scheduler monitors (G0: the chart has no ServiceMonitor).
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata: {name: hami, namespace: kube-system, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/instance: hami}}
+  endpoints:
+    - {port: monitorport, path: /metrics, interval: 15s}
+    - {port: monitor, path: /metrics, interval: 15s}
+---
+# The LMCache MP server (hostNetwork): its HTTP server on port 8080 of the node IP (G0).
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata: {name: lmcache-server, namespace: companion, labels: {release: kube-prometheus-stack}}
+spec:
+  selector: {matchLabels: {app: lmcache-server}}
+  podMetricsEndpoints: [{port: metrics, path: /metrics, interval: 15s}]
+

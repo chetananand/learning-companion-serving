@@ -1,0 +1,19 @@
+# barrier companion/vllm-prefill-7c9b584f86-xhrjf:8000/barrier/metrics
+# TYPE barrier_hold_seconds histogram
+barrier_hold_seconds_bucket{le="0.005"} 0
+barrier_hold_seconds_bucket{le="0.01"} 0
+barrier_hold_seconds_bucket{le="0.02"} 0
+barrier_hold_seconds_bucket{le="0.05"} 0
+barrier_hold_seconds_bucket{le="0.1"} 0
+barrier_hold_seconds_bucket{le="0.2"} 0
+barrier_hold_seconds_bucket{le="0.5"} 1
+barrier_hold_seconds_bucket{le="1.0"} 68
+barrier_hold_seconds_bucket{le="+Inf"} 68
+barrier_hold_seconds_sum 34.773592
+barrier_hold_seconds_count 68
+# TYPE barrier_timeouts_total counter
+barrier_timeouts_total 67
+# TYPE barrier_fail_open_total counter
+barrier_fail_open_total 0
+# TYPE barrier_passed_total counter
+barrier_passed_total 22638

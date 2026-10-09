@@ -1,0 +1,41 @@
+NAMESPACE                 NAME                                                            READY   STATUS      RESTARTS        AGE    IP            NODE              NOMINATED NODE   READINESS GATES
+companion                 companion-api-6559687f4d-kdjmz                                  1/1     Running     0               11m    10.42.0.24    150-136-219-205   <none>           <none>
+companion                 companion-router-epp-5f56dc49d-g8ngx                            2/2     Running     0               11m    10.42.0.36    150-136-219-205   <none>           <none>
+companion                 companion-ui-74cfdbcf6d-ntpfh                                   1/1     Running     0               11m    10.42.0.27    150-136-219-205   <none>           <none>
+companion                 edge-6d8f7f64b-898mz                                            1/1     Running     0               11m    10.42.0.25    150-136-219-205   <none>           <none>
+companion                 edge-6d8f7f64b-lss2d                                            1/1     Running     0               11m    10.42.0.28    150-136-219-205   <none>           <none>
+companion                 lmcache-server-fxmxl                                            1/1     Running     0               11m    10.19.84.81   150-136-219-205   <none>           <none>
+companion                 vllm-decode-d97df4456-q2w8b                                     2/2     Running     0               11m    10.42.0.42    150-136-219-205   <none>           <none>
+companion                 vllm-prefill-7c9b584f86-rkpkx                                   2/2     Running     0               11m    10.42.0.31    150-136-219-205   <none>           <none>
+companion                 warm-controller-774cbc6b58-b9rcb                                1/1     Running     0               92s    10.42.0.49    150-136-219-205   <none>           <none>
+data                      browser-5c4f87867c-lf7p9                                        1/1     Running     0               11m    10.42.0.26    150-136-219-205   <none>           <none>
+data                      qdrant-0                                                        1/1     Running     0               11m    10.42.0.29    150-136-219-205   <none>           <none>
+data                      sie-embed-66dfff87ff-d2zww                                      1/1     Running     0               11m    10.42.0.37    150-136-219-205   <none>           <none>
+data                      sie-ocr-64f688dd75-n9vw5                                        1/1     Running     0               11m    10.42.0.44    150-136-219-205   <none>           <none>
+data                      test-pages-76796c88-frvvn                                       0/1     OOMKilled   7 (5m35s ago)   11m    10.42.0.32    150-136-219-205   <none>           <none>
+envoy-ai-gateway-system   ai-gateway-controller-7695f6bd47-fw9h4                          1/1     Running     0               11m    10.42.0.23    150-136-219-205   <none>           <none>
+envoy-gateway-system      envoy-companion-companion-gateway-7d8974f3-685ddcc6b8-4n69r     3/3     Running     0               9m2s   10.42.0.46    150-136-219-205   <none>           <none>
+envoy-gateway-system      envoy-companion-companion-gateway-7d8974f3-685ddcc6b8-865rq     3/3     Running     0               11m    10.42.0.39    150-136-219-205   <none>           <none>
+envoy-gateway-system      envoy-gateway-6bc9fd94fc-xznc6                                  1/1     Running     0               11m    10.42.0.22    150-136-219-205   <none>           <none>
+envoy-gateway-system      envoy-ratelimit-544446b45c-277bd                                1/1     Running     0               11m    10.42.0.43    150-136-219-205   <none>           <none>
+guard                     guard-789fb4dc76-59vc6                                          1/1     Running     0               11m    10.42.0.33    150-136-219-205   <none>           <none>
+guard                     guard-789fb4dc76-w5zhr                                          1/1     Running     0               11m    10.42.0.34    150-136-219-205   <none>           <none>
+guard                     guard-injection-84865cc688-mptf7                                1/1     Running     0               11m    10.42.0.40    150-136-219-205   <none>           <none>
+guard                     guard-safety-85584cc876-7prw5                                   1/1     Running     0               11m    10.42.0.45    150-136-219-205   <none>           <none>
+keda                      keda-admission-webhooks-56b7b7c6c8-qggkx                        1/1     Running     1 (11m ago)     11m    10.42.0.19    150-136-219-205   <none>           <none>
+keda                      keda-operator-64598b885f-b4www                                  1/1     Running     1 (11m ago)     11m    10.42.0.18    150-136-219-205   <none>           <none>
+keda                      keda-operator-metrics-apiserver-7d67c4b8c8-5zls7                1/1     Running     1 (11m ago)     11m    10.42.0.21    150-136-219-205   <none>           <none>
+kube-system               coredns-54996dc9b4-hwc8q                                        1/1     Running     0               21m    10.42.0.3     150-136-219-205   <none>           <none>
+kube-system               hami-device-plugin-wtng6                                        2/2     Running     0               12m    10.42.0.6     150-136-219-205   <none>           <none>
+kube-system               hami-scheduler-7f9d98fd5d-xsnwk                                 2/2     Running     0               12m    10.42.0.7     150-136-219-205   <none>           <none>
+kube-system               local-path-provisioner-77b9867795-p5qnf                         1/1     Running     0               21m    10.42.0.4     150-136-219-205   <none>           <none>
+kube-system               metrics-server-6dc596dfb8-jqcbs                                 1/1     Running     0               21m    10.42.0.2     150-136-219-205   <none>           <none>
+monitoring                alertmanager-kube-prometheus-stack-alertmanager-0               2/2     Running     0               12m    10.42.0.15    150-136-219-205   <none>           <none>
+monitoring                dcgm-exporter-pgrk6                                             1/1     Running     0               11m    10.42.0.17    150-136-219-205   <none>           <none>
+monitoring                kube-prometheus-stack-grafana-7d6cd974cd-bhbxk                  3/3     Running     0               12m    10.42.0.13    150-136-219-205   <none>           <none>
+monitoring                kube-prometheus-stack-grafana-image-renderer-5f86f8bcfb-5ntrd   1/1     Running     0               12m    10.42.0.11    150-136-219-205   <none>           <none>
+monitoring                kube-prometheus-stack-kube-state-metrics-687686d88b-wwm8s       1/1     Running     0               12m    10.42.0.10    150-136-219-205   <none>           <none>
+monitoring                kube-prometheus-stack-operator-546fd498fd-2d8f9                 1/1     Running     0               12m    10.42.0.12    150-136-219-205   <none>           <none>
+monitoring                kube-prometheus-stack-prometheus-node-exporter-jvctd            1/1     Running     0               12m    10.19.84.81   150-136-219-205   <none>           <none>
+monitoring                prometheus-kube-prometheus-stack-prometheus-0                   2/2     Running     0               12m    10.42.0.16    150-136-219-205   <none>           <none>
+platform                  redis-5f596f6bc7-dp9t8                                          1/1     Running     0               11m    10.42.0.35    150-136-219-205   <none>           <none>

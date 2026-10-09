@@ -1,0 +1,10 @@
+{
+ "pass": false,
+ "ttft_cold_s": 0.6404302700000244,
+ "ttft_hbm_s": 0.062373626999942644,
+ "ttft_after_evict_s": 0.6494778379999389,
+ "flood": 40,
+ "connector_delta": {
+  "vllm:external_prefix_cache_queries_total{engine=\"0\",model_name=\"companion\"}": 429703.0
+ }
+}

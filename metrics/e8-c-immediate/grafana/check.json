@@ -1,0 +1,478 @@
+{
+ "from": 1790724242.0,
+ "to": 1790725008.0,
+ "panels": 56,
+ "no_data": [
+  {
+   "dashboard": "Success and failures",
+   "panel": "App turns by outcome",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "NIXL transfers",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "NIXL transfer time p95",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "Failed and expired transfers",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "NIXL bytes each second",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Turn latency p95 by phase (SLO-3, SLO-4)",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Tool latency p95",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Tool errors by reason",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Verdicts by status and rule path",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Answer gate decisions",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Page check: removed windows",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  }
+ ],
+ "rows": [
+  {
+   "dashboard": "Cluster",
+   "panel": "Node CPU used (cores)",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Cluster",
+   "panel": "Node memory used",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Cluster",
+   "panel": "Pods by phase",
+   "series": 5,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Cluster",
+   "panel": "GPU use",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Cluster",
+   "panel": "GPU framebuffer used",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Cluster",
+   "panel": "GPU power",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Cluster",
+   "panel": "HAMi slices: GPU memory limit by pod",
+   "series": 4,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Success and failures",
+   "panel": "Requests at edge by class",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Success and failures",
+   "panel": "Sheds by code and reason",
+   "series": 10,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Success and failures",
+   "panel": "Overflow (Superlinked)",
+   "series": 1,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Success and failures",
+   "panel": "Success ratio (no shed)",
+   "series": 1,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Success and failures",
+   "panel": "Completed on vLLM by reason",
+   "series": 5,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Success and failures",
+   "panel": "App turns by outcome",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Gateway and admission",
+   "panel": "Guard rejects by stage and reason",
+   "series": 4,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Gateway and admission",
+   "panel": "Guard stage 2 latency p95 (SLO-7: 0.3 s)",
+   "series": 1,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Gateway and admission",
+   "panel": "Tenant rate-limit rejects (Agent Router, edge view)",
+   "series": 1,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Gateway and admission",
+   "panel": "Flow-control drops (edge view, by router reason)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Gateway and admission",
+   "panel": "edge TTFT p95 by class and route",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Gateway and admission",
+   "panel": "edge request duration p95",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Router",
+   "panel": "Scheduling attempts by pod",
+   "series": 4,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Router",
+   "panel": "Pool saturation (1.0 = backpressure)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Router",
+   "panel": "P/D decisions",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Router",
+   "panel": "Prefix-cache hit ratio (vLLM)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Router",
+   "panel": "Prefix-cache hit ratio for each pod (it drops after a cache clear, E7)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Router",
+   "panel": "Plugin latency p95",
+   "series": 18,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Queue depth by pod",
+   "panel": "Flow-control queue by band (before the pick)",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Queue depth by pod",
+   "panel": "Flow-control queue by tenant",
+   "series": 34,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Queue depth by pod",
+   "panel": "Queue depth for each pod, router view (our orch_replica_queue_depth)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Queue depth by pod",
+   "panel": "vLLM waiting by pod (after the pick)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Queue depth by pod",
+   "panel": "vLLM running by pod",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Queue depth by pod",
+   "panel": "Queue wait p95 by outcome",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Queue depth by pod",
+   "panel": "Pool average queue size",
+   "series": 1,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "vLLM",
+   "panel": "KV cache use",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "vLLM",
+   "panel": "Preemptions",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "vLLM",
+   "panel": "TTFT p95 (SLO-1: 1.5 s)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "vLLM",
+   "panel": "ITL p95 (SLO-2: 50 ms)",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "vLLM",
+   "panel": "End-to-end latency p95",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "vLLM",
+   "panel": "Tokens per second",
+   "series": 6,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "NIXL transfers",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "NIXL transfer time p95",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "Failed and expired transfers",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "NIXL bytes each second",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "LMCache lookups: hit and requested tokens",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Hop store",
+   "panel": "LMCache CPU tier use",
+   "series": 1,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Pods, replicas, KEDA",
+   "panel": "Desired against actual replicas",
+   "series": 4,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Pods, replicas, KEDA",
+   "panel": "Worker states",
+   "series": 7,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Pods, replicas, KEDA",
+   "panel": "Warmup time p95",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Pods, replicas, KEDA",
+   "panel": "Ramp weight by pod",
+   "series": 3,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Pods, replicas, KEDA",
+   "panel": "First TTFT: cold against warm",
+   "series": 1,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "Pods, replicas, KEDA",
+   "panel": "KEDA scaler metric",
+   "series": 2,
+   "errors": [],
+   "ok": true
+  },
+  {
+   "dashboard": "App",
+   "panel": "Turn latency p95 by phase (SLO-3, SLO-4)",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Tool latency p95",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Tool errors by reason",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Verdicts by status and rule path",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Answer gate decisions",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  },
+  {
+   "dashboard": "App",
+   "panel": "Page check: removed windows",
+   "series": 0,
+   "errors": [],
+   "ok": false
+  }
+ ]
+}

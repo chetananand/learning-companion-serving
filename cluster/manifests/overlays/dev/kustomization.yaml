@@ -1,0 +1,29 @@
+# Dev days: node 2 only. gemma-4-E4B-it runs a prefill pod and a decode pod on HAMi slices, so NIXL
+# and LMCache are tested across the two A6000 GPUs before the H100 sessions (system design section 2.3).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: [../t2]
+patches:
+  - target: {kind: DaemonSet, name: lmcache-server}
+    patch: |-
+      - {op: replace, path: /spec/template/spec/nodeSelector, value: {companion.io/node: control}}
+      # Only the tier size changes. The base flags stay (G1: --host, --http-host, --isolated-ipc).
+      - {op: test, path: /spec/template/spec/containers/0/command/2, value: --l1-size-gb}
+      - {op: replace, path: /spec/template/spec/containers/0/command/3, value: "20"}
+      - {op: replace, path: /spec/template/spec/containers/0/resources, value: {requests: {cpu: "2", memory: 24Gi}, limits: {memory: 28Gi}}}
+  - target: {kind: Deployment, name: vllm-prefill}
+    # G0: the guards and SIE leave about 23 GB on one A6000 (HAMi places memory for each GPU).
+    patch: |-
+      - {op: remove, path: /spec/template/metadata/labels/hami.io~1webhook}   # node 2: HAMi places it
+      - {op: replace, path: /spec/template/spec/nodeSelector, value: {companion.io/node: control}}
+      - {op: replace, path: /spec/template/spec/containers/0/env/0/value, value: google/gemma-4-E4B-it}
+      - {op: replace, path: /spec/template/spec/containers/0/resources, value: {limits: {nvidia.com/gpu: "1", nvidia.com/gpumem: "22000", memory: 32Gi}, requests: {cpu: "2", memory: 16Gi}}}
+  - target: {kind: Deployment, name: vllm-decode}
+    patch: |-
+      - {op: remove, path: /spec/template/metadata/labels/hami.io~1webhook}   # node 2: HAMi places it
+      - {op: replace, path: /spec/template/spec/nodeSelector, value: {companion.io/node: control}}
+      - {op: replace, path: /spec/template/spec/containers/0/env/0/value, value: google/gemma-4-E4B-it}
+      - {op: replace, path: /spec/template/spec/containers/0/resources, value: {limits: {nvidia.com/gpu: "1", nvidia.com/gpumem: "22000", memory: 32Gi}, requests: {cpu: "2", memory: 16Gi}}}
+  - target: {kind: Deployment, name: warm-controller}
+    patch: |-
+      - {op: replace, path: /spec/template/spec/containers/0/env/2/value, value: "1.2"}

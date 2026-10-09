@@ -1,0 +1,103 @@
+# warm-controller companion/warm-controller-6c75d774c9-rnmd4:9100/metrics
+# HELP orch_worker_state 1 for the current state of each pod
+# TYPE orch_worker_state gauge
+orch_worker_state{pod="vllm-decode-5bb6df5467-xngpn",state="starting"} 0.0
+orch_worker_state{pod="vllm-decode-5bb6df5467-xngpn",state="engine_ready"} 0.0
+orch_worker_state{pod="vllm-decode-5bb6df5467-xngpn",state="warming"} 0.0
+orch_worker_state{pod="vllm-decode-5bb6df5467-xngpn",state="warm"} 1.0
+orch_worker_state{pod="vllm-decode-5bb6df5467-xngpn",state="cold_failed"} 0.0
+orch_worker_state{pod="vllm-decode-5bb6df5467-xngpn",state="stalled"} 0.0
+orch_worker_state{pod="vllm-decode-5bb6df5467-xngpn",state="draining"} 0.0
+orch_worker_state{pod="vllm-prefill-7c9b584f86-rkpkx",state="starting"} 0.0
+orch_worker_state{pod="vllm-prefill-7c9b584f86-rkpkx",state="engine_ready"} 0.0
+orch_worker_state{pod="vllm-prefill-7c9b584f86-rkpkx",state="warming"} 0.0
+orch_worker_state{pod="vllm-prefill-7c9b584f86-rkpkx",state="warm"} 1.0
+orch_worker_state{pod="vllm-prefill-7c9b584f86-rkpkx",state="cold_failed"} 0.0
+orch_worker_state{pod="vllm-prefill-7c9b584f86-rkpkx",state="stalled"} 0.0
+orch_worker_state{pod="vllm-prefill-7c9b584f86-rkpkx",state="draining"} 0.0
+# HELP orch_warmup_seconds Warmup time by phase
+# TYPE orch_warmup_seconds histogram
+orch_warmup_seconds_bucket{le="1.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="5.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="10.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="30.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="60.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="120.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="300.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="600.0",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="+Inf",phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_count{phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_sum{phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 0.009519246999843745
+orch_warmup_seconds_bucket{le="1.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="5.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="10.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="30.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="60.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="120.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="300.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="600.0",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="+Inf",phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_count{phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_sum{phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 0.03101906699976098
+orch_warmup_seconds_bucket{le="1.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 0.0
+orch_warmup_seconds_bucket{le="5.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 0.0
+orch_warmup_seconds_bucket{le="10.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 1.0
+orch_warmup_seconds_bucket{le="30.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="60.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="120.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="300.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="600.0",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_bucket{le="+Inf",phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_count{phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 2.0
+orch_warmup_seconds_sum{phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 22.565875849999884
+orch_warmup_seconds_bucket{le="1.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 0.0
+orch_warmup_seconds_bucket{le="5.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 0.0
+orch_warmup_seconds_bucket{le="10.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 0.0
+orch_warmup_seconds_bucket{le="30.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="60.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="120.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="300.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="600.0",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_bucket{le="+Inf",phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_count{phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.0
+orch_warmup_seconds_sum{phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 16.75120964100006
+# HELP orch_warmup_seconds_created Warmup time by phase
+# TYPE orch_warmup_seconds_created gauge
+orch_warmup_seconds_created{phase="engine_ready",pod="vllm-decode-5bb6df5467-xngpn"} 1.7909073299979286e+09
+orch_warmup_seconds_created{phase="engine_ready",pod="vllm-prefill-7c9b584f86-rkpkx"} 1.7909073300056584e+09
+orch_warmup_seconds_created{phase="total",pod="vllm-prefill-7c9b584f86-rkpkx"} 1.7909073385419374e+09
+orch_warmup_seconds_created{phase="total",pod="vllm-decode-5bb6df5467-xngpn"} 1.7909073467396357e+09
+# HELP orch_first_ttft_seconds 4K probe TTFT
+# TYPE orch_first_ttft_seconds histogram
+orch_first_ttft_seconds_bucket{le="0.1",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="0.25",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="0.5",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="1.0",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="2.0",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 2.0
+orch_first_ttft_seconds_bucket{le="4.0",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 2.0
+orch_first_ttft_seconds_bucket{le="8.0",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 2.0
+orch_first_ttft_seconds_bucket{le="16.0",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 2.0
+orch_first_ttft_seconds_bucket{le="+Inf",pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 2.0
+orch_first_ttft_seconds_count{pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 2.0
+orch_first_ttft_seconds_sum{pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 2.347727214000315
+orch_first_ttft_seconds_bucket{le="0.1",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="0.25",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="0.5",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="1.0",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 0.0
+orch_first_ttft_seconds_bucket{le="2.0",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.0
+orch_first_ttft_seconds_bucket{le="4.0",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.0
+orch_first_ttft_seconds_bucket{le="8.0",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.0
+orch_first_ttft_seconds_bucket{le="16.0",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.0
+orch_first_ttft_seconds_bucket{le="+Inf",pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.0
+orch_first_ttft_seconds_count{pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.0
+orch_first_ttft_seconds_sum{pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.2662885810000262
+# HELP orch_first_ttft_seconds_created 4K probe TTFT
+# TYPE orch_first_ttft_seconds_created gauge
+orch_first_ttft_seconds_created{pod="vllm-prefill-7c9b584f86-rkpkx",warm="true"} 1.7909073385417686e+09
+orch_first_ttft_seconds_created{pod="vllm-decode-5bb6df5467-xngpn",warm="true"} 1.790907346739507e+09
+# HELP orch_ramp_weight Ramp weight of each warm pod
+# TYPE orch_ramp_weight gauge
+orch_ramp_weight{pod="vllm-decode-5bb6df5467-xngpn"} 0.1
+orch_ramp_weight{pod="vllm-prefill-7c9b584f86-rkpkx"} 0.1
+# HELP orch_engine_stall_total Engines that stopped making progress
+# TYPE orch_engine_stall_total counter

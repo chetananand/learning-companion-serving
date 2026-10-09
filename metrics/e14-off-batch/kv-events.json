@@ -1,0 +1,90 @@
+{
+ "evicted_gpu_blocks": 1475,
+ "by_endpoint": {
+  "tcp://10.42.1.41:5556": {
+   "batches": 59,
+   "stored": {
+    "GPU": 1473
+   },
+   "removed": {
+    "GPU": 1475
+   },
+   "cleared": 0,
+   "missed_batches": 0
+  }
+ },
+ "per_second": {
+  "1790723473": {
+   "stored_GPU": 79,
+   "removed_GPU": 174
+  },
+  "1790723474": {
+   "removed_GPU": 81,
+   "stored_GPU": 80
+  },
+  "1790723475": {
+   "removed_GPU": 40,
+   "stored_GPU": 134
+  },
+  "1790723476": {
+   "stored_GPU": 2
+  },
+  "1790723480": {
+   "stored_GPU": 79,
+   "removed_GPU": 174
+  },
+  "1790723481": {
+   "removed_GPU": 81,
+   "stored_GPU": 80
+  },
+  "1790723482": {
+   "removed_GPU": 40,
+   "stored_GPU": 134
+  },
+  "1790723483": {
+   "stored_GPU": 2
+  },
+  "1790723487": {
+   "stored_GPU": 79,
+   "removed_GPU": 174
+  },
+  "1790723488": {
+   "removed_GPU": 81,
+   "stored_GPU": 80
+  },
+  "1790723489": {
+   "removed_GPU": 40,
+   "stored_GPU": 134
+  },
+  "1790723490": {
+   "stored_GPU": 2
+  },
+  "1790723494": {
+   "stored_GPU": 79,
+   "removed_GPU": 174
+  },
+  "1790723495": {
+   "removed_GPU": 81,
+   "stored_GPU": 80
+  },
+  "1790723496": {
+   "removed_GPU": 40,
+   "stored_GPU": 134
+  },
+  "1790723497": {
+   "stored_GPU": 2
+  },
+  "1790723501": {
+   "stored_GPU": 79,
+   "removed_GPU": 174
+  },
+  "1790723502": {
+   "removed_GPU": 81,
+   "stored_GPU": 80
+  },
+  "1790723503": {
+   "removed_GPU": 40,
+   "stored_GPU": 134
+  }
+ }
+}

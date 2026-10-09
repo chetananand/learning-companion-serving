@@ -1,0 +1,88 @@
+{
+  "calls": 3112,
+  "wall_s": 668.7,
+  "by_class": {
+    "batch": {
+      "calls": 195,
+      "ok": 45,
+      "aborted": 0,
+      "sheds": {
+        "503 timeout_queue": 149,
+        "599 ReadError": 1
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": 4.1,
+      "latency_p95_s": 44.8879,
+      "output_tokens": 3087,
+      "prompt_tokens": 109500
+    },
+    "interactive": {
+      "calls": 2917,
+      "ok": 2639,
+      "aborted": 0,
+      "sheds": {
+        "400 prompt_injection": 5,
+        "503 timeout_queue": 273
+      },
+      "overflow": 0,
+      "ttft_p50_s": 15.7808,
+      "ttft_p95_s": 21.4536,
+      "latency_p50_s": 13.6915,
+      "latency_p95_s": 34.065,
+      "output_tokens": 287825,
+      "prompt_tokens": 9135470
+    }
+  },
+  "t_start": 1790708735.834146,
+  "config": {
+    "target": "http://edge.companion.svc.cluster.local:8080/v1",
+    "mix": "m4",
+    "rate": 1.35,
+    "duration_s": 600.0,
+    "out_dir": "/data/runs/e3-c-150",
+    "ramp_per_min": 0.0,
+    "abort_p": 0.0,
+    "tenants": [
+      "load-1",
+      "load-2",
+      "load-3",
+      "load-4",
+      "load-5",
+      "load-6",
+      "load-7",
+      "load-8",
+      "load-9",
+      "load-10",
+      "load-11",
+      "load-12",
+      "load-13",
+      "load-14",
+      "load-15",
+      "load-16",
+      "load-17",
+      "load-18",
+      "load-19",
+      "load-20",
+      "load-21",
+      "load-22",
+      "load-23",
+      "load-24",
+      "load-25",
+      "load-26",
+      "load-27",
+      "load-28",
+      "load-29",
+      "load-30",
+      "load-31",
+      "load-32"
+    ],
+    "batch_tenant": "sweep",
+    "seed": 7,
+    "max_in_flight": 512,
+    "allow_overflow": true,
+    "drain_s": 120.0,
+    "extra": []
+  }
+}

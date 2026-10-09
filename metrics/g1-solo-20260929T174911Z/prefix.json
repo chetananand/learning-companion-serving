@@ -1,0 +1,28 @@
+{
+ "pass": false,
+ "requests": 2000,
+ "bad": [
+  [
+   175,
+   "'Based on the provided notes, one fact is:\\n\\n**For the `ix-cache` correctness test'"
+  ],
+  [
+   1084,
+   "'One fact from the notes is that the **Prefix-cache correctness** test requires 2'"
+  ],
+  [
+   1520,
+   "'One fact from the notes (DR-003) is that the **Prefix-cache correctness** test r'"
+  ],
+  [
+   1677,
+   "'One fact from the notes is that there is an open bug where NaN logits occur afte'"
+  ]
+ ],
+ "bad_count": 4,
+ "prefix_hit_ratio": 0.845,
+ "metric_delta": {
+  "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"companion\"}": 5938136.0,
+  "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"companion\"}": 5020672.0
+ }
+}

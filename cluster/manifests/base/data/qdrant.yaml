@@ -1,0 +1,36 @@
+# Qdrant (ADR-007): one replica on node 2, on the local disk. Qdrant does not support NFS storage,
+# so the teardown backup takes a Qdrant snapshot and copies it to the Lambda filesystem.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: qdrant, namespace: data}
+spec:
+  serviceName: qdrant
+  replicas: 1
+  selector: {matchLabels: {app: qdrant}}
+  template:
+    metadata: {labels: {app: qdrant}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: qdrant
+          image: QDRANT_IMAGE
+          ports: [{name: http, containerPort: 6333}, {name: grpc, containerPort: 6334}]
+          env:
+            - {name: QDRANT__TELEMETRY_DISABLED, value: "true"}
+            - {name: QDRANT__STORAGE__SNAPSHOTS_PATH, value: /qdrant/snapshots}
+          volumeMounts:
+            - {name: storage, mountPath: /qdrant/storage}
+            - {name: snapshots, mountPath: /qdrant/snapshots}
+          readinessProbe: {httpGet: {path: /readyz, port: http}, periodSeconds: 5}
+          livenessProbe: {httpGet: {path: /livez, port: http}, periodSeconds: 10}
+          resources: {requests: {cpu: "1", memory: 2Gi}, limits: {memory: 8Gi}}
+      volumes:
+        - {name: storage, hostPath: {path: /var/lib/companion/qdrant, type: DirectoryOrCreate}}
+        - {name: snapshots, hostPath: {path: /lambda/nfs/companion-state/qdrant-snapshots, type: DirectoryOrCreate}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: qdrant, namespace: data, labels: {app: qdrant}}
+spec:
+  selector: {app: qdrant}
+  ports: [{name: http, port: 6333, targetPort: 6333}, {name: grpc, port: 6334, targetPort: 6334}]

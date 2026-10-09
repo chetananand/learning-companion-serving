@@ -1,0 +1,21 @@
+# NeMo Guardrails 0.24.1 config for `guard` (ADR-011). Built-in rails only, so NeMo runs it on
+# IORails (fast path, parallel rails, admission control). No main model: we call /v1/checks only.
+# Source: examples/configs/nemotron-3.5-content-safety in NVIDIA-NeMo/Guardrails v0.24.1.
+models:
+  - type: content_safety
+    engine: openai
+    model: nvidia/Nemotron-3.5-Content-Safety
+    parameters:
+      base_url: http://guard-safety.guard.svc.cluster.local:8000/v1
+      api_key: EMPTY
+      chat_template_kwargs:
+        enable_thinking: false            # fast mode (no reasoning trace)
+        request_categories: "/categories" # keep the Safety Categories line
+
+rails:
+  input:
+    flows:
+      - content safety check input $model=content_safety
+  output:
+    flows:
+      - content safety check output $model=content_safety

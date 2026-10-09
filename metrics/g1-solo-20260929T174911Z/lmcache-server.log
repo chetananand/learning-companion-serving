@@ -1,0 +1,870 @@
+[32;20m[2026-09-29 17:44:59,308] LMCache INFO:[0m torch_dev=<module 'torch.cuda' from '/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py'>, torch_device_type=cuda [3m(_device_detect.py:312:lmcache.v1.platform._device_detect)[0m
+[32;20m[2026-09-29 17:44:59,308] LMCache INFO:[0m Auto-selected backend [cuda] for accelerator 'cuda' from candidate backends [cuda, rocm]. [3m(__init__.py:148:lmcache.v1.platform)[0m
+
+ _     __  __    ____           _          
+| |   |  \/  |  / ___|__ _  ___| |__   ___      LMCache v0.5.5 (g05a013b2)
+| |   | |\/| | | |   / _` |/ __| '_ \ / _ \     Website:  https://lmcache.ai/
+| |___| |  | | | |__| (_| | (__| | | |  __/     Recipes:  https://docs.lmcache.ai/recipes
+|_____|_|  |_|  \____\__,_|\___|_| |_|\___|     LinkedIn: https://www.linkedin.com/company/lmcache-lab
+Set LMCACHE_DISABLE_BANNER=1 to hide this banner.
+
+[32;20m[2026-09-29 17:45:01,077] LMCache INFO:[0m multi_layer_block_kv_transfer mode: ptr [3m(base.py:95:lmcache.v1.multiprocess.transfer_context.base)[0m
+[32;20m[2026-09-29 17:45:05,345] LMCache INFO:[0m Discovered API module: cache_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,352] LMCache INFO:[0m Discovered API module: env_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,353] LMCache INFO:[0m Discovered API module: loglevel_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,354] LMCache INFO:[0m Discovered API module: metrics_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,357] LMCache INFO:[0m Discovered API module: periodic_thread_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,358] LMCache INFO:[0m Discovered API module: run_script_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,360] LMCache INFO:[0m Discovered API module: thread_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,364] LMCache INFO:[0m Discovered API module: common_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,365] LMCache INFO:[0m Discovered API module: config_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,370] LMCache INFO:[0m Discovered API module: info_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,374] LMCache INFO:[0m Discovered API module: quota_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,379] LMCache INFO:[0m Discovered API module: reconfigure_api [3m(router_discovery.py:53:lmcache.v1.utils.router_discovery)[0m
+[32;20m[2026-09-29 17:45:05,403] LMCache INFO:[0m CudaPinMemoryBackend: using torch cudart [3m(pin_memory.py:89:lmcache.v1.platform.cuda.pin_memory)[0m
+[32;20m[2026-09-29 17:45:05,404] LMCache INFO:[0m Starting LMCache HTTP server on http://172.26.133.238:8080 [3m(http_server.py:259:lmcache.v1.multiprocess.http_server)[0m
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+[32;20m[2026-09-29 17:45:05,472] LMCache INFO:[0m Starting LMCache HTTP server... (accelerator available: True) [3m(http_server.py:77:lmcache.v1.multiprocess.http_server)[0m
+[32;20m[2026-09-29 17:45:05,479] LMCache INFO:[0m OTel MeterProvider initialised with Prometheus fallback (standalone metrics HTTP server disabled; /metrics must be exposed by the caller), resource={'telemetry.sdk.language': 'python', 'telemetry.sdk.name': 'opentelemetry', 'telemetry.sdk.version': '1.40.0', 'service.instance.id': '0b53a7fc-641d-4e5e-a55b-63a81bf7cb9e', 'service.name': 'unknown_service'} [3m(otel_init.py:114:lmcache.v1.mp_observability.otel_init)[0m
+[32;20m[2026-09-29 17:45:11,366] LMCache INFO:[0m Starting L1EvictionController... [3m(eviction_controller.py:53:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+[32;20m[2026-09-29 17:45:11,383] LMCache INFO:[0m Starting L2EvictionController... [3m(eviction_controller.py:250:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+[32;20m[2026-09-29 17:45:11,383] LMCache INFO:[0m Starting StoreController... [3m(store_controller.py:305:lmcache.v1.distributed.storage_controllers.store_controller)[0m
+[32;20m[2026-09-29 17:45:11,384] LMCache INFO:[0m Starting PrefetchController... [3m(prefetch_controller.py:596:lmcache.v1.distributed.storage_controllers.prefetch_controller)[0m
+[32;20m[2026-09-29 17:45:11,401] LMCache INFO:[0m Using blake3 hash function [3m(token_hasher.py:79:lmcache.v1.multiprocess.token_hasher)[0m
+[32;20m[2026-09-29 17:45:11,420] LMCache INFO:[0m Computed NONE_HASH=b"~>\xff\x9e\xf7a:P4\x0e\xb1&w\xee\x03\xb8:\xc7Y\xfc\xba\x9b\xb3'\x05\xf0rH\xd5mG;" using hash function [3m(token_hasher.py:180:lmcache.v1.multiprocess.token_hasher)[0m
+[32;20m[2026-09-29 17:45:11,420] LMCache INFO:[0m TokenHasher initialized: chunk_size=256, hash_algorithm=blake3 [3m(token_hasher.py:67:lmcache.v1.multiprocess.token_hasher)[0m
+[32;20m[2026-09-29 17:45:11,421] LMCache INFO:[0m PeriodicThread SessionManager-cleanup-thread-72b306d94560 entering main loop (interval=60.0s) [3m(periodic_thread.py:304:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,421] LMCache INFO:[0m Started PeriodicThread: SessionManager-cleanup-thread-72b306d94560 (level=medium, interval=60.0s, init_wait=0.0s) [3m(periodic_thread.py:248:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,437] LMCache INFO:[0m PeriodicThread DeviceHostFuncDispatcher entering main loop (interval=0.0s) [3m(periodic_thread.py:304:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,438] LMCache INFO:[0m Started PeriodicThread: DeviceHostFuncDispatcher (level=high, interval=0.0s, init_wait=0.0s) [3m(periodic_thread.py:248:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,438] LMCache INFO:[0m Supported transfer mode: lmcache_driven [3m(server.py:188:lmcache.v1.multiprocess.server)[0m
+[32;20m[2026-09-29 17:45:11,438] LMCache INFO:[0m PeriodicThread lmcache-mp-worker-reaper entering main loop (interval=30.0s) [3m(periodic_thread.py:304:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,439] LMCache INFO:[0m Started PeriodicThread: lmcache-mp-worker-reaper (level=medium, interval=30.0s, init_wait=0.0s) [3m(periodic_thread.py:248:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,439] LMCache INFO:[0m Initializing MP usage context. [3m(mp.py:93:lmcache.usage_telemetry.mp)[0m
+[32;20m[2026-09-29 17:45:11,456] LMCache INFO:[0m Initializing MP continuous usage reporting. [3m(mp_continuous.py:217:lmcache.usage_telemetry.mp_continuous)[0m
+[32;20m[2026-09-29 17:45:11,457] LMCache INFO:[0m Started PeriodicThread: lmcache-usage-continuous (level=low, interval=600.0s, init_wait=600.0s) [3m(periodic_thread.py:248:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,457] LMCache INFO:[0m Initializing L2 connector usage reporting. [3m(l2_usage.py:243:lmcache.usage_telemetry.l2_usage)[0m
+[32;20m[2026-09-29 17:45:11,457] LMCache INFO:[0m Started PeriodicThread: lmcache-usage-l2 (level=low, interval=600.0s, init_wait=600.0s) [3m(periodic_thread.py:248:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,457] LMCache INFO:[0m Initializing L1 usage reporting. [3m(l1_usage.py:154:lmcache.usage_telemetry.l1_usage)[0m
+[32;20m[2026-09-29 17:45:11,458] LMCache INFO:[0m Started PeriodicThread: lmcache-usage-l1 (level=low, interval=600.0s, init_wait=600.0s) [3m(periodic_thread.py:248:lmcache.v1.periodic_thread)[0m
+[32;20m[2026-09-29 17:45:11,495] LMCache INFO:[0m Created AffinityThreadPool 'affinity-pool-0' with 1 worker slots: up to 1 distinct affinity keys each bind to their own thread before slots are shared. Compare this against the number of clients expected to connect to confirm routing. [3m(affinity_pool.py:60:lmcache.v1.multiprocess.affinity_pool)[0m
+[32;20m[2026-09-29 17:45:11,495] LMCache INFO:[0m LMCache ZMQ cache server is running on tcp://172.26.133.238:5555 [3m(server.py:386:lmcache.v1.multiprocess.server)[0m
+[32;20m[2026-09-29 17:45:11,512] LMCache INFO:[0m LMCache cache server is running... [3m(server.py:401:lmcache.v1.multiprocess.server)[0m
+[32;20m[2026-09-29 17:45:11,512] LMCache INFO:[0m LMCache HTTP server initialized [3m(http_server.py:164:lmcache.v1.multiprocess.http_server)[0m
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://172.26.133.238:8080 (Press CTRL+C to quit)
+INFO:     172.26.132.42:17315 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:45:14,219] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 30720 MB / 256000 MB (12.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:17,118] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 40960 MB / 256000 MB (16.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:19,968] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 51200 MB / 256000 MB (20.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:22,813] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 61440 MB / 256000 MB (24.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:25,670] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 71680 MB / 256000 MB (28.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+INFO:     172.26.132.42:13189 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:45:28,587] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 81920 MB / 256000 MB (32.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:31,443] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 92160 MB / 256000 MB (36.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:34,260] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 102400 MB / 256000 MB (40.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:37,084] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 112640 MB / 256000 MB (44.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:39,906] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 122880 MB / 256000 MB (48.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+INFO:     172.26.132.42:56071 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:45:42,725] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 133120 MB / 256000 MB (52.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:45,535] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 143360 MB / 256000 MB (56.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:48,345] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 153600 MB / 256000 MB (60.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:51,174] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 163840 MB / 256000 MB (64.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:54,011] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 174080 MB / 256000 MB (68.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+INFO:     172.26.132.42:5529 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:45:56,882] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 184320 MB / 256000 MB (72.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:45:59,706] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 194560 MB / 256000 MB (76.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:46:02,548] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 204800 MB / 256000 MB (80.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:46:05,368] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 215040 MB / 256000 MB (84.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:46:08,155] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 225280 MB / 256000 MB (88.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:46:10,963] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 235520 MB / 256000 MB (92.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+INFO:     172.26.132.42:59503 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:16,544] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:16,561] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:16,561] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Group 0 first-layer tensor: layer_idx=0 shape=(3928, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:1 storage_offset=0 numel=2059403264 storage_nbytes=4118806528 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Group 1 first-layer tensor: layer_idx=10 shape=(3928, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:1 storage_offset=0 numel=2059403264 storage_nbytes=4118806528 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Group 2 first-layer tensor: layer_idx=20 shape=(3928, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:1 storage_offset=0 numel=2059403264 storage_nbytes=4118806528 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Group 3 first-layer tensor: layer_idx=30 shape=(3928, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:1 storage_offset=0 numel=2059403264 storage_nbytes=4118806528 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:16,562] LMCache INFO:[0m Group 4 first-layer tensor: layer_idx=40 shape=(3928, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:1 storage_offset=0 numel=2059403264 storage_nbytes=4118806528 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:16,563] LMCache INFO:[0m Group 5 first-layer tensor: layer_idx=50 shape=(3928, 128, 4, 1024) stride=(524288, 4096, 1024, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:1 storage_offset=0 numel=2059403264 storage_nbytes=4118806528 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:16,563] LMCache INFO:[0m KV layer groups: ---
+KernelGroupInfo(layers=10, indices=0-9, shape_desc=(kv=1, nl=10, nb=3928, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=0, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=10-19, shape_desc=(kv=1, nl=10, nb=3928, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=1, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=20-29, shape_desc=(kv=1, nl=10, nb=3928, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=2, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=30-39, shape_desc=(kv=1, nl=10, nb=3928, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=3, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=40-49, shape_desc=(kv=1, nl=10, nb=3928, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=4, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=50-59, shape_desc=(kv=1, nl=10, nb=3928, bs=128, nh=4, hs=1024, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=128, slots_per_block=128, engine_group_idx=5, sw_size_tokens=-1)
+--- [3m(kv_layer_groups.py:474:lmcache.v1.kv_layer_groups)[0m
+[32;20m[2026-09-29 17:46:16,641] LMCache INFO:[0m Initialized cuda stream on device cuda:1 [3m(cache_context.py:463:lmcache.v1.platform.cuda.cache_context)[0m
+[32;20m[2026-09-29 17:46:16,646] LMCache INFO:[0m Allocated timeline-semaphore event buffer on cuda:1 (4096 slots) [3m(timeline_semaphore_event_ipc.py:622:lmcache.v1.platform.cuda.timeline_semaphore_event_ipc)[0m
+[32;20m[2026-09-29 17:46:16,647] LMCache INFO:[0m Registered KV cache for GPU ID 3588123553591254402 with 60 layers [3m(lmcache_driven_transfer.py:1009:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:17,395] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 245760 MB / 256000 MB (96.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+[32;20m[2026-09-29 17:46:18,419] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:18,420] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:18,420] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:18,420] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:18,420] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:18,420] LMCache INFO:[0m Engine KV Format: EngineKVFormat.NL_X_NB_BS_NH_CS NL x [NB, BS, NH, CS] [3m(detection.py:69:lmcache.v1.gpu_connector.kv_format.detection)[0m
+[32;20m[2026-09-29 17:46:18,420] LMCache INFO:[0m Group 0 first-layer tensor: layer_idx=0 shape=(3687, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:0 storage_offset=0 numel=1933049856 storage_nbytes=3866099712 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:18,421] LMCache INFO:[0m Group 1 first-layer tensor: layer_idx=10 shape=(3687, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:0 storage_offset=0 numel=1933049856 storage_nbytes=3866099712 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:18,421] LMCache INFO:[0m Group 2 first-layer tensor: layer_idx=20 shape=(3687, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:0 storage_offset=0 numel=1933049856 storage_nbytes=3866099712 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:18,421] LMCache INFO:[0m Group 3 first-layer tensor: layer_idx=30 shape=(3687, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:0 storage_offset=0 numel=1933049856 storage_nbytes=3866099712 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:18,421] LMCache INFO:[0m Group 4 first-layer tensor: layer_idx=40 shape=(3687, 64, 16, 512) stride=(524288, 8192, 512, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:0 storage_offset=0 numel=1933049856 storage_nbytes=3866099712 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:18,421] LMCache INFO:[0m Group 5 first-layer tensor: layer_idx=50 shape=(3687, 128, 4, 1024) stride=(524288, 4096, 1024, 1) is_contiguous=True dtype=torch.bfloat16 device=cuda:0 storage_offset=0 numel=1933049856 storage_nbytes=3866099712 padding_per_block=0 [3m(utils.py:608:lmcache.v1.gpu_connector.utils)[0m
+[32;20m[2026-09-29 17:46:18,421] LMCache INFO:[0m KV layer groups: ---
+KernelGroupInfo(layers=10, indices=0-9, shape_desc=(kv=1, nl=10, nb=3687, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=0, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=10-19, shape_desc=(kv=1, nl=10, nb=3687, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=1, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=20-29, shape_desc=(kv=1, nl=10, nb=3687, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=2, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=30-39, shape_desc=(kv=1, nl=10, nb=3687, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=3, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=40-49, shape_desc=(kv=1, nl=10, nb=3687, bs=64, nh=16, hs=512, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=64, slots_per_block=64, engine_group_idx=4, sw_size_tokens=1024)
+KernelGroupInfo(layers=10, indices=50-59, shape_desc=(kv=1, nl=10, nb=3687, bs=128, nh=4, hs=1024, element_size=2, block_stride_elems=524288), dtype=torch.bfloat16, tokens_per_block=128, slots_per_block=128, engine_group_idx=5, sw_size_tokens=-1)
+--- [3m(kv_layer_groups.py:474:lmcache.v1.kv_layer_groups)[0m
+[32;20m[2026-09-29 17:46:18,498] LMCache INFO:[0m Initialized cuda stream on device cuda:0 [3m(cache_context.py:463:lmcache.v1.platform.cuda.cache_context)[0m
+[32;20m[2026-09-29 17:46:18,517] LMCache INFO:[0m Allocated timeline-semaphore event buffer on cuda:0 (4096 slots) [3m(timeline_semaphore_event_ipc.py:622:lmcache.v1.platform.cuda.timeline_semaphore_event_ipc)[0m
+[32;20m[2026-09-29 17:46:18,517] LMCache INFO:[0m Registered KV cache for GPU ID 1818359171053982594 with 60 layers [3m(lmcache_driven_transfer.py:1009:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:20,338] LMCache INFO:[0m LazyMemoryAllocator: Expanded 10240 MB pinned memory, now total is 256000 MB / 256000 MB (100.0%) [3m(lazy_memory_allocator.py:328:lmcache.v1.memory_allocators.lazy_memory_allocator)[0m
+INFO:     172.26.132.42:45094 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.26.132.42:48538 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:45,951] LMCache INFO:[0m AffinityThreadPool: affinity_key=-3881497533426421151 assigned to worker slot 0 of 1 (thread affinity-pool-0-0); 1 distinct key(s) now bound [3m(affinity_pool.py:108:lmcache.v1.multiprocess.affinity_pool)[0m
+[32;20m[2026-09-29 17:46:45,956] LMCache INFO:[0m AffinityThreadPool: affinity_key=-243564074677799417 assigned to worker slot 0 of 1 (thread affinity-pool-0-0); 2 distinct key(s) now bound [3m(affinity_pool.py:108:lmcache.v1.multiprocess.affinity_pool)[0m
+[33;20m[2026-09-29 17:46:45,956] LMCache WARNING:[0m AffinityThreadPool: affinity_key=-243564074677799417 wrapped onto worker slot 0 (only 1 workers), so it shares a thread with an earlier key and their tasks are serialized. Increase the worker count to give each client its own thread. [3m(affinity_pool.py:119:lmcache.v1.multiprocess.affinity_pool)[0m
+[32;20m[2026-09-29 17:46:46,039] LMCache INFO:[0m Stored 768 tokens in 0.088 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:47,095] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/12 retained keys (3 L1, 0 L2) in 1.6 ms (external_request_id=chatcmpl-899607d07734de9a-9166f2f5, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:47,112] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/12 retained keys (3 L1, 0 L2) in 0.8 ms (external_request_id=chatcmpl-80512c5648c45f90-8336bf7e, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:47,322] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/12 retained keys (3 L1, 0 L2) in 0.9 ms (external_request_id=chatcmpl-9e2d610c45094ee5-9af30020, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:47,377] LMCache INFO:[0m Stored 2304 tokens in 0.246 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:47,396] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/12 retained keys (3 L1, 0 L2) in 0.9 ms (external_request_id=chatcmpl-920803c0d7fb8df5-9a2f0af8, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:48,485] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/25 retained keys (12 L1, 0 L2) in 2.0 ms (external_request_id=chatcmpl-a79466d40b41a592-9c1c8108, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:48,521] LMCache INFO:[0m Stored 2560 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:48,577] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/25 retained keys (12 L1, 0 L2) in 1.4 ms (external_request_id=chatcmpl-a376048269143fbe-aac643ea, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:48,591] LMCache INFO:[0m Stored 768 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:48,784] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/25 retained keys (25 L1, 0 L2) in 0.7 ms (external_request_id=chatcmpl-9e9e564523ad2064-afb7898d, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:48,871] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/25 retained keys (25 L1, 0 L2) in 2.0 ms (external_request_id=chatcmpl-936e6890f794e18c-a05f078f, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:48,974] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/3 retained keys (3 L1, 0 L2) in 18.8 ms (external_request_id=chatcmpl-af1fa471935f5370-9ec2b698, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:48,987] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/3 retained keys (3 L1, 0 L2) in 19.8 ms (external_request_id=chatcmpl-a4660472999c0b5a-a8ac54f3, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:49,071] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/3 retained keys (3 L1, 0 L2) in 18.7 ms (external_request_id=chatcmpl-bfff4af426df7938-b4957973, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:49,087] LMCache INFO:[0m Prefetch request completed (L1+L2): 3/3 retained keys (3 L1, 0 L2) in 19.5 ms (external_request_id=chatcmpl-8f9f5fa8e79fc880-b5084f87, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:50,099] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/50 retained keys (25 L1, 0 L2) in 13.9 ms (external_request_id=chatcmpl-b13b3abd19b9c8bb-a2149473, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:50,150] LMCache INFO:[0m Stored 2304 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:50,207] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/50 retained keys (25 L1, 0 L2) in 14.4 ms (external_request_id=chatcmpl-b5f102dbea9e63f8-8cd3c451, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:50,239] LMCache INFO:[0m Stored 2560 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:50,261] LMCache INFO:[0m Stored 6400 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:50,804] LMCache INFO:[0m Prefetch request completed (L1+L2): 44/50 retained keys (44 L1, 0 L2) in 14.7 ms (external_request_id=chatcmpl-9890d2b5479871ce-aafcf684, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:50,896] LMCache INFO:[0m Prefetch request completed (L1+L2): 50/50 retained keys (50 L1, 0 L2) in 15.6 ms (external_request_id=chatcmpl-b032868f4a4bf6b2-9f9ff77f, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:50,908] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 23.0 ms (external_request_id=chatcmpl-8d8671d992bb4cf5-94ea7824, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:50,951] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 1.7 ms (external_request_id=chatcmpl-871db03ca20e0f13-ae8f1dd5, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:51,024] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 22.1 ms (external_request_id=chatcmpl-abf8b5ba1bb5e78e-a5ca1c7c, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:51,067] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 22.7 ms (external_request_id=chatcmpl-9e070ad5177bd61c-b3ae26f6, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:52,347] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 22.2 ms (external_request_id=chatcmpl-ad39e98233e02b83-92166bb0, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:52,487] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/25 retained keys (25 L1, 0 L2) in 2.2 ms (external_request_id=chatcmpl-bd9fe4037a899c97-aca914f9, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:52,498] LMCache INFO:[0m Stored 3072 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:52,550] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/25 retained keys (25 L1, 0 L2) in 2.5 ms (external_request_id=chatcmpl-89b94f9ef04ad7f1-89f0d1d8, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:52,785] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/25 retained keys (25 L1, 0 L2) in 2.3 ms (external_request_id=chatcmpl-9651049570b1e98e-9ff70ddb, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:52,834] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 18.4 ms (external_request_id=chatcmpl-8c65d5706ac7120c-8a60961e, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:52,847] LMCache INFO:[0m Prefetch request completed (L1+L2): 25/25 retained keys (25 L1, 0 L2) in 0.8 ms (external_request_id=chatcmpl-94599a22421cf1a5-b9368852, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:53,120] LMCache INFO:[0m Stored 2304 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:53,197] LMCache INFO:[0m Stored 768 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:54,047] LMCache INFO:[0m Prefetch request completed (L1+L2): 50/50 retained keys (50 L1, 0 L2) in 2.0 ms (external_request_id=chatcmpl-b5355faa461e8aca-ba40d5c2, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:54,124] LMCache INFO:[0m Prefetch request completed (L1+L2): 50/50 retained keys (50 L1, 0 L2) in 1.8 ms (external_request_id=chatcmpl-a3f25ecb97484cdb-87b59148, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:54,139] LMCache INFO:[0m Prefetch request completed (L1+L2): 50/50 retained keys (50 L1, 0 L2) in 1.5 ms (external_request_id=chatcmpl-a2fab0792295b031-86a0ce01, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:54,222] LMCache INFO:[0m Prefetch request completed (L1+L2): 50/50 retained keys (50 L1, 0 L2) in 1.7 ms (external_request_id=chatcmpl-99057d1e66fd3a30-a719b3f7, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:55,621] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 21.9 ms (external_request_id=chatcmpl-b374f91a3a73b2a0-a0ace4f3, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:55,744] LMCache INFO:[0m Stored 3072 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:56,020] LMCache INFO:[0m Prefetch request completed (L1+L2): 12/12 retained keys (12 L1, 0 L2) in 1.1 ms (external_request_id=chatcmpl-9703fe31a97ac2a2-ad83a281, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:56,228] LMCache INFO:[0m Stored 2560 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:56,290] LMCache INFO:[0m Stored 512 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     172.26.132.42:34424 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:58,397] LMCache INFO:[0m Stored 3840 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:58,782] LMCache INFO:[0m Prefetch request completed (L1+L2): 15/15 retained keys (15 L1, 0 L2) in 0.8 ms (external_request_id=chatcmpl-b93a907dab35766b-98c851d5, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:58,786] LMCache INFO:[0m Retrieved 3840 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:46:59,217] LMCache INFO:[0m Stored 3840 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:46:59,600] LMCache INFO:[0m Prefetch request completed (L1+L2): 15/15 retained keys (15 L1, 0 L2) in 0.9 ms (external_request_id=chatcmpl-bb2725bfa94ff365-aae6a28a, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:46:59,604] LMCache INFO:[0m Retrieved 3840 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:47:00,036] LMCache INFO:[0m Stored 3840 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46976 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:00,425] LMCache INFO:[0m Prefetch request completed (L1+L2): 15/15 retained keys (15 L1, 0 L2) in 2.1 ms (external_request_id=chatcmpl-abf9bf6b83366c84-a1da5111, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:47:00,429] LMCache INFO:[0m Retrieved 3840 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:47:11,083] LMCache INFO:[0m Stored 8448 tokens in 0.004 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     172.26.132.42:43049 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:12,067] LMCache INFO:[0m Prefetch request completed (L1+L2): 33/33 retained keys (33 L1, 0 L2) in 1.3 ms (external_request_id=chatcmpl-994f5a5d28abbf66-a59c93af, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:47:12,474] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:13,507] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:14,515] LMCache INFO:[0m Stored 10752 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:15,591] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:16,630] LMCache INFO:[0m Stored 11520 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:17,792] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:18,795] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:19,834] LMCache INFO:[0m Stored 11776 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:21,043] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:22,051] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:23,110] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:24,111] LMCache INFO:[0m Stored 9472 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:25,062] LMCache INFO:[0m Stored 9728 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:26,046] LMCache INFO:[0m Stored 9728 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     172.26.132.42:1253 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:27,035] LMCache INFO:[0m Stored 11008 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:28,136] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:29,178] LMCache INFO:[0m Stored 10752 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:30,263] LMCache INFO:[0m Stored 10752 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:31,337] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:32,377] LMCache INFO:[0m Stored 9472 tokens in 0.004 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:33,326] LMCache INFO:[0m Stored 9728 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:34,316] LMCache INFO:[0m Stored 9472 tokens in 0.004 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:35,127] LMCache INFO:[0m L1 memory usage 0.91 above watermark 0.90; triggering eviction. [3m(eviction_controller.py:179:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:35,260] LMCache INFO:[0m Stored 9216 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:36,187] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:37,190] LMCache INFO:[0m Stored 11264 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:38,322] LMCache INFO:[0m Stored 10240 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:39,344] LMCache INFO:[0m Stored 10240 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:40,132] LMCache INFO:[0m L1 memory usage 0.91 above watermark 0.90; triggering eviction. [3m(eviction_controller.py:179:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:40,377] LMCache INFO:[0m Stored 11264 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:40118 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:47:41,508] LMCache INFO:[0m Stored 8448 tokens in 0.004 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     172.26.132.42:46751 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.26.132.42:37315 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.26.132.42:18015 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:14,993] LMCache INFO:[0m Stored 7168 tokens in 0.004 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:48:15,852] LMCache INFO:[0m Prefetch request completed (L1+L2): 28/28 retained keys (28 L1, 0 L2) in 1.6 ms (external_request_id=chatcmpl-bd5f46ba82da8ed4-ad1f12a1, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:48:16,263] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:17,296] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:18,314] LMCache INFO:[0m Stored 10752 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:19,141] LMCache INFO:[0m L1 memory usage 0.93 above watermark 0.90; triggering eviction. [3m(eviction_controller.py:179:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:19,394] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:20,431] LMCache INFO:[0m Stored 11520 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:21,594] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:22,594] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:23,645] LMCache INFO:[0m Stored 11776 tokens in 0.006 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:48:24,144] LMCache INFO:[0m L1 memory usage 0.93 above watermark 0.90; triggering eviction. [3m(eviction_controller.py:179:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:24,852] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:25,853] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.26.132.42:4158 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:27,017] LMCache INFO:[0m Stored 9984 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:28,020] LMCache INFO:[0m Stored 9472 tokens in 0.004 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:28,972] LMCache INFO:[0m Stored 9728 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:48:29,147] LMCache INFO:[0m L1 memory usage 0.92 above watermark 0.90; triggering eviction. [3m(eviction_controller.py:179:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:29,965] LMCache INFO:[0m Stored 9728 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:30,956] LMCache INFO:[0m Stored 11008 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:32,048] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:33,087] LMCache INFO:[0m Stored 10752 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:34,161] LMCache INFO:[0m Stored 10752 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:35,150] LMCache INFO:[0m L1 memory usage 0.92 above watermark 0.90; triggering eviction. [3m(eviction_controller.py:179:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:35,244] LMCache INFO:[0m Stored 10496 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:36,299] LMCache INFO:[0m Stored 9472 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:37,248] LMCache INFO:[0m Stored 9728 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:38,233] LMCache INFO:[0m Stored 9472 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:39,187] LMCache INFO:[0m Stored 9216 tokens in 0.005 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:42980 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:48:40,064] LMCache INFO:[0m Prefetch request completed (L1+L2): 28/28 retained keys (28 L1, 0 L2) in 2.0 ms (external_request_id=chatcmpl-905cc4187d90c4eb-91787db5, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:48:40,069] LMCache INFO:[0m Retrieved 7168 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:48:40,159] LMCache INFO:[0m L1 memory usage 0.91 above watermark 0.90; triggering eviction. [3m(eviction_controller.py:179:lmcache.v1.distributed.storage_controllers.eviction_controller)[0m
+INFO:     172.26.132.42:61489 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.26.132.42:40970 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:49:05,681] LMCache INFO:[0m Stored 2560 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:05,740] LMCache INFO:[0m Stored 2560 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:05,933] LMCache INFO:[0m Stored 2560 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,139] LMCache INFO:[0m Stored 1024 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,237] LMCache INFO:[0m Prefetch request completed (L1+L2): 2/26 retained keys (2 L1, 0 L2) in 213.9 ms (external_request_id=chatcmpl-14f8f77e-38e4-4150-83b4-355638f09a4b-ab4eac9f, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:06,237] LMCache INFO:[0m Prefetch request completed (L1+L2): 2/23 retained keys (2 L1, 0 L2) in 213.1 ms (external_request_id=chatcmpl-89a51490-8ae6-4c9d-811b-fedbaed8554c-98c8b4af, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:06,238] LMCache INFO:[0m Prefetch request completed (L1+L2): 2/25 retained keys (2 L1, 0 L2) in 213.0 ms (external_request_id=chatcmpl-61021203-abb7-48a4-8f5e-efb2c48ccdc4-a7d75c46, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:06,367] LMCache INFO:[0m Retrieved 512 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,369] LMCache INFO:[0m Retrieved 512 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,370] LMCache INFO:[0m Retrieved 512 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,509] LMCache INFO:[0m Stored 2304 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,593] LMCache INFO:[0m Stored 2560 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,790] LMCache INFO:[0m Stored 1280 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,792] LMCache INFO:[0m Stored 1280 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:06,993] LMCache INFO:[0m Stored 2560 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:07,193] LMCache INFO:[0m Stored 1024 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:07,195] LMCache INFO:[0m Stored 1536 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:07,395] LMCache INFO:[0m Stored 2560 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:07,601] LMCache INFO:[0m Stored 2304 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:09,182] LMCache INFO:[0m Prefetch request completed (L1+L2): 34/34 retained keys (34 L1, 0 L2) in 18.0 ms (external_request_id=chatcmpl-e95fc4a6-bb41-4caa-b7c5-276715f3c43c-aebc30b6, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:10,813] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:10,871] LMCache INFO:[0m Prefetch request completed (L1+L2): 34/35 retained keys (34 L1, 0 L2) in 20.1 ms (external_request_id=chatcmpl-5431f4f0-451a-4e89-84ba-ecbe69043449-9f2490b7, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:10,922] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:11,053] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:11,372] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     172.26.132.42:44352 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:49:11,966] LMCache INFO:[0m Stored 1536 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:12,784] LMCache INFO:[0m Stored 8704 tokens in 0.004 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:13,013] LMCache INFO:[0m Prefetch request completed (L1+L2): 5/6 retained keys (5 L1, 0 L2) in 19.0 ms (external_request_id=chatcmpl-b8062168-7448-4a2d-921c-733430256137-bb305daf, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:13,036] LMCache INFO:[0m Retrieved 1280 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:13,182] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+INFO:     10.42.1.21:46552 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46552 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46552 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46552 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.1.21:46552 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:49:13,580] LMCache INFO:[0m Prefetch request completed (L1+L2): 5/6 retained keys (5 L1, 0 L2) in 19.6 ms (external_request_id=chatcmpl-17d5d098-fe3a-4adf-a9da-6b2ca3991d4b-acd3f25e, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+INFO:     10.42.1.21:46552 - "GET /metrics HTTP/1.1" 200 OK
+[32;20m[2026-09-29 17:49:13,628] LMCache INFO:[0m Stored 256 tokens in 0.003 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:13,657] LMCache INFO:[0m Prefetch request completed (L1+L2): 34/34 retained keys (34 L1, 0 L2) in 30.4 ms (external_request_id=chatcmpl-c753cd38-b55c-44d1-9588-a81f1ef9f79d-9cffba20, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:13,681] LMCache INFO:[0m Retrieved 8704 tokens in 0.002 seconds [3m(lmcache_driven_transfer.py:1520:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:14,889] LMCache INFO:[0m Prefetch request completed (L1+L2): 6/7 retained keys (6 L1, 0 L2) in 20.0 ms (external_request_id=chatcmpl-d4c484fa-4a3b-4e7d-9a10-91c051170664-ad25f255, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:14,941] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:15,798] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:15,839] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:16,338] LMCache INFO:[0m Prefetch request completed (L1+L2): 6/7 retained keys (6 L1, 0 L2) in 20.1 ms (external_request_id=chatcmpl-d2967246-e3de-43be-ae45-bb5994508f78-9101cc07, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:16,389] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:16,806] LMCache INFO:[0m Prefetch request completed (L1+L2): 6/7 retained keys (6 L1, 0 L2) in 19.6 ms (external_request_id=chatcmpl-f090ad44-8b9f-47ac-87bd-c49908743d36-ad00471e, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:16,858] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m
+[32;20m[2026-09-29 17:49:17,286] LMCache INFO:[0m Prefetch request completed (L1+L2): 5/6 retained keys (5 L1, 0 L2) in 16.9 ms (external_request_id=chatcmpl-881424e1-73f7-4fc3-92f0-80f8a2ae258d-a0d9b9ac, prefetch_request_id=-1) [3m(storage_manager.py:726:lmcache.v1.distributed.storage_manager)[0m
+[32;20m[2026-09-29 17:49:17,333] LMCache INFO:[0m Stored 256 tokens in 0.001 seconds [3m(lmcache_driven_transfer.py:1276:lmcache.v1.multiprocess.modules.lmcache_driven_transfer)[0m

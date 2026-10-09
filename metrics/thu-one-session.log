@@ -1,0 +1,995 @@
+== 01:26:59 UTC wait for the node to be active
+== 01:30:36 UTC the node is active
+== 01:31:06 UTC ips
+one node: 150.136.219.205 private: 10.19.84.81 gpu_8x_a100_80gb_sxm4 us-east-1
+== 01:31:06 UTC up: bootstrap, kubeconfig, tunnel, images, secrets, install one, restore
+== 01:31:07 UTC g0.sh bootstrap
+Host key verification failed.
+rsync(82135): error: unexpected end of file
+== 01:31:07 UTC SESSION SCRIPTS ENDED with exit 0
+== 01:32:16 UTC RESTART after the host-key fix
+== 01:32:16 UTC ips
+one node: 150.136.219.205 private: 10.19.84.81 gpu_8x_a100_80gb_sxm4 us-east-1
+== 01:32:16 UTC up: bootstrap, kubeconfig, tunnel, images, secrets, install one, restore
+== 01:32:16 UTC g0.sh bootstrap
+GPU 0: NVIDIA A100-SXM4-80GB (UUID: GPU-fb33da42-fc44-6805-6a6f-5374f4cdb83b)
+GPU 1: NVIDIA A100-SXM4-80GB (UUID: GPU-a4371e81-f664-5ba2-e761-cf17bbeef24c)
+GPU 2: NVIDIA A100-SXM4-80GB (UUID: GPU-ef8e4583-ca75-b0e3-cf81-5940085bffac)
+GPU 3: NVIDIA A100-SXM4-80GB (UUID: GPU-6302bb1a-e7e3-f258-ac1f-f197f2831402)
+GPU 4: NVIDIA A100-SXM4-80GB (UUID: GPU-e4e5826f-2161-5e0a-1384-25c343ba6035)
+GPU 5: NVIDIA A100-SXM4-80GB (UUID: GPU-c7d90c0c-b831-e6d8-026e-15475141ca44)
+GPU 6: NVIDIA A100-SXM4-80GB (UUID: GPU-5aac4445-a239-ddff-f899-6967152b7f62)
+GPU 7: NVIDIA A100-SXM4-80GB (UUID: GPU-0512bf6f-d947-eeca-5a1b-843c39d26810)
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+[INFO]  Using v1.36.4+k3s1 as release
+[INFO]  Downloading hash https://github.com/k3s-io/k3s/releases/download/v1.36.4%2Bk3s1/sha256sum-amd64.txt
+[INFO]  Downloading binary https://github.com/k3s-io/k3s/releases/download/v1.36.4%2Bk3s1/k3s
+[INFO]  Verifying binary download
+[INFO]  Installing k3s to /usr/local/bin/k3s
+[INFO]  Skipping installation of SELinux RPM
+[INFO]  Creating /usr/local/bin/kubectl symlink to k3s
+[INFO]  Creating /usr/local/bin/crictl symlink to k3s
+[INFO]  Skipping /usr/local/bin/ctr symlink to k3s, command exists in PATH at /usr/bin/ctr
+[INFO]  Creating killall script /usr/local/bin/k3s-killall.sh
+[INFO]  Creating uninstall script /usr/local/bin/k3s-uninstall.sh
+[INFO]  env: Creating environment file /etc/systemd/system/k3s.service.env
+[INFO]  systemd: Creating service file /etc/systemd/system/k3s.service
+[INFO]  systemd: Enabling k3s unit
+Created symlink /etc/systemd/system/multi-user.target.wants/k3s.service → /etc/systemd/system/k3s.service.
+[INFO]  systemd: Starting k3s
+NAME              STATUS     ROLES    AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION             CONTAINER-RUNTIME
+150-136-219-205   NotReady   <none>   0s    v1.36.4+k3s1   10.19.84.81   <none>        Ubuntu 22.04.5 LTS   6.8.0-60-generic (amd64)   containerd://2.3.4-k3s1.36
+join token: /var/lib/rancher/k3s/server/node-token
+== 01:33:07 UTC g0.sh kubeconfig
+export KUBECONFIG=/Users/chetananand/learning/ai_inference_eng/learning-companion/cluster/state/kubeconfig
+== 01:33:08 UTC g0.sh tunnel
+NAME              STATUS   ROLES           AGE   VERSION        INTERNAL-IP   EXTERNAL-IP       OS-IMAGE             KERNEL-VERSION             CONTAINER-RUNTIME
+150-136-219-205   Ready    control-plane   5s    v1.36.4+k3s1   10.19.84.81   150.136.219.205   Ubuntu 22.04.5 LTS   6.8.0-60-generic (amd64)   containerd://2.3.4-k3s1.36
+== 01:33:12 UTC g0.sh images
+rsync -az --exclude .venv --exclude docs/spec/source ./ ubuntu@150.136.219.205:companion/ -e "ssh -i ~/.ssh/lambda_ai"
+ssh -i ~/.ssh/lambda_ai -o StrictHostKeyChecking=accept-new ubuntu@150.136.219.205 'cd companion && for i in edge guard-injection guard app browser; do \
+	  sudo docker build -q -t companion/$i:dev -f images/$i/Dockerfile . && \
+	  sudo docker save companion/$i:dev | sudo k3s ctr images import - ; done'
+sha256:ab2b634c84e33b29637afc565d86e564ab8b00e2fcce277e156a38662bb3fbd5
+docker.io/companion/edge:dev            	saved	
+application/vnd.oci.image.manifest.v1+json sha256:24c653424b6928f028bd740165aad672798e54515f9216917f323fb129c2e521
+Importing	elapsed: 8.1 s	total:   0.0 B	(0.0 B/s)	
+sha256:8e8dd78535aba047ec75c9d833861db6559d383b01e501f1fd39aa01f4d72882
+docker.io/companion/guard injection:dev 	saved	
+application/vnd.oci.image.manifest.v1+json sha256:43995c5ca98c8692cc2305137fadb3649e8b7bfb4465484e762e7883fbe6fff6
+Importing	elapsed: 164.8s	total:   0.0 B	(0.0 B/s)	
+sha256:c4f7c733bf022d232710484f317ee602aca57a03b64b9d848e07d3c93ddc15db
+docker.io/companion/guard:dev           	saved	
+application/vnd.oci.image.manifest.v1+json sha256:5fb935b11095ed88074a6ec0dbc42f6823b1411d04b2755d0fa2fa97fb48b569
+Importing	elapsed: 10.6s	total:   0.0 B	(0.0 B/s)	
+sha256:71b65c9157b62e2addf0cb4132c80bc718ee98ef5fb4d649359609fb41b44bf3
+docker.io/companion/app:dev             	saved	
+application/vnd.oci.image.manifest.v1+json sha256:800f07b10d2eb6e2b64df960cbe742afaf4351d412f44bba7fff8c0d03dc8814
+Importing	elapsed: 22.7s	total:   0.0 B	(0.0 B/s)	
+sha256:28da5bb47d7fcec48140250cee7679432380ef363b2b8d2e0502c6285c582ab6
+docker.io/companion/browser:dev         	saved	
+application/vnd.oci.image.manifest.v1+json sha256:7b3075ad546f8b78c24b23a7e761a5049427641626de1973306aa052ff295978
+Importing	elapsed: 54.4s	total:   0.0 B	(0.0 B/s)	
+== 01:41:15 UTC g0.sh secrets
+namespace/companion created
+secret/companion-secrets created
+namespace/guard created
+secret/companion-secrets created
+namespace/data created
+secret/companion-secrets created
+secret/llm-d-hf-token created
+== 01:41:20 UTC g0.sh install one
+wrote cluster/manifests/router/generated/epp-config.yaml
+wrote cluster/manifests/router/generated/router-values.yaml
+wrote cluster/manifests/router/generated/inference-objectives.yaml
+wrote cluster/manifests/router/generated/agent-router.yaml
+Downloading https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+
+== GPU sharing: HAMi on node 2, the NVIDIA device plugin on node 1
+node/150-136-219-205 labeled
+Release "hami" does not exist. Installing it now.
+NAME: hami
+LAST DEPLOYED: Fri Oct  2 01:41:27 2026
+NAMESPACE: kube-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+** Please be patient while the chart is being deployed **
+Resource name: nvidia.com/gpu
+Waiting for deployment "hami-scheduler" rollout to finish: 0 of 1 updated replicas are available...
+deployment "hami-scheduler" successfully rolled out
+daemonset.apps/nvidia-device-plugin-daemonset created
+daemonset.apps/nvidia-device-plugin-daemonset patched
+
+== Gateway API and Inference Extension CRDs
+customresourcedefinition.apiextensions.k8s.io/backendtlspolicies.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/gatewayclasses.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/gateways.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/grpcroutes.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/listenersets.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/referencegrants.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/tlsroutes.gateway.networking.k8s.io created
+validatingadmissionpolicy.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io created
+validatingadmissionpolicybinding.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/inferencepools.inference.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/inferencemodelrewrites.llm-d.ai serverside-applied
+customresourcedefinition.apiextensions.k8s.io/inferenceobjectives.llm-d.ai serverside-applied
+
+== Monitoring: kube-prometheus-stack and the DCGM exporter
+Release "kube-prometheus-stack" does not exist. Installing it now.
+NAME: kube-prometheus-stack
+LAST DEPLOYED: Fri Oct  2 01:42:03 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=kube-prometheus-stack"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace monitoring get secrets kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=kube-prometheus-stack" -oname)
+  kubectl --namespace monitoring port-forward $POD_NAME 3000
+
+Get your grafana admin user password by running:
+
+  kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo
+
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+Release "dcgm-exporter" does not exist. Installing it now.
+NAME: dcgm-exporter
+LAST DEPLOYED: Fri Oct  2 01:42:17 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods -n monitoring -l "app.kubernetes.io/name=dcgm-exporter,app.kubernetes.io/instance=dcgm-exporter" -o jsonpath="{.items[0].metadata.name}")
+  kubectl -n monitoring port-forward $POD_NAME 8080:9400 &
+  echo "Visit http://127.0.0.1:8080/metrics to use your application"
+
+== KEDA
+Release "keda" does not exist. Installing it now.
+NAME: keda
+LAST DEPLOYED: Fri Oct  2 01:42:18 2026
+NAMESPACE: keda
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+:::^.     .::::^:     :::::::::::::::    .:::::::::.                   .^.                  
+7???~   .^7????~.     7??????????????.   :?????????77!^.              .7?7.                 
+7???~  ^7???7~.       ~!!!!!!!!!!!!!!.   :????!!!!7????7~.           .7???7.                
+7???~^7????~.                            :????:    :~7???7.         :7?????7.               
+7???7????!.           ::::::::::::.      :????:      .7???!        :7??77???7.              
+7????????7:           7???????????~      :????:       :????:      :???7?5????7.             
+7????!~????^          !77777777777^      :????:       :????:     ^???7?#P7????7.            
+7???~  ^????~                            :????:      :7???!     ^???7J#@J7?????7.           
+7???~   :7???!.                          :????:   .:~7???!.    ~???7Y&@#7777????7.          
+7???~    .7???7:      !!!!!!!!!!!!!!!    :????7!!77????7^     ~??775@@@GJJYJ?????7.         
+7???~     .!????^     7?????????????7.   :?????????7!~:      !????G@@@@@@@@5??????7:        
+::::.       :::::     :::::::::::::::    .::::::::..        .::::JGGGB@@@&7:::::::::        
+                                                                      ?@@#~                  
+                                                                      P@B^                   
+                                                                    :&G:                    
+                                                                    !5.                     
+                                                                    .Kubernetes Event-driven Autoscaling (KEDA) - Application autoscaling made simple.
+
+Get started by deploying Scaled Objects to your cluster:
+    - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
+    - Samples: https://github.com/kedacore/samples
+
+Get information about the deployed ScaledObjects:
+  kubectl get scaledobject [--namespace <namespace>]
+
+Get details about a deployed ScaledObject:
+  kubectl describe scaledobject <scaled-object-name> [--namespace <namespace>]
+
+Get information about the deployed TriggerAuthentications:
+  kubectl get triggerauthentication [--namespace <namespace>]
+
+Get details about a deployed TriggerAuthentication:
+  kubectl describe triggerauthentication <trigger-authentication-name> [--namespace <namespace>]
+
+Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
+  kubectl get hpa [--all-namespaces] [--namespace <namespace>]
+
+Learn more about KEDA:
+- Documentation: https://keda.sh/
+- Support: https://keda.sh/support/
+- File an issue: https://github.com/kedacore/keda/issues/new/choose
+
+== Envoy Gateway with the AI Gateway values, the token rate-limit add-on (Redis), and the InferencePool add-on
+Pulled: docker.io/envoyproxy/gateway-crds-helm:v1.8.4
+Digest: sha256:838d00b2364e478a81f361dbc1e469054b857569e6ff053329d3b9cbe72a5729
+customresourcedefinition.apiextensions.k8s.io/backends.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/backendtrafficpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/clienttrafficpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/envoyextensionpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/envoypatchpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/envoyproxies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/httproutefilters.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/securitypolicies.gateway.envoyproxy.io serverside-applied
+Release "eg" does not exist. Installing it now.
+Pulled: docker.io/envoyproxy/gateway-helm:v1.8.4
+Digest: sha256:a36944cdc32b7e03ea0d561e1d938ac33011fbbe9744fe6e9973a1c7a2f734f7
+NAME: eg
+LAST DEPLOYED: Fri Oct  2 01:42:22 2026
+NAMESPACE: envoy-gateway-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+**************************************************************************
+*** PLEASE BE PATIENT: Envoy Gateway may take a few minutes to install ***
+**************************************************************************
+
+Envoy Gateway is an open source project for managing Envoy Proxy as a standalone or Kubernetes-based application gateway.
+
+Thank you for installing Envoy Gateway! 🎉
+
+Your release is named: eg. 🎉
+
+Your release is in namespace: envoy-gateway-system. 🎉
+
+To learn more about the release, try:
+
+  $ helm status eg -n envoy-gateway-system
+  $ helm get all eg -n envoy-gateway-system
+
+To have a quickstart of Envoy Gateway, please refer to https://gateway.envoyproxy.io/latest/tasks/quickstart.
+
+To get more details, please visit https://gateway.envoyproxy.io and https://github.com/envoyproxy/gateway.
+Release "envoy-ai-gateway-crd" does not exist. Installing it now.
+Pulled: docker.io/envoyproxy/ai-gateway-crds-helm:v1.1.0
+Digest: sha256:80f47141b734be93e7c0d771da9613288cf1c3528a83cb56f670b149e6c8e3a3
+NAME: envoy-ai-gateway-crd
+LAST DEPLOYED: Fri Oct  2 01:42:31 2026
+NAMESPACE: envoy-ai-gateway-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+Release "envoy-ai-gateway" does not exist. Installing it now.
+Pulled: docker.io/envoyproxy/ai-gateway-helm:v1.1.0
+Digest: sha256:8f39aa53022b67c5dee750ffc6c4182e12aae505e8888e69417544e8d744156a
+NAME: envoy-ai-gateway
+LAST DEPLOYED: Fri Oct  2 01:42:33 2026
+NAMESPACE: envoy-ai-gateway-system
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+
+== Our manifests (overlay: one)
+Warning: resource namespaces/monitoring is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+namespace/monitoring configured
+namespace/companion serverside-applied
+namespace/data serverside-applied
+namespace/guard serverside-applied
+namespace/platform serverside-applied
+serviceaccount/warm-controller serverside-applied
+role.rbac.authorization.k8s.io/warm-controller serverside-applied
+rolebinding.rbac.authorization.k8s.io/warm-controller serverside-applied
+configmap/companion-app serverside-applied
+configmap/test-pages serverside-applied
+configmap/guard-nemo-config serverside-applied
+configmap/companion-dashboards serverside-applied
+service/companion-api serverside-applied
+service/companion-ui serverside-applied
+service/edge serverside-applied
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+service/warm-controller serverside-applied
+service/browser serverside-applied
+service/qdrant serverside-applied
+service/sie-embed serverside-applied
+service/sie-ocr serverside-applied
+service/test-pages serverside-applied
+service/guard serverside-applied
+service/guard-injection serverside-applied
+service/guard-safety serverside-applied
+service/redis serverside-applied
+deployment.apps/companion-api serverside-applied
+deployment.apps/companion-ui serverside-applied
+deployment.apps/edge serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+deployment.apps/warm-controller serverside-applied
+deployment.apps/browser serverside-applied
+deployment.apps/sie-embed serverside-applied
+deployment.apps/sie-ocr serverside-applied
+deployment.apps/test-pages serverside-applied
+deployment.apps/guard serverside-applied
+deployment.apps/guard-injection serverside-applied
+deployment.apps/guard-safety serverside-applied
+deployment.apps/redis serverside-applied
+statefulset.apps/qdrant serverside-applied
+cronjob.batch/ingest serverside-applied
+cronjob.batch/sweep serverside-applied
+aigatewayroute.aigateway.envoyproxy.io/companion serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows serverside-applied
+clienttrafficpolicy.gateway.envoyproxy.io/companion-gateway-buffer serverside-applied
+envoyproxy.gateway.envoyproxy.io/companion-proxy serverside-applied
+gateway.gateway.networking.k8s.io/companion-gateway serverside-applied
+gatewayclass.gateway.networking.k8s.io/companion serverside-applied
+scaledobject.keda.sh/vllm-decode serverside-applied
+scaledobject.keda.sh/vllm-prefill serverside-applied
+inferenceobjective.llm-d.ai/batch serverside-applied
+inferenceobjective.llm-d.ai/interactive serverside-applied
+podmonitor.monitoring.coreos.com/lmcache-server serverside-applied
+podmonitor.monitoring.coreos.com/vllm serverside-applied
+prometheusrule.monitoring.coreos.com/companion-rules serverside-applied
+servicemonitor.monitoring.coreos.com/companion-api serverside-applied
+servicemonitor.monitoring.coreos.com/edge serverside-applied
+servicemonitor.monitoring.coreos.com/warm-controller serverside-applied
+servicemonitor.monitoring.coreos.com/data-plane serverside-applied
+servicemonitor.monitoring.coreos.com/guard-injection serverside-applied
+servicemonitor.monitoring.coreos.com/hami serverside-applied
+networkpolicy.networking.k8s.io/loadgen-gateway-egress serverside-applied
+networkpolicy.networking.k8s.io/web-egress serverside-applied
+networkpolicy.networking.k8s.io/browser-ingress serverside-applied
+networkpolicy.networking.k8s.io/web-egress serverside-applied
+
+== llm-d router (EPP) with our rendered values
+Release "companion-router" does not exist. Installing it now.
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 01:42:35 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+
+== Done. Next: make smoke OVERLAY=one
+Waiting for deployment "edge" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "edge" rollout to finish: 1 of 2 updated replicas are available...
+deployment "edge" successfully rolled out
+one node: the engine pods load the model (next: bash cluster/one.sh wait)
+== 01:42:43 UTC g0.sh restore
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 1 new pods have been updated...
+{"result":true,"status":"ok","time":0.999784137}
+points: 4502
+cluster/g0.sh: line 29: 83312 Terminated: 15          kubectl -n data port-forward svc/qdrant 16333:6333 > /dev/null 2>&1
+== 01:43:27 UTC placed: the GPU plan, before the model loads
+GPU-0512bf6f-d947-eeca-5a1b-843c39d26810: data/sie-embed-66dfff87ff-d2zww, data/sie-ocr-64f688dd75-n9vw5, guard/guard-injection-84865cc688-mptf7, guard/guard-safety-85584cc876-7prw5
+GPU-a4371e81-f664-5ba2-e761-cf17bbeef24c: companion/vllm-prefill-7c9b584f86-rkpkx
+GPU-fb33da42-fc44-6805-6a6f-5374f4cdb83b: companion/vllm-decode-d97df4456-q2w8b
+GPU plan: PASS
+== 01:43:29 UTC wait: the LMCache tier and the engine pods
+Waiting for daemon set "lmcache-server" rollout to finish: 0 of 1 updated pods are available...
+daemon set "lmcache-server" successfully rolled out
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-prefill" successfully rolled out
+Waiting for deployment "vllm-decode" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-decode" successfully rolled out
+== 01:51:25 UTC gpus: the GPU plan and the KV cache memory (a full GPU for vLLM)
+GPU-0512bf6f-d947-eeca-5a1b-843c39d26810: data/sie-embed-66dfff87ff-d2zww, data/sie-ocr-64f688dd75-n9vw5, guard/guard-injection-84865cc688-mptf7, guard/guard-safety-85584cc876-7prw5
+GPU-a4371e81-f664-5ba2-e761-cf17bbeef24c: companion/vllm-prefill-7c9b584f86-rkpkx
+GPU-fb33da42-fc44-6805-6a6f-5374f4cdb83b: companion/vllm-decode-d97df4456-q2w8b
+GPU plan: PASS
+index, uuid, memory.used [MiB], memory.total [MiB]
+0, GPU-fb33da42-fc44-6805-6a6f-5374f4cdb83b, 74865 MiB, 81920 MiB
+1, GPU-a4371e81-f664-5ba2-e761-cf17bbeef24c, 73433 MiB, 81920 MiB
+2, GPU-ef8e4583-ca75-b0e3-cf81-5940085bffac, 4 MiB, 81920 MiB
+3, GPU-6302bb1a-e7e3-f258-ac1f-f197f2831402, 4 MiB, 81920 MiB
+4, GPU-e4e5826f-2161-5e0a-1384-25c343ba6035, 4 MiB, 81920 MiB
+5, GPU-c7d90c0c-b831-e6d8-026e-15475141ca44, 4 MiB, 81920 MiB
+6, GPU-5aac4445-a239-ddff-f899-6967152b7f62, 4 MiB, 81920 MiB
+7, GPU-0512bf6f-d947-eeca-5a1b-843c39d26810, 43358 MiB, 81920 MiB
+vllm-prefill: 36.2 GiB (2026-09-29: 36.34 GiB)
+vllm-decode: 38.73 GiB (2026-09-29: 38.36 GiB)
+KV memory: PASS
+== 01:51:29 UTC smoke
+deployment "vllm-prefill" successfully rolled out
+PASS prefill pod ready
+deployment "vllm-decode" successfully rolled out
+PASS decode pod ready
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/smoke-vllm-prefill-17171, falling back to streaming logs: unable to upgrade connection: container smoke-vllm-prefill-17171 not found in pod smoke-vllm-prefill-17171_companion
+PASS vllm-prefill serves the model
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/smoke-vllm-decode-27166, falling back to streaming logs: unable to upgrade connection: container smoke-vllm-decode-27166 not found in pod smoke-vllm-decode-27166_companion
+PASS vllm-decode serves the model
+PASS edge rejects a bad model with 400
+FAIL full path: {"error":{"message":"no_endpoints","type":"no_endpoints","code":503}}
+== bring-up exit 1
+== 01:51:42 UTC SESSION SCRIPTS ENDED
+== 01:53:31 UTC warm baseline for the A100: WARM_BASELINE_TTFT_4K_S=1.0 (probes 1.17 s and 1.28 s; the H100 value 0.35 s failed the warmup)
+deployment "vllm-prefill" successfully rolled out
+PASS prefill pod ready
+deployment "vllm-decode" successfully rolled out
+PASS decode pod ready
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/smoke-vllm-prefill-6655, falling back to streaming logs: unable to upgrade connection: container smoke-vllm-prefill-6655 not found in pod smoke-vllm-prefill-6655_companion
+PASS vllm-prefill serves the model
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+warning: couldn't attach to pod/smoke-vllm-decode-13924, falling back to streaming logs: unable to upgrade connection: container smoke-vllm-decode-13924 not found in pod smoke-vllm-decode-13924_companion
+PASS vllm-decode serves the model
+PASS edge rejects a bad model with 400
+PASS full path returns a completion
+PASS guard stage 2 rejects an injection
+PASS data/qdrant ready
+PASS data/sie-embed ready
+PASS data/sie-ocr ready
+PASS data/browser ready
+PASS one app turn completes
+overlay one: smoke passed
+saved 7 scrapes in metrics/one-20261002T015416Z
+saved metrics/one-20261002T015416Z
+== 01:54:38 UTC T-1 demo-check (the demo fixes)
+uv run python -m app.demo_check --api http://127.0.0.1:8000
+D-01  PASS  the answer cites the Uber blog  (10.45 s, first token 2.375895479985047)
+D-02  FAIL  2 or more bookmarks cited  (17.17 s, first token 7.118642539018765)
+D-03  FAIL  a claim is updated from a tier-1 live page  (58.94 s, first token 8.130236272001639)
+D-04  PASS  each claim has a verdict, and each new fact is from a tier-1 page  (52.9 s, first token 7.397635512024863)
+D-05  PASS  the claims show verified, with the live citation  (35.83 s, first token 6.946769853995647)
+D-06  PASS  each changed claim shows its rule path  (55.71 s, first token 9.119363748992328)
+D-07  FAIL  the current version comes from tier-1 live docs  (16.28 s, first token None)
+D-08  FAIL  the trace shows the OCR step, and the answer cites the gallery  (17.11 s, first token None)
+D-09  FAIL  the answer lists the new models or says no change, with a checked claim  (53.42 s, first token 13.812331616005395)
+D-10  FAIL  two or more numbers, each with a source  (48.91 s, first token 7.636807940027211)
+D-11  PASS  400 prompt_injection  (0.26 s, first token None)
+D-12  PASS  the page check marked the bad window, and the answer ignores it  (4.61 s, first token None)
+6/12 passed
+make: *** [demo-check] Error 1
+== 02:00:50 UTC T-1 done. Next: the owner records the demo in the UI (http://localhost:8501), then: thu-one.sh experiments
+== 02:00:50 UTC PHASE ENDED (demo-check)
+== 02:10:01 UTC the owner recorded D-08 (two takes), D-03, D-09. Start: experiments
+minutes before the first stop rule: 223 (this phase: 110, the capture: 45)
+== 02:10:02 UTC T-2 E3 with 32 decode sequences, and E7 again
+== 02:10:02 UTC W-1 E3 arm C with 32 decode sequences
+== router (0 overrides)
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+Release "companion-router" has been upgraded. Happy Helming!
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 02:10:05 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 2
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+Warning: resource inferenceobjectives/interactive is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+inferenceobjective.llm-d.ai/interactive configured
+Warning: resource inferenceobjectives/batch is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+inferenceobjective.llm-d.ai/batch configured
+Warning: resource aigatewayroutes/companion is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+aigatewayroute.aigateway.envoyproxy.io/companion configured
+Warning: resource backendtrafficpolicies/tenant-windows is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows configured
+No resources found in companion namespace.
+== engine (2 args, overlay one)
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+deployment "vllm-prefill" successfully rolled out
+Waiting for deployment "vllm-decode" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-decode" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-decode" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-decode" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-decode" successfully rolled out
+== warm controller: WARM_MODE=warmup WARM_RAMP_MODE=ramp
+deployment.apps/warm-controller env updated
+Waiting for deployment "warm-controller" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "warm-controller" rollout to finish: 1 old replicas are pending termination...
+deployment "warm-controller" successfully rolled out
+== the full path answers: 3 calls in a row with 200
+variant e3-c32 applied
+job.batch/kv-lg-e3-c32-50 created
+job.batch/lg-e3-c32-50 created
+job lg-e3-c32-50 complete
+{"requests": 991, "ok": 824, "split": 82, "same_pod": 742, "split_ratio": 0.0995, "tokens_prefilled_remote": 75277}
+saved 43 queries to metrics/e3-c32-50/prom
+saved metrics/e3-c32-50
+job.batch/kv-lg-e3-c32-100 created
+job.batch/lg-e3-c32-100 created
+== 02:31:47 UTC PHASE ENDED (experiments)
+== 02:31:49 UTC STOPPED e3-c32-100 (rate 0.9 is deep overload on the A100: at 0.45, TTFT p50 16 s). New levels for the A100: 0.15, 0.30, 0.45 scripts/s. Fault 35: the stall rule took the prefill pod out at 85-278 s of e3-c32-50.
+== 02:32:11 UTC START thu-a100-e3.sh
+== 02:32:11 UTC E3 layout C, 32 decode sequences (the variant e3-c32 runs now): 0.15 and 0.30 scripts each second
+job.batch/kv-lg-e3-c32-r015 created
+job.batch/lg-e3-c32-r015 created
+job lg-e3-c32-r015 complete
+{"requests": 754, "ok": 691, "split": 83, "same_pod": 608, "split_ratio": 0.1201, "tokens_prefilled_remote": 14076}
+saved 43 queries to metrics/e3-c32-r015/prom
+saved metrics/e3-c32-r015
+job.batch/kv-lg-e3-c32-r030 created
+job.batch/lg-e3-c32-r030 created
+job lg-e3-c32-r030 complete
+{"requests": 942, "ok": 922, "split": 103, "same_pod": 819, "split_ratio": 0.1117, "tokens_prefilled_remote": 24551}
+saved 43 queries to metrics/e3-c32-r030/prom
+saved metrics/e3-c32-r030
+== 02:56:01 UTC E3 layout A, 32 sequences on each pod: 0.15, 0.30, and 0.45 scripts each second
+== router (2 overrides)
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+Release "companion-router" has been upgraded. Happy Helming!
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 02:56:04 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 3
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+inferenceobjective.llm-d.ai/interactive unchanged
+inferenceobjective.llm-d.ai/batch unchanged
+aigatewayroute.aigateway.envoyproxy.io/companion configured
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows configured
+No resources found in companion namespace.
+== engine (6 args, overlay one)
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-prefill" successfully rolled out
+Waiting for deployment "vllm-decode" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-decode" successfully rolled out
+== warm controller: WARM_MODE=warmup WARM_RAMP_MODE=ramp
+deployment "warm-controller" successfully rolled out
+== the full path answers: 3 calls in a row with 200
+variant e3-a32 applied
+job.batch/kv-lg-e3-a32-r015 created
+job.batch/lg-e3-a32-r015 created
+job lg-e3-a32-r015 complete
+{"requests": 652, "ok": 645, "split": 0, "same_pod": 645, "split_ratio": 0.0, "tokens_prefilled_remote": 0}
+saved 43 queries to metrics/e3-a32-r015/prom
+saved metrics/e3-a32-r015
+job.batch/kv-lg-e3-a32-r030 created
+job.batch/lg-e3-a32-r030 created
+job lg-e3-a32-r030 complete
+{"requests": 1352, "ok": 1352, "split": 0, "same_pod": 1352, "split_ratio": 0.0, "tokens_prefilled_remote": 0}
+saved 43 queries to metrics/e3-a32-r030/prom
+saved metrics/e3-a32-r030
+job.batch/kv-lg-e3-a32-r045 created
+job.batch/lg-e3-a32-r045 created
+job lg-e3-a32-r045 complete
+{"requests": 1534, "ok": 1491, "split": 0, "same_pod": 1491, "split_ratio": 0.0, "tokens_prefilled_remote": 0}
+saved 43 queries to metrics/e3-a32-r045/prom
+saved metrics/e3-a32-r045
+== 03:37:23 UTC E7 again, precise index
+== router (2 overrides)
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+Release "companion-router" has been upgraded. Happy Helming!
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 03:37:27 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+inferenceobjective.llm-d.ai/interactive unchanged
+inferenceobjective.llm-d.ai/batch unchanged
+aigatewayroute.aigateway.envoyproxy.io/companion configured
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows configured
+No resources found in companion namespace.
+== engine (8 args, overlay one)
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-prefill" successfully rolled out
+Waiting for deployment "vllm-decode" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-decode" successfully rolled out
+== warm controller: WARM_MODE=warmup WARM_RAMP_MODE=ramp
+deployment "warm-controller" successfully rolled out
+== the full path answers: 3 calls in a row with 200
+variant e7b-precise applied
+job.batch/kv-lg-e7b-precise created
+job.batch/lg-e7b-precise created
+200
+job lg-e7b-precise complete
+{"requests": 515, "ok": 512, "split": 0, "same_pod": 512, "split_ratio": 0.0, "tokens_prefilled_remote": 0}
+saved 43 queries to metrics/e7b-precise/prom
+saved metrics/e7b-precise
+{
+ "pod": "10.42.0.78",
+ "after": "2026-10-02T03:45:00+00:00",
+ "warm_sessions": 15,
+ "eligible": 151,
+ "split": 0,
+ "ghosts": 15,
+ "ghost_ratio": 0.0993,
+ "ghost_first_byte_ms_mean": 58.7,
+ "ghost_input_tokens": 56610
+}
+== 03:48:16 UTC E7 again, approx index
+== router (4 overrides)
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+Release "companion-router" has been upgraded. Happy Helming!
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 03:48:18 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 5
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+inferenceobjective.llm-d.ai/interactive unchanged
+inferenceobjective.llm-d.ai/batch unchanged
+aigatewayroute.aigateway.envoyproxy.io/companion configured
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows configured
+No resources found in companion namespace.
+== engine (8 args, overlay one)
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+deployment "vllm-prefill" successfully rolled out
+deployment "vllm-decode" successfully rolled out
+== warm controller: WARM_MODE=warmup WARM_RAMP_MODE=ramp
+deployment "warm-controller" successfully rolled out
+== the full path answers: 3 calls in a row with 200
+variant e7b-approx applied
+job.batch/kv-lg-e7b-approx created
+job.batch/lg-e7b-approx created
+200
+job lg-e7b-approx complete
+{"requests": 569, "ok": 558, "split": 0, "same_pod": 558, "split_ratio": 0.0, "tokens_prefilled_remote": 0}
+saved 43 queries to metrics/e7b-approx/prom
+saved metrics/e7b-approx
+{
+ "pod": "10.42.0.78",
+ "after": "2026-10-02T03:51:28+00:00",
+ "warm_sessions": 11,
+ "eligible": 136,
+ "split": 0,
+ "ghosts": 0,
+ "ghost_ratio": 0.0,
+ "ghost_first_byte_ms_mean": null,
+ "ghost_input_tokens": 0
+}
+== 03:54:43 UTC back to the base
+== router (0 overrides)
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+Release "companion-router" has been upgraded. Happy Helming!
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 03:54:45 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 6
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+inferenceobjective.llm-d.ai/interactive unchanged
+inferenceobjective.llm-d.ai/batch unchanged
+aigatewayroute.aigateway.envoyproxy.io/companion configured
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows configured
+No resources found in companion namespace.
+== engine (0 args, overlay one)
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-prefill" successfully rolled out
+Waiting for deployment "vllm-decode" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-decode" successfully rolled out
+== warm controller: WARM_MODE=warmup WARM_RAMP_MODE=ramp
+deployment "warm-controller" successfully rolled out
+== the full path answers: 3 calls in a row with 200
+variant baseline applied
+== 03:58:45 UTC A100 must-do runs done
+== 03:58:45 UTC PHASE ENDED (A100 E3 and E7)
+== 03:58:49 UTC START the E7 approx rerun (fault 36)
+== 03:58:49 UTC E7 again, approx index, with a checked reset
+== router (4 overrides)
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+Release "companion-router" has been upgraded. Happy Helming!
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 03:58:53 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 7
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+inferenceobjective.llm-d.ai/interactive unchanged
+inferenceobjective.llm-d.ai/batch unchanged
+aigatewayroute.aigateway.envoyproxy.io/companion configured
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows configured
+No resources found in companion namespace.
+== engine (8 args, overlay one)
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-prefill" successfully rolled out
+Waiting for deployment "vllm-decode" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-decode" successfully rolled out
+== warm controller: WARM_MODE=warmup WARM_RAMP_MODE=ramp
+deployment "warm-controller" successfully rolled out
+== the full path answers: 3 calls in a row with 200
+variant e7b-approx2 applied
+job.batch/kv-lg-e7b-approx2 created
+job.batch/lg-e7b-approx2 created
+job lg-e7b-approx2 complete
+{"requests": 525, "ok": 525, "split": 0, "same_pod": 525, "split_ratio": 0.0, "tokens_prefilled_remote": 0}
+saved 43 queries to metrics/e7b-approx2/prom
+saved metrics/e7b-approx2
+{
+ "pod": "10.42.0.88",
+ "after": "2026-10-02T04:05:09+00:00",
+ "warm_sessions": 10,
+ "eligible": 111,
+ "split": 0,
+ "ghosts": 10,
+ "ghost_ratio": 0.0901,
+ "ghost_first_byte_ms_mean": 29.0,
+ "ghost_input_tokens": 38022
+}
+reset result: {"success":true}
+== 04:08:25 UTC back to the base
+== router (0 overrides)
+Pulled: ghcr.io/llm-d/charts/llm-d-router-gateway:v0.11.0
+Digest: sha256:63a79a842974691be73d44918c7086bcc52d6fee546ff39113517a23c03eeab0
+Release "companion-router" has been upgraded. Happy Helming!
+NAME: companion-router
+LAST DEPLOYED: Fri Oct  2 04:08:28 2026
+NAMESPACE: companion
+STATUS: deployed
+REVISION: 8
+TEST SUITE: None
+NOTES:
+llm-d-router-gateway companion-router deployed.
+inferenceobjective.llm-d.ai/interactive unchanged
+inferenceobjective.llm-d.ai/batch unchanged
+aigatewayroute.aigateway.envoyproxy.io/companion configured
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows configured
+No resources found in companion namespace.
+== engine (0 args, overlay one)
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vllm-prefill" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-prefill" successfully rolled out
+Waiting for deployment "vllm-decode" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vllm-decode" successfully rolled out
+== warm controller: WARM_MODE=warmup WARM_RAMP_MODE=ramp
+deployment "warm-controller" successfully rolled out
+== the full path answers: 3 calls in a row with 200
+variant baseline applied
+== 04:12:28 UTC E7 approx rerun done
+== 04:12:28 UTC PHASE ENDED (E7 approx rerun)
+== 04:12:29 UTC the owner: go (Grafana screen recording on). START E9
+minutes before the first stop rule: 101 (this phase: 45, the capture: 45)
+== 04:12:30 UTC T-3 E9 decode-heavy load: only the decode pool may grow
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/vllm-decode serverside-applied
+scaledobject.keda.sh/vllm-prefill serverside-applied
+NAME           SCALETARGETKIND      SCALETARGETNAME   MIN   MAX   READY   ACTIVE   FALLBACK   PAUSED   TRIGGERS     AUTHENTICATIONS   AGE
+vllm-decode    apps/v1.Deployment   vllm-decode       1     2     True    True     False      False    prometheus                     149m
+vllm-prefill   apps/v1.Deployment   vllm-prefill      1     2     True    True     False      False    prometheus                     149m
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/vllm-prefill annotated
+deployment.apps/vllm-prefill condition met
+job.batch/kv-lg-e9-decode created
+job.batch/lg-e9-decode created
+job lg-e9-decode complete
+{"requests": 200, "ok": 192, "split": 4, "same_pod": 188, "split_ratio": 0.0208, "tokens_prefilled_remote": 522}
+saved 43 queries to metrics/e9-decode/prom
+saved metrics/e9-decode
+== 04:27:28 UTC T-4 E9 prefill-heavy load: only the prefill pool may grow
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/vllm-decode annotated
+deployment.apps/vllm-decode condition met
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/vllm-prefill annotated
+job.batch/kv-lg-e9-prefill created
+job.batch/lg-e9-prefill created
+== 04:42:27 UTC E9 on the A100: the planner prefill capacity 10500 (H100, E1) -> 1800 tokens/s (the saturated uncached rate of one A100 prefill pod, measured in e9-prefill). The H100 value gave 1 pod.
+== 05:04:24 UTC STOP e9-prefill (two prefill pods served; the capture must start before 22:08 PDT)
+job lg-e9-prefill FAILED: see metrics/e9-prefill/job.log
+error: timed out waiting for the condition
+{"requests": 290, "ok": 268, "split": 224, "same_pod": 44, "split_ratio": 0.8358, "tokens_prefilled_remote": 1645694}
+saved 43 queries to metrics/e9-prefill/prom
+saved metrics/e9-prefill
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/vllm-decode annotated
+== 05:05:39 UTC E9 done. Next: thu-one.sh capture
+== 05:05:39 UTC PHASE ENDED (E9)
+== 05:05:51 UTC START capture
+== 05:05:52 UTC T-5 the evidence before the terminate: report, backup with the Prometheus snapshot, Grafana images
+runs with data:  e3-c32-50 e7b-precise e3-c32-r015 e3-c32-r030 e3-a32-r015 e3-a32-r030 e3-a32-r045 e7b-approx2 e9-decode e9-prefill
+Found 2 pods, using pod/vllm-prefill-7c9b584f86-ddxrq
+saved 9 scrapes in metrics/one-20261002T050552Z
+saved metrics/one-20261002T050552Z
+cluster/g0.sh: line 29: 92468 Terminated: 15          kubectl -n data port-forward svc/qdrant 16333:6333 > /dev/null 2>&1
+cluster/state/backups:
+total 559856
+drwxr-xr-x@  9 chetananand  staff       288 Oct  1 22:06 .
+drwxr-xr-x@ 45 chetananand  staff      1440 Oct  1 18:31 ..
+-rw-r--r--@  1 chetananand  staff  67500032 Oct  1 22:06 bookmarks-1502595341432150-2026-10-02-05-06-16.snapshot
+-rw-r--r--@  1 chetananand  staff  67500032 Sep 29 19:21 bookmarks-3417370601256430-2026-09-30-02-21-18.snapshot
+-rw-r--r--@  1 chetananand  staff  67500032 Sep 29 19:38 bookmarks-3417370601256430-2026-09-30-02-38-52.snapshot
+-rw-r--r--@  1 chetananand  staff  67491840 Sep 28 19:14 bookmarks-4464863990847224-2026-09-29-02-14-25.snapshot
+drwxr-xr-x@  4 chetananand  staff       128 Sep 29 10:42 capture
+drwxr-sr-x@  7 chetananand  staff       224 Sep 29 19:39 prometheus-20260930T023859Z-1382405d0dd86be5
+drwxr-sr-x@  5 chetananand  staff       160 Oct  1 22:06 prometheus-20261002T050626Z-615b7333825ec382
+
+cluster/state/backups/capture:
+total 115680
+drwxr-xr-x@ 4 chetananand  staff       128 Sep 29 10:42 .
+drwxr-xr-x@ 9 chetananand  staff       288 Oct  1 22:06 ..
+-rw-r--r--@ 1 chetananand  staff  34894974 Oct  1 22:06 app-calls.jsonl
+-rw-r--r--@ 1 chetananand  staff  24327525 Sep 29 10:57 frozen.jsonl
+e3-c32-50: 50/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Page check: removed windows 
+e7b-precise: 44/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Router / P/D decisions 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+e3-c32-r015: 46/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Page check: removed windows 
+e3-c32-r030: 45/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+e3-a32-r015: 44/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Router / P/D decisions 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+e3-a32-r030: 44/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Router / P/D decisions 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+e3-a32-r045: 44/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Router / P/D decisions 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+e7b-approx2: 44/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Router / P/D decisions 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+e9-decode: 45/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+e9-prefill: 45/56 panels have data
+  NO DATA  Gateway and admission / Tenant rate-limit rejects (Agent Router, edge view) 
+  NO DATA  Hop store / NIXL transfers 
+  NO DATA  Hop store / NIXL transfer time p95 
+  NO DATA  Hop store / Failed and expired transfers 
+  NO DATA  Hop store / NIXL bytes each second 
+  NO DATA  App / Turn latency p95 by phase (SLO-3, SLO-4) 
+  NO DATA  App / Tool latency p95 
+  NO DATA  App / Tool errors by reason 
+  NO DATA  App / Verdicts by status and rule path 
+  NO DATA  App / Answer gate decisions 
+  NO DATA  App / Page check: removed windows 
+== 05:09:08 UTC capture done. Next: terminate companion-one, the ledger, and the commit
+== 05:09:08 UTC PHASE ENDED (capture)
+== 2026-10-02 20:58:54 UTC CORRECTION to fault 35 (line 515): the stall rule did not take the prefill pod out. The prefill engine process stopped: the memory of GPU 1 fell to 952 MiB at 122 s of e3-c32-50 (02:18:06 UTC), and a new engine loaded the model. The metrics of the pod have no samples from 87 s to 262 s, and the 60 no_endpoints came from 86 s to 279 s. A stalled pod stays out until it goes not-ready, and the warm controller warmed the pod again at 02:20:44 UTC. The data agrees with a restart by the liveness probe (timeout 1 s). The pod events were not saved. See DESIGN.md, faults.

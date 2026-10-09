@@ -1,0 +1,111 @@
+# Guard stage 2 (ADR-011). Models on node 2 GPU 1 through HAMi slices; NeMo server on the CPU.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: guard-safety, namespace: guard}
+spec:
+  strategy: {type: Recreate}   # a HAMi GPU slice: a rolling update waits for GPU memory (G0)
+  replicas: 1
+  selector: {matchLabels: {app: guard-safety}}
+  template:
+    metadata: {labels: {app: guard-safety}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: vllm
+          image: VLLM_IMAGE              # fallback GUARD_SAFETY_VLLM_FALLBACK_IMAGE (v0.20.2), see ADR-011
+          command: ["vllm", "serve", "nvidia/Nemotron-3.5-Content-Safety"]
+          args: [--port=8000, --max-model-len=8192, --enable-prefix-caching, --gpu-memory-utilization=0.85,
+                 '--limit-mm-per-prompt={"image":1}']
+          env:
+            - {name: HF_HOME, value: /models/hf}
+          ports: [{name: http, containerPort: 8000}]
+          resources:
+            limits: {nvidia.com/gpu: "1", nvidia.com/gpumem: "16000", memory: 24Gi}
+            requests: {cpu: "2", memory: 12Gi}
+          readinessProbe: {httpGet: {path: /v1/models, port: http}, periodSeconds: 5}
+          # Session 1: the first check on a cold model took 0.99 s, and the edge waits 1.0 s (fail closed).
+          # So the pod is ready only after one real completion.
+          startupProbe:
+            exec:
+              command: [python3, -c, "import json, urllib.request as u; u.urlopen(u.Request('http://127.0.0.1:8000/v1/chat/completions', json.dumps({'model': 'nvidia/Nemotron-3.5-Content-Safety', 'messages': [{'role': 'user', 'content': 'hello'}], 'max_tokens': 1}).encode(), {'Content-Type': 'application/json'}), timeout=30)"]
+            periodSeconds: 10
+            timeoutSeconds: 35
+            failureThreshold: 90
+          volumeMounts: [{name: models, mountPath: /models}]
+      volumes:
+        - {name: models, hostPath: {path: /lambda/nfs/companion-state/models, type: DirectoryOrCreate}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: guard-safety, namespace: guard}
+spec:
+  selector: {app: guard-safety}
+  ports: [{name: http, port: 8000, targetPort: 8000}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: guard-injection, namespace: guard}
+spec:
+  strategy: {type: Recreate}   # a HAMi GPU slice: a rolling update waits for GPU memory (G0)
+  replicas: 1
+  selector: {matchLabels: {app: guard-injection}}
+  template:
+    metadata: {labels: {app: guard-injection}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: classifier
+          image: companion/guard-injection:dev
+          imagePullPolicy: Never
+          command: ["uvicorn", "--factory", "control.guard.injection_server:app", "--host", "0.0.0.0", "--port", "8000"]
+          env:
+            - {name: GUARD_INJECTION_MODEL, value: GUARD_INJECTION_MODEL}
+            - {name: GUARD_INJECTION_THRESHOLD, value: "0.5"}
+            - {name: HF_TOKEN, valueFrom: {secretKeyRef: {name: companion-secrets, key: HF_TOKEN}}}
+            - {name: HF_HOME, value: /models/hf}
+          ports: [{name: http, containerPort: 8000}]
+          resources:
+            limits: {nvidia.com/gpu: "1", nvidia.com/gpumem: "4000", memory: 6Gi}  # G0: 2000 gave CUDA OOM at batch 16
+            requests: {cpu: "2", memory: 3Gi}
+          readinessProbe: {httpGet: {path: /readyz, port: http}, periodSeconds: 10, timeoutSeconds: 60}
+          volumeMounts: [{name: models, mountPath: /models}]
+      volumes:
+        - {name: models, hostPath: {path: /lambda/nfs/companion-state/models, type: DirectoryOrCreate}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: guard-injection, namespace: guard, labels: {app: guard-injection}}
+spec:
+  selector: {app: guard-injection}
+  ports: [{name: http, port: 8000, targetPort: 8000}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: guard, namespace: guard}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: guard}}
+  template:
+    metadata: {labels: {app: guard}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: nemo
+          image: companion/guard:dev       # nemoguardrails==NEMO_GUARDRAILS_VERSION
+          imagePullPolicy: Never
+          # VERIFY the CLI flags at G0.
+          command: ["nemoguardrails", "server", "--config=/config", "--port=8000", "--default-config-id=companion"]
+          ports: [{name: http, containerPort: 8000}]
+          readinessProbe: {httpGet: {path: /v1/health, port: http}, periodSeconds: 5}
+          livenessProbe: {httpGet: {path: /healthz, port: http}, periodSeconds: 10}
+          resources: {requests: {cpu: "1", memory: 1Gi}, limits: {memory: 2Gi}}
+          volumeMounts: [{name: config, mountPath: /config/companion}]
+      volumes:
+        - {name: config, configMap: {name: guard-nemo-config}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: guard, namespace: guard}
+spec:
+  selector: {app: guard}
+  ports: [{name: http, port: 8000, targetPort: 8000}]

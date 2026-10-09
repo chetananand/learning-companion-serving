@@ -1,0 +1,89 @@
+{
+  "calls": 2271,
+  "wall_s": 621.1,
+  "by_class": {
+    "batch": {
+      "calls": 638,
+      "ok": 589,
+      "aborted": 0,
+      "sheds": {
+        "503 timeout_queue": 21,
+        "429 tenant_tokens": 28
+      },
+      "overflow": 0,
+      "ttft_p50_s": null,
+      "ttft_p95_s": null,
+      "latency_p50_s": 3.6124,
+      "latency_p95_s": 22.3842,
+      "output_tokens": 42429,
+      "prompt_tokens": 1438369
+    },
+    "interactive": {
+      "calls": 1633,
+      "ok": 1624,
+      "aborted": 0,
+      "sheds": {
+        "503 no_endpoints": 3,
+        "599 RemoteProtocolError": 2,
+        "503 timeout_queue": 4
+      },
+      "overflow": 0,
+      "ttft_p50_s": 1.0202,
+      "ttft_p95_s": 13.7853,
+      "latency_p50_s": 4.4384,
+      "latency_p95_s": 20.7865,
+      "output_tokens": 167639,
+      "prompt_tokens": 5514693
+    }
+  },
+  "t_start": 1790729394.3271897,
+  "config": {
+    "target": "http://edge.companion.svc.cluster.local:8080/v1",
+    "mix": "m4",
+    "rate": 0.63,
+    "duration_s": 600.0,
+    "out_dir": "/data/runs/e8-a-jump",
+    "ramp_per_min": 0.0,
+    "abort_p": 0.0,
+    "tenants": [
+      "load-1",
+      "load-2",
+      "load-3",
+      "load-4",
+      "load-5",
+      "load-6",
+      "load-7",
+      "load-8",
+      "load-9",
+      "load-10",
+      "load-11",
+      "load-12",
+      "load-13",
+      "load-14",
+      "load-15",
+      "load-16",
+      "load-17",
+      "load-18",
+      "load-19",
+      "load-20",
+      "load-21",
+      "load-22",
+      "load-23",
+      "load-24",
+      "load-25",
+      "load-26",
+      "load-27",
+      "load-28",
+      "load-29",
+      "load-30",
+      "load-31",
+      "load-32"
+    ],
+    "batch_tenant": "sweep",
+    "seed": 7,
+    "max_in_flight": 512,
+    "allow_overflow": true,
+    "drain_s": 120.0,
+    "extra": []
+  }
+}

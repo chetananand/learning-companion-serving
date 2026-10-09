@@ -1,0 +1,22 @@
+{
+ "evicted_gpu_blocks": 15,
+ "by_endpoint": {
+  "tcp://10.42.1.41:5556": {
+   "batches": 3,
+   "stored": {
+    "GPU": 11
+   },
+   "removed": {
+    "GPU": 15
+   },
+   "cleared": 0,
+   "missed_batches": 0
+  }
+ },
+ "per_second": {
+  "1790722951": {
+   "stored_GPU": 11,
+   "removed_GPU": 15
+  }
+ }
+}

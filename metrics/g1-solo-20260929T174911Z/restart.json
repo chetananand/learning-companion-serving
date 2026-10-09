@@ -1,0 +1,8 @@
+{
+ "pass": true,
+ "ttft_s": 0.20109149800009618,
+ "connector_delta": {
+  "vllm:external_prefix_cache_queries_total{engine=\"0\",model_name=\"companion\"}": 7735.0,
+  "vllm:external_prefix_cache_hits_total{engine=\"0\",model_name=\"companion\"}": 7680.0
+ }
+}

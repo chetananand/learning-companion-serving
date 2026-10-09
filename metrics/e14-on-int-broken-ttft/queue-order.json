@@ -1,0 +1,301 @@
+{
+ "long_class": "interactive",
+ "rounds": [
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 413,
+    "reason": "{\"error\":{\"message\":\"30965 prompt tokens is above 30000\",\"type\":\"prompt_too_long\",\"code\":413}}",
+    "end_s": 0.1275
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0644,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.6553
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0648,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.8047
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0651,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.8539
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0653,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.7552
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0655,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.052
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 413,
+    "reason": "{\"error\":{\"message\":\"30962 prompt tokens is above 30000\",\"type\":\"prompt_too_long\",\"code\":413}}",
+    "end_s": 0.0568
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0016,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.5804
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0019,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.729
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0022,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.6798
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0024,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.5967
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0026,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0589
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 413,
+    "reason": "{\"error\":{\"message\":\"30965 prompt tokens is above 30000\",\"type\":\"prompt_too_long\",\"code\":413}}",
+    "end_s": 0.0568
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0017,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.5794
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.002,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.728
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0023,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.6788
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0025,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.5951
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0027,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0576
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 413,
+    "reason": "{\"error\":{\"message\":\"30963 prompt tokens is above 30000\",\"type\":\"prompt_too_long\",\"code\":413}}",
+    "end_s": 0.0568
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0017,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.5843
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.002,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.7327
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0023,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.6829
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0026,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.6006
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0028,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0631
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 413,
+    "reason": "{\"error\":{\"message\":\"30963 prompt tokens is above 30000\",\"type\":\"prompt_too_long\",\"code\":413}}",
+    "end_s": 0.0558
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0016,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.5806
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0018,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.7295
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0021,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.6796
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0024,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.5968
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0026,
+    "ttft_s": null,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0585
+   }
+  ]
+ ],
+ "summary": {
+  "retrieve_32k": {
+   "n": 0,
+   "ttft_median_s": null,
+   "end_median_s": null
+  },
+  "agent_step": {
+   "n": 0,
+   "ttft_median_s": null,
+   "end_median_s": null
+  },
+  "first_token_went_to": {
+   "retrieve_32k": 0,
+   "agent_step": 0
+  }
+ }
+}

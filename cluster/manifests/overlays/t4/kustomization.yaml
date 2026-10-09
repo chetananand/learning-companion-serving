@@ -1,0 +1,11 @@
+# T4: node 1 = 4 x H100 SXM for the scale session (E9). KEDA may add one pod for each pool.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: [../t2]
+patches:
+  - target: {kind: ScaledObject, name: vllm-prefill}
+    patch: |-
+      - {op: replace, path: /spec/maxReplicaCount, value: 2}
+  - target: {kind: ScaledObject, name: vllm-decode}
+    patch: |-
+      - {op: replace, path: /spec/maxReplicaCount, value: 2}

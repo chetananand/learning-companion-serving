@@ -1,0 +1,77 @@
+# SIE (ADR-007): two servers on HAMi slices of node 2 GPU 0. SIE images are bundle-specific:
+# the `default` image serves the embed and rerank models, the `sglang-vision-extract` image serves OCR.
+# Node 2 GPU memory (HAMi): sie-embed 12,000 + sie-ocr 20,000 + guard 16,000 + 4,000 = 52,000 MiB. It fits
+# 2 x A6000 (2 x 49,140) and 1 x H100 (81,559). G0: the OCR engine died (-9) in 10,000 MiB and 16 GiB of RAM.
+# VERIFY at G0: the `sie-server serve` command in the image, the /metrics path, and the slice sizes.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: sie-embed, namespace: data}
+spec:
+  strategy: {type: Recreate}   # a HAMi GPU slice: a rolling update waits for GPU memory (G0)
+  replicas: 1
+  selector: {matchLabels: {app: sie-embed}}
+  template:
+    metadata: {labels: {app: sie-embed, app.kubernetes.io/part-of: companion-sie}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: sie
+          image: SIE_EMBED_IMAGE
+          command: [sie-server, serve, --port, "8080", --json-logs,
+                    --models, "BAAI/bge-m3,Qwen/Qwen3-Reranker-4B", --preload, "BAAI/bge-m3,Qwen/Qwen3-Reranker-4B"]
+          env:
+            - {name: HF_HOME, value: /models/hf}
+            - {name: HF_TOKEN, valueFrom: {secretKeyRef: {name: companion-secrets, key: HF_TOKEN}}}
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /readyz, port: http}, periodSeconds: 10, failureThreshold: 60}
+          resources:
+            limits: {nvidia.com/gpu: "1", nvidia.com/gpumem: "12000", memory: 16Gi}
+            requests: {cpu: "2", memory: 8Gi}
+          volumeMounts: [{name: models, mountPath: /models}]
+      volumes:
+        - {name: models, hostPath: {path: /lambda/nfs/companion-state/models, type: DirectoryOrCreate}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: sie-ocr, namespace: data}
+spec:
+  strategy: {type: Recreate}   # a HAMi GPU slice: a rolling update waits for GPU memory (G0)
+  replicas: 1
+  selector: {matchLabels: {app: sie-ocr}}
+  template:
+    metadata: {labels: {app: sie-ocr, app.kubernetes.io/part-of: companion-sie}}
+    spec:
+      nodeSelector: {companion.io/node: control}
+      containers:
+        - name: sie
+          image: SIE_OCR_IMAGE
+          command: [sie-server, serve, --port, "8080", --json-logs,
+                    --models, "lightonai/LightOnOCR-2-1B", --preload, "lightonai/LightOnOCR-2-1B"]  # G2 picks the OCR model
+          env:
+            - {name: HF_HOME, value: /models/hf}
+            - {name: HF_TOKEN, valueFrom: {secretKeyRef: {name: companion-secrets, key: HF_TOKEN}}}
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /readyz, port: http}, periodSeconds: 10, failureThreshold: 60}
+          resources:
+            limits: {nvidia.com/gpu: "1", nvidia.com/gpumem: "20000", memory: 32Gi}  # G0: 10000 and 16Gi died (-9)
+            requests: {cpu: "2", memory: 8Gi}
+          volumeMounts:
+            - {name: models, mountPath: /models}
+            - {name: shm, mountPath: /dev/shm}
+      volumes:
+        - {name: models, hostPath: {path: /lambda/nfs/companion-state/models, type: DirectoryOrCreate}}
+        - {name: shm, emptyDir: {medium: Memory, sizeLimit: 2Gi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: sie-embed, namespace: data, labels: {app: sie-embed}}
+spec:
+  selector: {app: sie-embed}
+  ports: [{name: http, port: 8080, targetPort: 8080}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: sie-ocr, namespace: data, labels: {app: sie-ocr}}
+spec:
+  selector: {app: sie-ocr}
+  ports: [{name: http, port: 8080, targetPort: 8080}]

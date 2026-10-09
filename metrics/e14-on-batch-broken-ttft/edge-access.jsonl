@@ -1,0 +1,208 @@
+INFO:     10.42.0.1:60016 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38466 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38476 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38480 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45270 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45280 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49684 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722951.5376763,"request_id":"830d855d1037432ea6f83d52a471ce6c","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":0.3,"ttft_ms":70.0,"duration_ms":966.3,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45282 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49684 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722954.6436806,"request_id":"cc99bb54dcac4595a5194598f40e4f8a","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.4,"ttft_ms":60.4,"duration_ms":674.4,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49684 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722957.834077,"request_id":"bd6ca16c5cde499191e3f5aa0bc1e23c","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.5,"ttft_ms":58.9,"duration_ms":673.3,"extra":{}}
+INFO:     10.42.0.1:47828 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47836 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49684 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722961.0208218,"request_id":"f56b2b191de041feaba45c5b6723dd6b","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.4,"ttft_ms":62.5,"duration_ms":676.1,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49684 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47852 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790722964.2178168,"request_id":"fb14ace8d0bf4cf9ad0a1024088f7687","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.4,"ttft_ms":59.7,"duration_ms":674.1,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:37972 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:37986 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:37988 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55386 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55402 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55412 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47194 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47206 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47212 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790722996.174948,"request_id":"8c626ab1cd7e4f58878bbb0598b744c4","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":50.6,"extra":{}}
+INFO:     10.42.0.121:46574 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.121:46564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46586 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46608 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722996.2259567,"request_id":"6d8173513ee7497782ce6fa3e520222a","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":0.5,"ttft_ms":142.8,"duration_ms":523.5,"extra":{}}
+{"ts":1790722996.2316394,"request_id":"0073b656afd44e59b75d3f6ecd855de4","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":1.1,"ttft_ms":137.6,"duration_ms":534.6,"extra":{}}
+{"ts":1790722996.1710632,"request_id":"5918f19769344c0c92cc0b13cc1845b2","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":0.6,"ttft_ms":197.5,"duration_ms":727.2,"extra":{}}
+{"ts":1790722996.2290392,"request_id":"e4b871a4b3124706b26557fa510e05a9","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":3.1,"ttft_ms":139.6,"duration_ms":999.9,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36090 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790722999.365709,"request_id":"ad8196de07184e9f9616116d7dc80907","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":51.3,"extra":{}}
+INFO:     10.42.0.121:46574 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.1:36098 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46586 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46608 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722999.4183898,"request_id":"b782ef62b9b94dad8ebad79c12dfdb89","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":6.7,"ttft_ms":143.3,"duration_ms":525.0,"extra":{}}
+{"ts":1790722999.420672,"request_id":"aac7d6152e724188be95d87b17603a9d","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":5.6,"ttft_ms":140.9,"duration_ms":538.4,"extra":{}}
+{"ts":1790722999.4248915,"request_id":"eea15b6015c345e5a34e59dc25a03cc7","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.9,"ttft_ms":136.9,"duration_ms":716.3,"extra":{}}
+{"ts":1790722999.4227545,"request_id":"893a512c498345e591d9a8167f698c31","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":3.8,"ttft_ms":139.6,"duration_ms":998.5,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790723002.550005,"request_id":"4bd54931f95f4b36b6db2e445b9aae3e","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":52.2,"extra":{}}
+INFO:     10.42.0.121:46574 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.121:46608 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46586 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790723002.6034696,"request_id":"911e89d804ad49fba4925016780c2e87","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":7.4,"ttft_ms":145.1,"duration_ms":526.6,"extra":{}}
+{"ts":1790723002.6057456,"request_id":"275fc10081514b4491850680b4ae5523","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":6.1,"ttft_ms":142.7,"duration_ms":539.4,"extra":{}}
+{"ts":1790723002.609894,"request_id":"917e513ada78497faa6fa72dfd30d91b","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.3,"ttft_ms":138.0,"duration_ms":718.2,"extra":{}}
+{"ts":1790723002.607818,"request_id":"9a8e25255e7b437f82bd334569ff18cb","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":3.6,"ttft_ms":139.9,"duration_ms":1000.8,"extra":{}}
+INFO:     10.42.0.1:36110 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790723005.7377694,"request_id":"bd6a21f9fe0a455d89c8cd644d6abc80","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":50.4,"extra":{}}
+INFO:     10.42.0.121:46574 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.121:46564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46608 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46586 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790723005.789559,"request_id":"a44ffa02d8f74a1b8ffc9e55402379e6","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":7.7,"ttft_ms":144.6,"duration_ms":525.4,"extra":{}}
+{"ts":1790723005.7918231,"request_id":"f0dfa4d9111049e1a3f7345a0f261f9e","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":5.3,"ttft_ms":141.3,"duration_ms":538.9,"extra":{}}
+{"ts":1790723005.7958863,"request_id":"35ab93b071c34f23909d3b39a91770d1","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.3,"ttft_ms":138.4,"duration_ms":717.3,"extra":{}}
+{"ts":1790723005.7938704,"request_id":"7ee6316e8e4e448cae6ce5a066ef6e8a","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":2.9,"ttft_ms":140.2,"duration_ms":999.7,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35574 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790723008.927728,"request_id":"fb253f418c744e21af6bfa39cfd03fc3","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":52.8,"extra":{}}
+INFO:     10.42.0.121:46574 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.121:46592 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46586 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46564 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46608 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35584 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790723008.9819195,"request_id":"99eda68e147e40378b20fd0721c19249","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":8.2,"ttft_ms":144.8,"duration_ms":527.2,"extra":{}}
+{"ts":1790723008.98418,"request_id":"01354db18da443eeb5ede6ccbb64409e","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":5.7,"ttft_ms":143.1,"duration_ms":540.5,"extra":{}}
+{"ts":1790723008.988477,"request_id":"4c5454b487b14494929daa0a1df868ff","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.3,"ttft_ms":138.1,"duration_ms":718.3,"extra":{}}
+{"ts":1790723008.9862099,"request_id":"0ec69c690f7842ee9a5f5d3332f91671","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":3.0,"ttft_ms":141.2,"duration_ms":1001.1,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35592 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:41886 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:41896 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:58260 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54794 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54808 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54812 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47694 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47710 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790722951.5269234,"request_id":"897afca3d21c4acbb15e291ac5750959","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":51.8,"extra":{}}
+INFO:     10.42.0.119:49644 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.119:49652 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49668 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49692 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49686 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790722951.5793295,"request_id":"38f8d5548d1b47f499fe8106b59c2fd3","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":2.6,"ttft_ms":120.0,"duration_ms":527.9,"extra":{}}
+{"ts":1790722951.5845666,"request_id":"96fb05a9e68e4c118717a26d31406007","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":false,"guard_ms":92.0,"ttft_ms":220.1,"duration_ms":622.6,"extra":{}}
+{"ts":1790722951.5877361,"request_id":"6cb958c92c1b4613bfb42dfaac29c888","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":1.6,"ttft_ms":112.4,"duration_ms":668.9,"extra":{}}
+{"ts":1790722951.5817645,"request_id":"940d9109e19f4339ac43b13affcdf031","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":3.3,"ttft_ms":118.2,"duration_ms":724.2,"extra":{}}
+INFO:     10.42.0.1:47720 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790722954.6420124,"request_id":"1eac836597b643b29a3efcc2fcb07315","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":51.6,"extra":{}}
+INFO:     10.42.0.119:49644 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.119:49668 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49686 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49652 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49692 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722954.6951063,"request_id":"53b93ba937944cee8221841633186251","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":7.6,"ttft_ms":143.1,"duration_ms":523.5,"extra":{}}
+{"ts":1790722954.6974201,"request_id":"2820ede8d4ed4f39bd8eb5453f1f8aab","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":6.1,"ttft_ms":140.9,"duration_ms":537.6,"extra":{}}
+{"ts":1790722954.6994839,"request_id":"53ade45bd5114a118a06542835d1f297","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":4.7,"ttft_ms":138.0,"duration_ms":667.8,"extra":{}}
+{"ts":1790722954.7015102,"request_id":"3dbc006b668a40738b091c66519f32fc","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":7.3,"ttft_ms":136.1,"duration_ms":995.6,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790722957.8323464,"request_id":"9b0930ae1b664bd1be9c7738930ceaa9","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":51.6,"extra":{}}
+INFO:     10.42.0.119:49644 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.119:49668 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49692 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49652 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49686 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722957.8853517,"request_id":"a733fc6409d44ea9adf58658b554efe1","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":8.1,"ttft_ms":141.7,"duration_ms":522.5,"extra":{}}
+{"ts":1790722957.887629,"request_id":"17e0ff75039c491d8056e9c7544d9c62","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":5.6,"ttft_ms":139.2,"duration_ms":535.9,"extra":{}}
+{"ts":1790722957.889676,"request_id":"8ae27b74420a4d61bf57b14e34cf9e83","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":3.1,"ttft_ms":136.3,"duration_ms":666.8,"extra":{}}
+INFO:     10.42.0.1:58886 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790722957.8917613,"request_id":"8f6696e0cbc8450e89dfb23ca0e8a2c2","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":0.3,"ttft_ms":135.4,"duration_ms":994.3,"extra":{}}
+INFO:     10.42.0.1:58892 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790722961.018923,"request_id":"3f558a0aac95470db55ea4058e85e683","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":50.7,"extra":{}}
+INFO:     10.42.0.119:49644 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.119:49686 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49652 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49692 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49668 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722961.0710142,"request_id":"6b75f73e7b81401ea3bcd899aad7226a","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":7.8,"ttft_ms":147.2,"duration_ms":527.3,"extra":{}}
+{"ts":1790722961.0732398,"request_id":"ea6acf4f91f54faa8b79e997c65800ef","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":5.4,"ttft_ms":145.1,"duration_ms":541.5,"extra":{}}
+{"ts":1790722961.0752718,"request_id":"e5786bfab89444c58e618d647081ce4d","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":3.0,"ttft_ms":143.2,"duration_ms":671.5,"extra":{}}
+{"ts":1790722961.0772896,"request_id":"7ff4b553179646169dbc26f76499e9bc","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":0.3,"ttft_ms":140.0,"duration_ms":999.8,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790722964.216089,"request_id":"31592b1bbac94ec1b7a64c67c5c8a67c","tenant":"","request_class":"","step":"queue-order","status":413,"reason":"prompt_too_long","stage":"guard","route":"local","prompt_tokens":0,"max_tokens":0,"guard_cached":false,"guard_ms":0.0,"ttft_ms":null,"duration_ms":50.8,"extra":{}}
+INFO:     10.42.0.119:49644 - "POST /v1/chat/completions HTTP/1.1" 413 Request Entity Too Large
+INFO:     10.42.0.119:49652 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49668 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49692 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.119:49686 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:58906 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790722964.2682476,"request_id":"adb6df49eab64a59895e8534cb123991","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":320,"max_tokens":64,"guard_cached":true,"guard_ms":7.9,"ttft_ms":142.2,"duration_ms":524.6,"extra":{}}
+{"ts":1790722964.2705054,"request_id":"b991977f26ca4db99d3284f1d264b874","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":295,"max_tokens":64,"guard_cached":true,"guard_ms":5.4,"ttft_ms":140.9,"duration_ms":538.7,"extra":{}}
+{"ts":1790722964.2725558,"request_id":"10a00ca0771d44ffb439bb38f61d4335","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":3.1,"ttft_ms":138.7,"duration_ms":669.3,"extra":{}}
+{"ts":1790722964.2745728,"request_id":"448375ee7774448a98f6f3d05cc3873f","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":347,"max_tokens":64,"guard_cached":true,"guard_ms":0.4,"ttft_ms":136.9,"duration_ms":996.2,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43246 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43262 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43272 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:32818 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:32834 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:32850 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:39930 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:39940 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:39952 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46618 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790722996.179486,"request_id":"3eff39e928c349e19037a9dbfd858b17","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":299,"max_tokens":64,"guard_cached":true,"guard_ms":0.4,"ttft_ms":73.3,"duration_ms":686.5,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54842 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46618 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54850 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790722999.3670084,"request_id":"cb9b8ce3d0724be99854ddc105091be6","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":0.4,"ttft_ms":58.6,"duration_ms":624.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46618 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790723002.5514023,"request_id":"4fdb3e9e61a64d36a636c3b52ec3b8e4","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":0.6,"ttft_ms":61.0,"duration_ms":627.3,"extra":{}}
+INFO:     10.42.0.1:54866 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46618 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790723005.7390025,"request_id":"04cb60d8328c4d599e577bbaf348d665","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":0.4,"ttft_ms":58.6,"duration_ms":625.2,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60458 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.121:46618 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60468 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790723008.9290943,"request_id":"1fe7ee6e3d4c4df8954da91dacae3f1c","tenant":"load-1","request_class":"interactive","step":"queue-order","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":304,"max_tokens":64,"guard_cached":true,"guard_ms":0.7,"ttft_ms":64.0,"duration_ms":628.8,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60474 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:46650 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:46660 - "GET /readyz HTTP/1.1" 200 OK

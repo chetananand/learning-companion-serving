@@ -1,0 +1,100 @@
+{
+ "prefix_tokens": 4000,
+ "suffix_tokens": 1000,
+ "seed": {
+  "status": 200,
+  "ttft_s": 0.8492,
+  "prompt_tokens": 9303,
+  "cached_tokens": 0,
+  "error": null
+ },
+ "groups": {
+  "shared": {
+   "requests": [
+    {
+     "status": 200,
+     "ttft_s": 4.2615,
+     "prompt_tokens": 8949,
+     "cached_tokens": 7680,
+     "error": null
+    },
+    {
+     "status": 200,
+     "ttft_s": 4.5131,
+     "prompt_tokens": 9592,
+     "cached_tokens": 7680,
+     "error": null
+    },
+    {
+     "status": 200,
+     "ttft_s": 4.2612,
+     "prompt_tokens": 9091,
+     "cached_tokens": 7808,
+     "error": null
+    },
+    {
+     "status": 200,
+     "ttft_s": 4.1734,
+     "prompt_tokens": 8892,
+     "cached_tokens": 7808,
+     "error": null
+    },
+    {
+     "status": 200,
+     "ttft_s": 4.2515,
+     "prompt_tokens": 9101,
+     "cached_tokens": 7808,
+     "error": null
+    },
+    {
+     "status": 200,
+     "ttft_s": 4.328,
+     "prompt_tokens": 9463,
+     "cached_tokens": 7808,
+     "error": null
+    },
+    {
+     "status": 200,
+     "ttft_s": 4.2721,
+     "prompt_tokens": 8867,
+     "cached_tokens": 7808,
+     "error": null
+    },
+    {
+     "status": 200,
+     "ttft_s": 4.3627,
+     "prompt_tokens": 9479,
+     "cached_tokens": 7808,
+     "error": null
+    }
+   ],
+   "metric_delta": {
+    "vllm:nixl_xfer_time_seconds_bucket{engine=\"0\",le=\"5.0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_xfer_time_seconds_bucket{engine=\"0\",le=\"+Inf\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_xfer_time_seconds_count{engine=\"0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_xfer_time_seconds_sum{engine=\"0\",model_name=\"companion\"}": 32.312,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.001\",model_name=\"companion\"}": 3.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.005\",model_name=\"companion\"}": 5.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.01\",model_name=\"companion\"}": 5.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.025\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.05\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.075\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.1\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.2\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.3\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.5\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"0.75\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"1.0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"5.0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_bucket{engine=\"0\",le=\"+Inf\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_count{engine=\"0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_post_time_seconds_sum{engine=\"0\",model_name=\"companion\"}": 0.041,
+    "vllm:nixl_bytes_transferred_bucket{engine=\"0\",le=\"2.147483648e+09\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_bytes_transferred_bucket{engine=\"0\",le=\"8.589934592e+09\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_bytes_transferred_bucket{engine=\"0\",le=\"+Inf\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_bytes_transferred_count{engine=\"0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_bytes_transferred_sum{engine=\"0\",model_name=\"companion\"}": 13191086080.0,
+    "vllm:nixl_num_descriptors_bucket{engine=\"0\",le=\"1000.0\",model_name=\"companion\"}": 4.0,
+    "vllm:nixl_num_descriptors_bucket{engine=\"0\",le=\"2000.0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_num_descriptors_bucket{engine=\"0\",le=\"4000.0\",model_name=\"companion\"}": 8.0,
+    "vllm:nixl_num_descr

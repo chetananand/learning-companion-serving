@@ -1,0 +1,9 @@
+{
+ "pass": true,
+ "output": "42",
+ "ttft_s": 0.7104813939999985,
+ "status": 200,
+ "error": null,
+ "nixl_delta": {},
+ "cached_tokens": 3840
+}

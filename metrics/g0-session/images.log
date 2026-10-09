@@ -1,0 +1,25 @@
+rsync -az --exclude .venv --exclude docs/spec/source ./ ubuntu@192.222.52.95:companion/ -e "ssh -i ~/.ssh/lambda_ai"
+ssh -i ~/.ssh/lambda_ai -o StrictHostKeyChecking=accept-new ubuntu@192.222.52.95 'cd companion && for i in edge guard-injection guard app browser; do \
+	  sudo docker build -q -t companion/$i:dev -f images/$i/Dockerfile . && \
+	  sudo docker save companion/$i:dev | sudo k3s ctr images import - ; done'
+sha256:7416fe8b4acbb346c907378921a997c8dbe77f30afc004ced8693f451e5c81f8
+docker.io/companion/edge:dev            	saved	
+application/vnd.oci.image.index.v1+json sha256:7416fe8b4acbb346c907378921a997c8dbe77f30afc004ced8693f451e5c81f8
+Importing	elapsed: 11.2s	total:   0.0 B	(0.0 B/s)	
+sha256:efa1657de12b3658d3b809010f868262ca00a5e0e1bb597ca439326e30b460f2
+docker.io/companion/guard injection:dev 	saved	
+application/vnd.oci.image.index.v1+json sha256:efa1657de12b3658d3b809010f868262ca00a5e0e1bb597ca439326e30b460f2
+Importing	elapsed: 298.5s	total:   0.0 B	(0.0 B/s)	
+sha256:ab24303cb4d7d8cd1bd91c8085aea4864ca27d2850a8ad14f6947b3dba6c2d23
+docker.io/companion/guard:dev           	saved	
+application/vnd.oci.image.index.v1+json sha256:ab24303cb4d7d8cd1bd91c8085aea4864ca27d2850a8ad14f6947b3dba6c2d23
+Importing	elapsed: 12.2s	total:   0.0 B	(0.0 B/s)	
+sha256:d7556b500c2f2823ca4fc75f859b3bacbc2540d71725ea32c3532b9815dd6c6c
+docker.io/companion/app:dev             	saved	
+application/vnd.oci.image.index.v1+json sha256:d7556b500c2f2823ca4fc75f859b3bacbc2540d71725ea32c3532b9815dd6c6c
+Importing	elapsed: 30.7s	total:   0.0 B	(0.0 B/s)	
+sha256:27cd6165cfac0f6dfd9fab91569b22631258099bf756f25e3ba3db8d39c0ce90
+docker.io/companion/browser:dev         	saved	
+application/vnd.oci.image.index.v1+json sha256:27cd6165cfac0f6dfd9fab91569b22631258099bf756f25e3ba3db8d39c0ce90
+Importing	elapsed: 81.2s	total:   0.0 B	(0.0 B/s)	
+exit=0

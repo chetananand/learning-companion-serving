@@ -1,0 +1,15 @@
+{
+  "interactive": {
+    "calls": 257,
+    "ok": 257,
+    "aborted": 0,
+    "sheds": {},
+    "overflow": 0,
+    "ttft_p50_s": 0.7361,
+    "ttft_p95_s": 1.7359,
+    "latency_p50_s": 9.3089,
+    "latency_p95_s": 14.7193,
+    "output_tokens": 67551,
+    "prompt_tokens": 1478696
+  }
+}

@@ -1,0 +1,43 @@
+# One ScaledObject for each pool (system design section 8). The planner rules compute the desired
+# replicas; the target value 1 makes KEDA follow them. Never scale an LLM pool to zero.
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata: {name: vllm-prefill, namespace: companion}
+spec:
+  scaleTargetRef: {name: vllm-prefill}
+  minReplicaCount: 1
+  maxReplicaCount: 1                  # t4 overlay: 2
+  pollingInterval: 10
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleUp: {stabilizationWindowSeconds: 0, policies: [{type: Pods, value: 1, periodSeconds: 60}]}
+        scaleDown: {stabilizationWindowSeconds: 600, policies: [{type: Pods, value: 1, periodSeconds: 60}]}
+  triggers:
+    - type: prometheus
+      metricType: AverageValue
+      metadata:
+        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        query: max(companion:planner_desired_replicas{pool="prefill"})
+        threshold: "1"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata: {name: vllm-decode, namespace: companion}
+spec:
+  scaleTargetRef: {name: vllm-decode}
+  minReplicaCount: 1
+  maxReplicaCount: 1                  # t4 overlay: 2
+  pollingInterval: 10
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleUp: {stabilizationWindowSeconds: 0, policies: [{type: Pods, value: 1, periodSeconds: 60}]}
+        scaleDown: {stabilizationWindowSeconds: 600, policies: [{type: Pods, value: 1, periodSeconds: 60}]}
+  triggers:
+    - type: prometheus
+      metricType: AverageValue
+      metadata:
+        serverAddress: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        query: max(companion:planner_desired_replicas{pool="decode"})
+        threshold: "1"

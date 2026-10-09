@@ -1,0 +1,87 @@
+# Source tiers for the fact check (product spec section 6, rules 8 and 11).
+# Tier 1: primary sources (official docs, repositories, release notes, standards, original papers).
+# Tier 2: major publications and engineering blogs.
+# Tier 3: forums and aggregators. Every unknown domain is tier 3.
+# A host matches itself and all its subdomains.
+
+tier1_hosts:
+  - docs.vllm.ai
+  - vllm.ai
+  - blog.vllm.ai
+  - pytorch.org
+  - huggingface.co
+  - docs.nvidia.com
+  - developer.nvidia.com
+  - docs.lmcache.ai
+  - lmcache.ai
+  - llm-d.ai
+  - kubernetes.io
+  - keda.sh
+  - docs.docker.com
+  - go.dev
+  - golang.org
+  - postgresql.org
+  - docs.timescale.com
+  - timescale.com
+  - tigerdata.com  # the TimescaleDB docs moved here (demo D-07, 2026-09-29: docs.timescale.com redirects)
+  - kafka.apache.org
+  - flink.apache.org
+  - pinot.apache.org
+  - python.org
+  - arxiv.org
+  - research.character.ai
+  - sebastianraschka.com
+  - magazine.sebastianraschka.com
+  - ai.google.dev
+  - developers.googleblog.com
+  - ai.meta.com
+  - qdrant.tech
+  - redis.io
+  - envoyproxy.io
+  - gateway.envoyproxy.io
+  - lambda.ai
+  - docs.lambda.ai
+
+# github.com/<org>/... is tier 1 when <org> is in this list.
+tier1_github_orgs:
+  - vllm-project
+  - llm-d
+  - lmcache
+  - nvidia
+  - nvidia-nemo
+  - ai-dynamo
+  - huggingface
+  - kubernetes
+  - kedacore
+  - envoyproxy
+  - pytorch
+  - golang
+  - timescale
+  - qdrant
+  - rasbt
+  - google-deepmind
+  - meta-llama
+
+tier2_hosts:
+  - uber.com
+  - netflixtechblog.com
+  - engineering.fb.com
+  - blog.cloudflare.com
+  - planetscale.com
+  - about.gitlab.com
+  - supabase.com
+  - databricks.com
+  - anyscale.com
+  - llamaindex.ai
+  - weaviate.io
+  - huyenchip.com
+  - eugeneyan.com
+  - lilianweng.github.io
+  - thenewstack.io
+  - infoq.com
+  - acm.org
+  - nlpcloud.com
+  - aws.amazon.com
+
+deny_hosts:
+  - example-spam.invalid

@@ -1,0 +1,1 @@
+{"query": "sum by (priority) (inference_extension_flow_control_queue_size)", "status": "success", "data": {"resultType": "matrix", "result": []}}

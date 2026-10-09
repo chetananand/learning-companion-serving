@@ -1,0 +1,16 @@
+{
+ "retrieve_32k": {
+  "n": 4,
+  "ttft_median_s": 3.0205,
+  "end_median_s": 4.8883
+ },
+ "agent_step": {
+  "n": 25,
+  "ttft_median_s": 1.015,
+  "end_median_s": 3.4804
+ },
+ "first_token_went_to": {
+  "retrieve_32k": 0,
+  "agent_step": 5
+ }
+}

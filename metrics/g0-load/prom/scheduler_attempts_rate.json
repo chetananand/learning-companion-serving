@@ -1,0 +1,1 @@
+{"query": "sum by (pod_name, status) (rate(inference_extension_scheduler_attempts_total[1m]))", "status": "success", "data": {"resultType": "matrix", "result": []}}

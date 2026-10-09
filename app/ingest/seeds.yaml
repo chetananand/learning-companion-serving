@@ -1,0 +1,8 @@
+# Extra rows that are not in Notion. The ingest job reads them with --seeds.
+# D-12: a page inside the cluster that hides an instruction in its text (08-question-bank.md, note 2).
+# We serve this page only inside the cluster. We do not publish it on the web.
+- id: injected-page
+  title: Injected page
+  url: http://test-pages.data.svc.cluster.local/injected.html
+  created: 2026-09-27
+  tags: [test]

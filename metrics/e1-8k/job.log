@@ -1,0 +1,107 @@
+{
+  "1": {
+    "interactive": {
+      "calls": 3,
+      "ok": 3,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 0.9752,
+      "ttft_p95_s": 1.2993,
+      "latency_p50_s": 11.0707,
+      "latency_p95_s": 12.0864,
+      "output_tokens": 1536,
+      "prompt_tokens": 24957
+    }
+  },
+  "2": {
+    "interactive": {
+      "calls": 6,
+      "ok": 6,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 1.4892,
+      "ttft_p95_s": 2.1561,
+      "latency_p50_s": 12.2152,
+      "latency_p95_s": 12.9786,
+      "output_tokens": 3072,
+      "prompt_tokens": 53293
+    }
+  },
+  "4": {
+    "interactive": {
+      "calls": 12,
+      "ok": 12,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 1.6419,
+      "ttft_p95_s": 3.0016,
+      "latency_p50_s": 12.6449,
+      "latency_p95_s": 14.0891,
+      "output_tokens": 6144,
+      "prompt_tokens": 96043
+    }
+  },
+  "8": {
+    "interactive": {
+      "calls": 24,
+      "ok": 24,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 1.626,
+      "ttft_p95_s": 6.246,
+      "latency_p50_s": 13.6122,
+      "latency_p95_s": 18.7852,
+      "output_tokens": 12288,
+      "prompt_tokens": 197657
+    }
+  },
+  "16": {
+    "interactive": {
+      "calls": 48,
+      "ok": 48,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 2.2649,
+      "ttft_p95_s": 11.3895,
+      "latency_p50_s": 15.2597,
+      "latency_p95_s": 24.8467,
+      "output_tokens": 24576,
+      "prompt_tokens": 394198
+    }
+  },
+  "24": {
+    "interactive": {
+      "calls": 72,
+      "ok": 72,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 6.9916,
+      "ttft_p95_s": 14.1878,
+      "latency_p50_s": 21.2054,
+      "latency_p95_s": 28.2008,
+      "output_tokens": 36864,
+      "prompt_tokens": 581081
+    }
+  },
+  "32": {
+    "interactive": {
+      "calls": 96,
+      "ok": 96,
+      "aborted": 0,
+      "sheds": {},
+      "overflow": 0,
+      "ttft_p50_s": 12.9088,
+      "ttft_p95_s": 20.0364,
+      "latency_p50_s": 27.3252,
+      "latency_p95_s": 33.5839,
+      "output_tokens": 49152,
+      "prompt_tokens": 763305
+    }
+  }
+}

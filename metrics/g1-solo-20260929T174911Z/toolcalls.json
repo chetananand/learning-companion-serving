@@ -1,0 +1,737 @@
+{
+ "pass": true,
+ "pass_rate": 0.975,
+ "cases": [
+  {
+   "id": "quick-search-01",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-9d35de6d69425e5f",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"Uber retry storms protection\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-02",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-b6373c951bf4b9a7",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"continuous batching chunked prefill\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-03",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-9aaf67a49195e924",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"deploy Mixtral vLLM AWS EC2\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-04",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-bf367f47aa507412",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"LMCache storage backends\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-05",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-b60d28c2e5a0263e",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"Character.AI inference cost techniques\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-06",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-89d33fc353df6b81",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"Go generics performance speed slower\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-07",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-adebbe8480ad67de",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"upgrade TimescaleDB 1.x to 2.x\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-08",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-978e3569e38f911f",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"KV cache context growth\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-09",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-9e262fb9211e14a9",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"prefix caching save prefill\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-search-10",
+   "group": "quick-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-926aed521d0f3a60",
+     "type": "function",
+     "function": {
+      "name": "search_bookmarks",
+      "arguments": "{\"query\": \"speculative decoding\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-figure-11",
+   "group": "quick-figure",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-95c220e636eebd3c",
+     "type": "function",
+     "function": {
+      "name": "screenshot_page",
+      "arguments": "{\"near_text\": \"Figure 3: Gemma 3 27B architecture\", \"url\": \"https://sebastianraschka.com/llm-architecture-gallery/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-figure-12",
+   "group": "quick-figure",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-ae21ef07e3762bd6",
+     "type": "function",
+     "function": {
+      "name": "screenshot_page",
+      "arguments": "{\"near_text\": \"Figure 4: Gemma 3 27B architecture\", \"url\": \"https://sebastianraschka.com/llm-architecture-gallery/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-figure-13",
+   "group": "quick-figure",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-85a3fe7d0677e4b6",
+     "type": "function",
+     "function": {
+      "name": "screenshot_page",
+      "arguments": "{\"near_text\": \"Figure 5: Gemma 3 27B architecture\", \"url\": \"https://sebastianraschka.com/llm-architecture-gallery/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-figure-14",
+   "group": "quick-figure",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-bfce8265e15ad09f",
+     "type": "function",
+     "function": {
+      "name": "screenshot_page",
+      "arguments": "{\"near_text\": \"Figure 6: Gemma 3 27B architecture\", \"url\": \"https://sebastianraschka.com/llm-architecture-gallery/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-figure-15",
+   "group": "quick-figure",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-bf6702af654eb132",
+     "type": "function",
+     "function": {
+      "name": "screenshot_page",
+      "arguments": "{\"near_text\": \"Figure 7: Gemma 3 27B architecture\", \"url\": \"https://sebastianraschka.com/llm-architecture-gallery/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-figure-16",
+   "group": "quick-figure",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-b06dd8e71013ec07",
+     "type": "function",
+     "function": {
+      "name": "screenshot_page",
+      "arguments": "{\"near_text\": \"Figure 8: Gemma 3 27B architecture\", \"url\": \"https://sebastianraschka.com/llm-architecture-gallery/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-answer-17",
+   "group": "quick-answer",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-a402453d6019516a",
+     "type": "function",
+     "function": {
+      "name": "answer_now",
+      "arguments": "{}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-answer-18",
+   "group": "quick-answer",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-b1fe2de8cf1ab700",
+     "type": "function",
+     "function": {
+      "name": "answer_now",
+      "arguments": "{}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-answer-19",
+   "group": "quick-answer",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-9fba3418e24fb772",
+     "type": "function",
+     "function": {
+      "name": "answer_now",
+      "arguments": "{}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "quick-answer-20",
+   "group": "quick-answer",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-a937486da5e0f323",
+     "type": "function",
+     "function": {
+      "name": "answer_now",
+      "arguments": "{}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "agent-plan-21",
+   "group": "agent-plan",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-bb2edd7f2916bd27",
+     "type": "function",
+     "function": {
+      "name": "write_todos",
+      "arguments": "{\"todos\": [{\"content\": \"Verify if the guide at https://example.org/page0 still installs vLLM 0.2.1 or if it has been updated.\", \"status\": \"pending\"}]}"
+     }
+    },
+    {
+     "id": "chatcmpl-tool-a6d2e33ec36aa7c1",
+     "type": "function",
+     "function": {
+      "name": "task",
+      "arguments": "{\"description\": \"Check if the guide at https://example.org/page0 still installs vLLM 0.2.1 or if it has been updated to a newer version. Claim: \\\"The guide installs vLLM 0.2.1.\\\" Bookmark: [B1]. Question: \\\"Is this still true?\\\"\", \"subagent_type\": \"fact-checker\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "agent-plan-22",
+   "group": "agent-plan",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-8f2dd4e4771eb92e",
+     "type": "function",
+     "function": {
+      "name": "write_todos",
+      "arguments": "{\"todos\": [{\"content\": \"Verify if LMCache still supports CPU, disk, and NIXL backends.\", \"status\": \"pending\"}]}"
+     }
+    },
+    {
+     "id": "chatcmpl-tool-abf286fdb43027a2",
+     "type": "function",
+     "function": {
+      "name": "task",
+      "arguments": "{\"description\": \"Verify the claim: \\\"LMCache supports CPU, disk, and NIXL backends.\\\" Bookmark label: [B2]. Question: Is this still true as of 2026-09-30?\", \"subagent_type\": \"fact-checker\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "agent-plan-23",
+   "group": "agent-plan",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-93ce2a112d125202",
+     "type": "function",
+     "function": {
+      "name": "write_todos",
+      "arguments": "{\"todos\": [{\"content\": \"Verify if the latest TimescaleDB major version is still 2. [B1]\", \"status\": \"pending\"}]}"
+     }
+    },
+    {
+     "id": "chatcmpl-tool-8c756ecc8605e4f0",
+     "type": "function",
+     "function": {
+      "name": "task",
+      "arguments": "{\"description\": \"Check if the claim \\\"The latest TimescaleDB major version is 2\\\" from bookmark [B1] is still true as of 2026-09-30. Provide the current latest major version if it has changed. Question: Is this still true?\", \"subagent_type\": \"fact-checker\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "agent-plan-24",
+   "group": "agent-plan",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-93ee21f67b41017d",
+     "type": "function",
+     "function": {
+      "name": "write_todos",
+      "arguments": "{\"todos\": [{\"content\": \"Verify if Go 1.18 added generics.\", \"status\": \"pending\"}]}"
+     }
+    },
+    {
+     "id": "chatcmpl-tool-af706593c9a60c65",
+     "type": "function",
+     "function": {
+      "name": "task",
+      "arguments": "{\"description\": \"Verify the claim: \\\"Go 1.18 added generics.\\\" Bookmark label: [B3]. Question: Is this still true?\", \"subagent_type\": \"fact-checker\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "agent-plan-25",
+   "group": "agent-plan",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-8f0233ab7c3bf0cf",
+     "type": "function",
+     "function": {
+      "name": "write_todos",
+      "arguments": "{\"todos\": [{\"content\": \"Verify if Character.AI still uses multi-query attention to cut the KV cache size.\", \"status\": \"pending\"}]}"
+     }
+    },
+    {
+     "id": "chatcmpl-tool-8a118b2e38d018b1",
+     "type": "function",
+     "function": {
+      "name": "task",
+      "arguments": "{\"description\": \"Verify the claim: \\\"Character.AI uses multi-query attention to cut the KV cache size.\\\" Bookmark label: [B2]. Question: Is this still true as of 2026-09-30?\", \"subagent_type\": \"fact-checker\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "agent-plan-26",
+   "group": "agent-plan",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-a7f19adff4fe6751",
+     "type": "function",
+     "function": {
+      "name": "write_todos",
+      "arguments": "{\"todos\": [{\"content\": \"Verify if vLLM still uses PagedAttention for the KV cache.\", \"status\": \"pending\"}]}"
+     }
+    },
+    {
+     "id": "chatcmpl-tool-be32fb5dec1eee30",
+     "type": "function",
+     "function": {
+      "name": "task",
+      "arguments": "{\"description\": \"Verify the claim: \\\"vLLM uses PagedAttention for the KV cache.\\\" Bookmark label: [B1]. Question: Is this still true as of 2026-09-30?\", \"subagent_type\": \"fact-checker\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-search-27",
+   "group": "verify-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-96937d79292d5d26",
+     "type": "function",
+     "function": {
+      "name": "web_search",
+      "arguments": "{\"query\": \"vLLM installation guide version 0.2.1\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-search-28",
+   "group": "verify-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-9e0e3817796c6977",
+     "type": "function",
+     "function": {
+      "name": "web_search",
+      "arguments": "{\"query\": \"LMCache supported backends CPU disk NIXL\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-search-29",
+   "group": "verify-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-b83e173eda031c5d",
+     "type": "function",
+     "function": {
+      "name": "web_search",
+      "arguments": "{\"query\": \"latest TimescaleDB major version\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-search-30",
+   "group": "verify-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-82025e97bb6ef977",
+     "type": "function",
+     "function": {
+      "name": "web_search",
+      "arguments": "{\"query\": \"Go 1.18 generics release notes\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-search-31",
+   "group": "verify-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-956eea37613bc9c1",
+     "type": "function",
+     "function": {
+      "name": "web_search",
+      "arguments": "{\"query\": \"Character.AI multi-query attention KV cache size\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-search-32",
+   "group": "verify-search",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-9401bd8fde9dd7d0",
+     "type": "function",
+     "function": {
+      "name": "web_search",
+      "arguments": "{\"query\": \"vLLM PagedAttention KV cache\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-fetch-33",
+   "group": "verify-fetch",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-82896d909f146f37",
+     "type": "function",
+     "function": {
+      "name": "fetch_page",
+      "arguments": "{\"focus\": \"vLLM version installed by the guide\", \"url\": \"https://docs.vllm.ai/en/latest/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-fetch-34",
+   "group": "verify-fetch",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-9354c3b3244ff0b1",
+     "type": "function",
+     "function": {
+      "name": "fetch_page",
+      "arguments": "{\"focus\": \"LMCache supports CPU, disk, and NIXL backends\", \"url\": \"https://docs.lmcache.ai/kv_cache/storage_backends/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-fetch-35",
+   "group": "verify-fetch",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-8d0d42641eb1d8b8",
+     "type": "function",
+     "function": {
+      "name": "fetch_page",
+      "arguments": "{\"focus\": \"latest major version of TimescaleDB\", \"url\": \"https://docs.timescale.com/about/latest/release-notes/\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-fetch-36",
+   "group": "verify-fetch",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-930d9a33e4ee7860",
+     "type": "function",
+     "function": {
+      "name": "fetch_page",
+      "arguments": "{\"focus\": \"Go 1.18 added generics\", \"url\": \"https://go.dev/doc/go1.18\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-claimcheck-37",
+   "group": "verify-claimcheck",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-84539be1b9d62c7a",
+     "type": "function",
+     "function": {
+      "name": "ClaimCheck",
+      "arguments": "{\"bookmark_ref\": \"B1\", \"claim\": \"The guide installs vLLM 0.2.1.\", \"pages\": [{\"quote\": \"vLLM 0.30.0 is the current release. Install it with pip install vllm.\", \"url\": \"https://docs.vllm.ai/en/latest/\", \"verdict\": \"OUTDATED\"}]}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-claimcheck-38",
+   "group": "verify-claimcheck",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-93f21bb267f8d23a",
+     "type": "function",
+     "function": {
+      "name": "ClaimCheck",
+      "arguments": "{\"bookmark_ref\": \"B2\", \"claim\": \"LMCache supports CPU, disk, and NIXL backends.\", \"pages\": [{\"quote\": \"LMCache stores KV cache in CPU memory and on local disk. Remote backends: NIXL, Mooncake, and Redis.\", \"url\": \"https://docs.lmcache.ai/kv_cache/storage_backends/\", \"verdict\": \"SUPPORTED\"}]}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-claimcheck-39",
+   "group": "verify-claimcheck",
+   "ok": false,
+   "problems": [
+    "tool fetch_page not in ['ClaimCheck']",
+    "claim is empty"
+   ],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-921acb36f2a4b21e",
+     "type": "function",
+     "function": {
+      "name": "fetch_page",
+      "arguments": "{\"focus\": \"The latest TimescaleDB major version is 2.\", \"url\": \"https://github.com/timescale/timescaledb/releases\"}"
+     }
+    }
+   ],
+   "content": ""
+  },
+  {
+   "id": "verify-claimcheck-40",
+   "group": "verify-claimcheck",
+   "ok": true,
+   "problems": [],
+   "tool_calls": [
+    {
+     "id": "chatcmpl-tool-b305994ad49bf8bb",
+     "type": "function",
+     "function": {
+      "name": "ClaimCheck",
+      "arguments": "{\"bookmark_ref\": \"B3\", \"claim\": \"Go 1.18 added generics.\", \"pages\": [{\"quote\": \"Go 1.18 adds support for generic code with type parameters.\", \"url\": \"https://go.dev/doc/go1.18\", \"verdict\": \"SUPPORTED\"}]}"
+     }
+    }
+   ],
+   "content": ""
+  }
+ ]
+}

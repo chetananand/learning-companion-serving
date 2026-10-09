@@ -1,0 +1,301 @@
+{
+ "long_class": "interactive",
+ "rounds": [
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 503,
+    "reason": "{\"error\":{\"message\":\"guard_unavailable\",\"type\":\"guard_unavailable\",\"code\":503}}",
+    "end_s": 0.5122
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0653,
+    "ttft_s": 0.2642,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.5991
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0657,
+    "ttft_s": 0.3148,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.7987
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0659,
+    "ttft_s": 0.2798,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.8151
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0662,
+    "ttft_s": 0.2797,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.6317
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0664,
+    "ttft_s": 0.3307,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0787
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 503,
+    "reason": "{\"error\":{\"message\":\"guard_unavailable\",\"type\":\"guard_unavailable\",\"code\":503}}",
+    "end_s": 0.4045
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0014,
+    "ttft_s": 0.2292,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.501
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0017,
+    "ttft_s": 0.2462,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.6665
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.002,
+    "ttft_s": 0.2801,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.7496
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0022,
+    "ttft_s": 0.2796,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.5673
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0024,
+    "ttft_s": 0.3296,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0795
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 503,
+    "reason": "{\"error\":{\"message\":\"guard_unavailable\",\"type\":\"guard_unavailable\",\"code\":503}}",
+    "end_s": 0.4568
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0016,
+    "ttft_s": 0.225,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.4967
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0019,
+    "ttft_s": 0.2419,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.6619
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0021,
+    "ttft_s": 0.2755,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.7452
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0024,
+    "ttft_s": 0.2751,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.5623
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0026,
+    "ttft_s": 0.3251,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0747
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 503,
+    "reason": "{\"error\":{\"message\":\"guard_unavailable\",\"type\":\"guard_unavailable\",\"code\":503}}",
+    "end_s": 0.4026
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0015,
+    "ttft_s": 0.2245,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.4962
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0018,
+    "ttft_s": 0.2416,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.6613
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0021,
+    "ttft_s": 0.2753,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.7449
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0023,
+    "ttft_s": 0.275,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.5619
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0026,
+    "ttft_s": 0.3252,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.074
+   }
+  ],
+  [
+   {
+    "kind": "retrieve_32k",
+    "class": "interactive",
+    "sent_s": 0.0001,
+    "ttft_s": null,
+    "status": 503,
+    "reason": "{\"error\":{\"message\":\"guard_unavailable\",\"type\":\"guard_unavailable\",\"code\":503}}",
+    "end_s": 0.4056
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0014,
+    "ttft_s": 0.2326,
+    "status": 200,
+    "prompt_tokens": 1376,
+    "end_s": 0.5032
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0017,
+    "ttft_s": 0.2489,
+    "status": 200,
+    "prompt_tokens": 1360,
+    "end_s": 0.6691
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.002,
+    "ttft_s": 0.2656,
+    "status": 200,
+    "prompt_tokens": 1355,
+    "end_s": 0.7357
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0022,
+    "ttft_s": 0.2824,
+    "status": 200,
+    "prompt_tokens": 1351,
+    "end_s": 0.5695
+   },
+   {
+    "kind": "agent_step",
+    "class": "interactive",
+    "sent_s": 0.0025,
+    "ttft_s": 0.3493,
+    "status": 200,
+    "prompt_tokens": 1427,
+    "end_s": 1.0328
+   }
+  ]
+ ],
+ "summary": {
+  "retrieve_32k": {
+   "n": 0,
+   "ttft_median_s": null,
+   "end_median_s": null
+  },
+  "agent_step": {
+   "n": 25,
+   "ttft_median_s": 0.2753,
+   "end_median_s": 0.6665
+  },
+  "first_token_went_to": {
+   "retrieve_32k": 0,
+   "agent_step": 5
+  }
+ }
+}

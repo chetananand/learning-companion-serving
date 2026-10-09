@@ -1,0 +1,1 @@
+{"query": "max by (Hostname, gpu) (DCGM_FI_DEV_POWER_USAGE)", "status": "success", "data": {"resultType": "matrix", "result": []}}

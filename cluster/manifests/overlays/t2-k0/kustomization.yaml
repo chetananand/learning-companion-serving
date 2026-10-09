@@ -1,0 +1,39 @@
+# Fallback K0 (ADR-002, G1 decision rule 2): NIXL only, no LMCache CPU tier (also the E16 arm A).
+# With no LMCache, the P/D hop goes back to NIXL (at G0: TCP between the pods, 4.9 s for 5.5K tokens).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: [../t2]
+patches:
+  - patch: |-
+      $patch: delete
+      apiVersion: apps/v1
+      kind: DaemonSet
+      metadata: {name: lmcache-server, namespace: companion}
+  - target: {kind: Deployment, name: vllm-prefill}
+    patch: |-
+      - op: test
+        path: /spec/template/spec/containers/0/args/17
+        value: --kv-transfer-config
+      - op: replace
+        path: /spec/template/spec/containers/0/args/18
+        value: '{"kv_connector":"NixlConnector","kv_role":"kv_producer","kv_buffer_device":"cuda","kv_load_failure_policy":"fail","kv_connector_extra_config":{"backends":["UCX"]}}'
+      - op: test
+        path: /spec/template/spec/containers/1/env/3/name
+        value: BARRIER_LMCACHE_METRICS
+      - op: replace
+        path: /spec/template/spec/containers/1/env/3/value
+        value: ""   # no LMCache in K0: the store barrier is off
+  - target: {kind: Deployment, name: vllm-decode}
+    patch: |-
+      - op: test
+        path: /spec/template/spec/containers/0/args/17
+        value: --kv-transfer-config
+      - op: replace
+        path: /spec/template/spec/containers/0/args/18
+        value: '{"kv_connector":"NixlConnector","kv_role":"kv_consumer","kv_buffer_device":"cuda","kv_load_failure_policy":"fail","kv_connector_extra_config":{"backends":["UCX"]}}'
+      - op: test
+        path: /spec/template/spec/initContainers/0/args/1
+        value: --kv-connector=shared-storage
+      - op: replace
+        path: /spec/template/spec/initContainers/0/args/1
+        value: --kv-connector=nixlv2

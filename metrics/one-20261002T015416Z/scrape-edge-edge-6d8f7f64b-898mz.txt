@@ -1,0 +1,117 @@
+# edge companion/edge-6d8f7f64b-898mz:8080/metrics
+# HELP orch_requests_total Requests into edge
+# TYPE orch_requests_total counter
+orch_requests_total{class="interactive",step="unknown",tenant="owner"} 8.0
+# HELP orch_requests_created Requests into edge
+# TYPE orch_requests_created gauge
+orch_requests_created{class="interactive",step="unknown",tenant="owner"} 1.7909058989856658e+09
+# HELP orch_guard_reject_total Guard rejects
+# TYPE orch_guard_reject_total counter
+orch_guard_reject_total{reason="model_not_allowed",stage="1"} 2.0
+# HELP orch_guard_reject_created Guard rejects
+# TYPE orch_guard_reject_created gauge
+orch_guard_reject_created{reason="model_not_allowed",stage="1"} 1.7909058987785847e+09
+# HELP orch_guard_seconds Guard latency
+# TYPE orch_guard_seconds histogram
+orch_guard_seconds_bucket{cached="false",le="0.005",stage="2"} 0.0
+orch_guard_seconds_bucket{cached="false",le="0.01",stage="2"} 0.0
+orch_guard_seconds_bucket{cached="false",le="0.025",stage="2"} 0.0
+orch_guard_seconds_bucket{cached="false",le="0.05",stage="2"} 0.0
+orch_guard_seconds_bucket{cached="false",le="0.1",stage="2"} 0.0
+orch_guard_seconds_bucket{cached="false",le="0.25",stage="2"} 0.0
+orch_guard_seconds_bucket{cached="false",le="0.5",stage="2"} 0.0
+orch_guard_seconds_bucket{cached="false",le="1.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="1.5",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="2.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="3.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="5.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="10.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="20.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="30.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="60.0",stage="2"} 1.0
+orch_guard_seconds_bucket{cached="false",le="+Inf",stage="2"} 1.0
+orch_guard_seconds_count{cached="false",stage="2"} 1.0
+orch_guard_seconds_sum{cached="false",stage="2"} 0.7767342740000913
+orch_guard_seconds_bucket{cached="true",le="0.005",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="0.01",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="0.025",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="0.05",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="0.1",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="0.25",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="0.5",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="1.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="1.5",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="2.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="3.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="5.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="10.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="20.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="30.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="60.0",stage="2"} 7.0
+orch_guard_seconds_bucket{cached="true",le="+Inf",stage="2"} 7.0
+orch_guard_seconds_count{cached="true",stage="2"} 7.0
+orch_guard_seconds_sum{cached="true",stage="2"} 0.004185163000101966
+# HELP orch_guard_seconds_created Guard latency
+# TYPE orch_guard_seconds_created gauge
+orch_guard_seconds_created{cached="false",stage="2"} 1.7909058997623816e+09
+orch_guard_seconds_created{cached="true",stage="2"} 1.7909059273499372e+09
+# HELP orch_shed_total Sheds by reason, code, and stage
+# TYPE orch_shed_total counter
+orch_shed_total{code="400",reason="model_not_allowed",stage="guard"} 2.0
+orch_shed_total{code="503",reason="no_endpoints",stage="flow_control"} 7.0
+# HELP orch_shed_created Sheds by reason, code, and stage
+# TYPE orch_shed_created gauge
+orch_shed_created{code="400",reason="model_not_allowed",stage="guard"} 1.790905898778641e+09
+orch_shed_created{code="503",reason="no_endpoints",stage="flow_control"} 1.7909059029440093e+09
+# HELP orch_overflow_total Requests sent to the overflow
+# TYPE orch_overflow_total counter
+# HELP orch_overflow_refused_total Overflow refusals
+# TYPE orch_overflow_refused_total counter
+# HELP orch_ttft_seconds Time to first byte at edge
+# TYPE orch_ttft_seconds histogram
+orch_ttft_seconds_bucket{class="interactive",le="0.005",route="local"} 0.0
+orch_ttft_seconds_bucket{class="interactive",le="0.01",route="local"} 0.0
+orch_ttft_seconds_bucket{class="interactive",le="0.025",route="local"} 0.0
+orch_ttft_seconds_bucket{class="interactive",le="0.05",route="local"} 0.0
+orch_ttft_seconds_bucket{class="interactive",le="0.1",route="local"} 0.0
+orch_ttft_seconds_bucket{class="interactive",le="0.25",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="0.5",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="1.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="1.5",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="2.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="3.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="5.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="10.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="20.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="30.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="60.0",route="local"} 1.0
+orch_ttft_seconds_bucket{class="interactive",le="+Inf",route="local"} 1.0
+orch_ttft_seconds_count{class="interactive",route="local"} 1.0
+orch_ttft_seconds_sum{class="interactive",route="local"} 0.1249823219998234
+# HELP orch_ttft_seconds_created Time to first byte at edge
+# TYPE orch_ttft_seconds_created gauge
+orch_ttft_seconds_created{class="interactive",route="local"} 1.790905978833577e+09
+# HELP orch_request_duration_seconds Request duration at edge
+# TYPE orch_request_duration_seconds histogram
+orch_request_duration_seconds_bucket{class="interactive",le="0.005",route="local"} 0.0
+orch_request_duration_seconds_bucket{class="interactive",le="0.01",route="local"} 0.0
+orch_request_duration_seconds_bucket{class="interactive",le="0.025",route="local"} 0.0
+orch_request_duration_seconds_bucket{class="interactive",le="0.05",route="local"} 0.0
+orch_request_duration_seconds_bucket{class="interactive",le="0.1",route="local"} 0.0
+orch_request_duration_seconds_bucket{class="interactive",le="0.25",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="0.5",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="1.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="1.5",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="2.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="3.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="5.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="10.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="20.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="30.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="60.0",route="local"} 1.0
+orch_request_duration_seconds_bucket{class="interactive",le="+Inf",route="local"} 1.0
+orch_request_duration_seconds_count{class="interactive",route="local"} 1.0
+orch_request_duration_seconds_sum{class="interactive",route="local"} 0.12609469499989245
+# HELP orch_request_duration_seconds_created Request duration at edge
+# TYPE orch_request_duration_seconds_created gauge
+orch_request_duration_seconds_created{class="interactive",route="local"} 1.7909059788346539e+09

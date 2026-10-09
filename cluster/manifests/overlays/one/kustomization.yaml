@@ -1,0 +1,43 @@
+# One node (ADR-005, revision 2): one 4 x H100 SXM node runs all pods, if no node 2 shape has stock on 2026-10-01.
+# The node has the label companion.io/node=control, so the engine pods and the LMCache tier move to it.
+# GPUs: HAMi manages all four (no NVIDIA device plugin pod: its selector is companion.io/node=gpu).
+#   - Each engine pod asks for 100% of the cores and the memory of one GPU. HAMi gives such a pod only a GPU
+#     that no other pod uses (HAMi v2.10.0, pkg/device/nvidia/device.go). CUDA_DISABLE_CONTROL=true: the HAMi
+#     device plugin does not load its memory hook into vLLM, so vLLM sees the full GPU, as on node 1.
+#   - The node 2 GPU pods (52,000 MiB) pack onto one GPU (binpack). The chart default policy is spread.
+# The engine settings and the KEDA limits (1 pod for each pool) are the same as t2.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: [../t2]
+patches:
+  - target: {kind: DaemonSet, name: lmcache-server}
+    patch: |-
+      - {op: replace, path: /spec/template/spec/nodeSelector, value: {companion.io/node: control}}
+  - target: {kind: Deployment, name: vllm-prefill}
+    patch: |-
+      - {op: remove, path: /spec/template/metadata/labels/hami.io~1webhook}   # one node: HAMi places it
+      - {op: replace, path: /spec/template/spec/nodeSelector, value: {companion.io/node: control}}
+      - {op: test, path: /spec/template/spec/containers/0/name, value: modelserver}
+      - {op: add, path: /spec/template/spec/containers/0/resources/limits/nvidia.com~1gpucores, value: "100"}
+      - {op: add, path: /spec/template/spec/containers/0/resources/limits/nvidia.com~1gpumem-percentage, value: "100"}
+      - {op: add, path: /spec/template/spec/containers/0/env/-, value: {name: CUDA_DISABLE_CONTROL, value: "true"}}
+  - target: {kind: Deployment, name: vllm-decode}
+    patch: |-
+      - {op: remove, path: /spec/template/metadata/labels/hami.io~1webhook}   # one node: HAMi places it
+      - {op: replace, path: /spec/template/spec/nodeSelector, value: {companion.io/node: control}}
+      - {op: test, path: /spec/template/spec/containers/0/name, value: modelserver}
+      - {op: add, path: /spec/template/spec/containers/0/resources/limits/nvidia.com~1gpucores, value: "100"}
+      - {op: add, path: /spec/template/spec/containers/0/resources/limits/nvidia.com~1gpumem-percentage, value: "100"}
+      - {op: add, path: /spec/template/spec/containers/0/env/-, value: {name: CUDA_DISABLE_CONTROL, value: "true"}}
+  - target: {kind: Deployment, name: sie-embed}
+    patch: |-
+      - {op: add, path: /spec/template/metadata/annotations, value: {hami.io/gpu-scheduler-policy: binpack}}
+  - target: {kind: Deployment, name: sie-ocr}
+    patch: |-
+      - {op: add, path: /spec/template/metadata/annotations, value: {hami.io/gpu-scheduler-policy: binpack}}
+  - target: {kind: Deployment, name: guard-safety}
+    patch: |-
+      - {op: add, path: /spec/template/metadata/annotations, value: {hami.io/gpu-scheduler-policy: binpack}}
+  - target: {kind: Deployment, name: guard-injection}
+    patch: |-
+      - {op: add, path: /spec/template/metadata/annotations, value: {hami.io/gpu-scheduler-policy: binpack}}

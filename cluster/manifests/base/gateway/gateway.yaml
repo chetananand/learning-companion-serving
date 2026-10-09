@@ -1,0 +1,68 @@
+# The Agent Router (Envoy Gateway + Envoy AI Gateway). The AIGatewayRoute and the tenant windows
+# come from control/router/render.py (router/generated/agent-router.yaml).
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata: {name: companion}
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef: {group: gateway.envoyproxy.io, kind: EnvoyProxy, name: companion-proxy, namespace: companion}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata: {name: companion-proxy, namespace: companion}
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyDeployment:
+        replicas: 2
+        pod: {nodeSelector: {companion.io/node: control}}
+      envoyService:
+        type: ClusterIP
+        name: companion-gateway-envoy    # a fixed name in envoy-gateway-system (G0: verified), the edge upstream
+  # One JSON line for each request: the hop records (H-77) come from these lines (tools/hop_records.py).
+  # The EPP sets the destination and prefill headers through ext_proc. VERIFY at G0 that the log shows them.
+  telemetry:
+    accessLog:
+      settings:
+        - format:
+            type: JSON
+            json:
+              start_time: "%START_TIME%"
+              request_id: "%REQ(X-REQUEST-ID)%"
+              tenant: "%REQ(X-TENANT-ID)%"
+              session: "%REQ(X-SESSION-ID)%"
+              step: "%REQ(X-STEP)%"
+              decode_endpoint: "%REQ(X-GATEWAY-DESTINATION-ENDPOINT)%"
+              prefill_host: "%REQ(X-PREFILLER-HOST-PORT)%"
+              upstream_host: "%UPSTREAM_HOST%"
+              status: "%RESPONSE_CODE%"
+              duration_ms: "%DURATION%"
+              first_byte_ms: "%RESPONSE_DURATION%"
+              dropped_reason: "%RESP(X-LLM-D-REQUEST-DROPPED-REASON)%"
+              input_tokens: "%DYNAMIC_METADATA(io.envoy.ai_gateway:llm_input_token)%"
+              cached_input_tokens: "%DYNAMIC_METADATA(io.envoy.ai_gateway:llm_cached_input_token)%"
+              output_tokens: "%DYNAMIC_METADATA(io.envoy.ai_gateway:llm_output_token)%"
+          sinks:
+            - type: File
+              file: {path: /dev/stdout}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata: {name: companion-gateway, namespace: companion}
+spec:
+  gatewayClassName: companion
+  listeners:
+    - {name: http, protocol: HTTP, port: 80}
+---
+# Session 1 (2026-09-29): the AI Gateway buffers the whole request body, and the Envoy default buffer is
+# 32 KiB. A prompt of about 8K tokens or more got 413 from Envoy (10 of 660 capture calls; E1 uses 8K and
+# 24K tokens). 4 MiB holds the longest prompt (32,768 tokens) with room.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata: {name: companion-gateway-buffer, namespace: companion}
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: Gateway, name: companion-gateway}
+  connection:
+    bufferLimit: 4Mi

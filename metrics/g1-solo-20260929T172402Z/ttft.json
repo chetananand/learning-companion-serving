@@ -1,0 +1,26 @@
+{
+ "pass": true,
+ "median_ttft_s": 0.9045,
+ "runs": [
+  {
+   "ttft_s": 0.9145995039998525,
+   "prompt_tokens": 11200
+  },
+  {
+   "ttft_s": 0.907225163000021,
+   "prompt_tokens": 11178
+  },
+  {
+   "ttft_s": 0.9044948200000817,
+   "prompt_tokens": 11138
+  },
+  {
+   "ttft_s": 0.8414415610000106,
+   "prompt_tokens": 9775
+  },
+  {
+   "ttft_s": 0.8388377920000494,
+   "prompt_tokens": 10103
+  }
+ ]
+}

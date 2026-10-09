@@ -1,0 +1,1 @@
+{"query": "histogram_quantile(0.95, sum by (pod, le) (rate(vllm:nixl_xfer_time_seconds_bucket[1m])))", "status": "success", "data": {"resultType": "matrix", "result": []}}

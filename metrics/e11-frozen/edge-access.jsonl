@@ -1,0 +1,941 @@
+INFO:     10.42.0.1:41790 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730571.9343522,"request_id":"7f83b91ed8b54ec3bc084508f073f8a2","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3979,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":407.1,"duration_ms":3010.9,"extra":{}}
+{"ts":1790730566.2169287,"request_id":"d885598534ae4cdf8b0192a03564e752","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5883,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":542.2,"duration_ms":9110.6,"extra":{}}
+INFO:     10.42.0.165:56220 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730571.1200871,"request_id":"26d42b81b5af4b89970b16a7d180bf32","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4937,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":156.3,"duration_ms":4853.3,"extra":{}}
+INFO:     10.42.0.165:53722 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730567.3696487,"request_id":"d7ad82f3543846129811acb1a7a44d89","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4949,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":134.9,"duration_ms":9487.6,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47712 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730568.464159,"request_id":"8343a9edb2554949af297db27bf700bb","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":9313,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":851.0,"duration_ms":10082.6,"extra":{}}
+INFO:     10.42.0.1:39596 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:39598 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47720 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730570.75585,"request_id":"ae04bae5a5e54660bbe3df7aa8d1a072","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6404,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":609.8,"duration_ms":9128.3,"extra":{}}
+INFO:     10.42.0.165:47468 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730577.507399,"request_id":"bf19112138e6478bba401f4226732092","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5049,"max_tokens":900,"guard_cached":false,"guard_ms":65.3,"ttft_ms":549.3,"duration_ms":3640.8,"extra":{}}
+{"ts":1790730570.1963055,"request_id":"1fb2480bf08a49debac216feeb79ff4b","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6398,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":606.4,"duration_ms":11111.1,"extra":{}}
+{"ts":1790730574.9094248,"request_id":"90e03c11ed264ece8f387798bc22e3f3","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4895,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":492.1,"duration_ms":7324.4,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.165:56220 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730582.703188,"request_id":"4a6ff5777f134027af33fc87c9221755","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5665,"max_tokens":900,"guard_cached":false,"guard_ms":63.3,"ttft_ms":617.1,"duration_ms":866.5,"extra":{}}
+INFO:     10.42.0.1:39612 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730576.2320704,"request_id":"9c64e2a263484aac801d71ae750bba66","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3616,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":374.0,"duration_ms":8226.1,"extra":{}}
+{"ts":1790730579.001309,"request_id":"5e009cc75285491594fa2b2a2084a3b5","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5714,"max_tokens":900,"guard_cached":false,"guard_ms":61.2,"ttft_ms":596.6,"duration_ms":6779.8,"extra":{}}
+INFO:     10.42.0.165:56220 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.165:53722 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47720 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730580.1827483,"request_id":"f4cff3bb7e1141948b961b2a0ef25894","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5857,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":576.1,"duration_ms":7173.4,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52068 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730586.0678413,"request_id":"0ba5d9a5db5f4227867e072baf58cc23","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3938,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":749.6,"duration_ms":3156.5,"extra":{}}
+INFO:     10.42.0.1:52074 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47468 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730586.0052352,"request_id":"e67169c8ea73439f8ec841f6b46b3897","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5367,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":455.3,"duration_ms":4760.6,"extra":{}}
+INFO:     10.42.0.165:56220 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730586.6652753,"request_id":"c85e256e75fe4bcbbf30e86213cafb3c","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6035,"max_tokens":900,"guard_cached":false,"guard_ms":59.7,"ttft_ms":601.3,"duration_ms":6230.6,"extra":{}}
+INFO:     10.42.0.1:52076 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730591.1991503,"request_id":"6bb5da4cbe4b402492b2cdb8c9cda8c9","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4131,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":414.3,"duration_ms":5157.6,"extra":{}}
+{"ts":1790730589.1679468,"request_id":"7b9d2b12f2304a8a83b626ad436a5edb","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4587,"max_tokens":900,"guard_cached":false,"guard_ms":58.8,"ttft_ms":543.2,"duration_ms":7445.6,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45084 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45088 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45092 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36432 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36442 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36450 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50186 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50202 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50218 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54776 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54778 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54782 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:48690 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54176 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54184 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:48700 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54202 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54210 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54240 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730637.859807,"request_id":"2cef0b568854499b8c58f3094d9f6b08","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8105,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":659.7,"duration_ms":5769.6,"extra":{}}
+{"ts":1790730637.5901077,"request_id":"c6de8a1418304338806186644c8fc0b3","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8473,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":804.2,"duration_ms":6324.8,"extra":{}}
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:48716 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:32896 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:32904 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45710 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45712 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730643.8001113,"request_id":"f0a7f2b0b4324bfd9a1f86c87ac593a5","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4415,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":381.5,"duration_ms":5794.9,"extra":{}}
+INFO:     10.42.0.167:32912 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730640.731511,"request_id":"ae7bb3e47d1e4907bb3e12aff0477f76","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5132,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":560.3,"duration_ms":10041.0,"extra":{}}
+{"ts":1790730638.0094602,"request_id":"eefa43b79f6b4f6db85cf8a4931dae69","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5884,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":869.4,"duration_ms":14359.9,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730642.72882,"request_id":"65282de25e734ddfb6b2df3d586cbe09","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3976,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":689.6,"duration_ms":10079.4,"extra":{}}
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54176 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730639.116496,"request_id":"ad46811759874e75ab27dc68565f02f7","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7170,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":143.6,"duration_ms":15083.7,"extra":{}}
+INFO:     10.42.0.1:45720 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730653.1258965,"request_id":"8284d19ec224450ebfd4c01692fe9cea","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4647,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":169.8,"duration_ms":1427.4,"extra":{}}
+{"ts":1790730641.6467748,"request_id":"4103884949f04fae9ec37b9ebf3b9bf7","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6151,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":584.6,"duration_ms":14858.2,"extra":{}}
+{"ts":1790730649.3089447,"request_id":"8e1c26d7fcab42c9ab521e24233f7aa2","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5205,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":525.1,"duration_ms":7697.4,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:32912 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38060 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54184 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730648.1317635,"request_id":"a80f9bab8e08471788c641e1adc7d5c8","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6018,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":571.4,"duration_ms":10743.7,"extra":{}}
+INFO:     10.42.0.167:54210 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38072 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:32904 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730645.9687288,"request_id":"d4509622f9ad4b828e04f4fa0079c37b","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5137,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":555.0,"duration_ms":14133.6,"extra":{}}
+{"ts":1790730657.8389235,"request_id":"27624dfc4ba449a1a57bf4f38ca94691","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6953,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":1036.1,"duration_ms":3743.4,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730657.7689931,"request_id":"f9a8e2ff44d14ff1ba1e1b93c1634e6c","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4868,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":513.4,"duration_ms":4899.1,"extra":{}}
+{"ts":1790730647.303933,"request_id":"aebcd0f078934af49c163273216e132b","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5820,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":568.8,"duration_ms":15663.1,"extra":{}}
+{"ts":1790730658.23735,"request_id":"5812d22f41cb41978dc40f6e6a18a6be","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4996,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":414.7,"duration_ms":4898.8,"extra":{}}
+{"ts":1790730653.5888715,"request_id":"ed01c3ed620948a39cc08afdb03f7e75","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5133,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":531.0,"duration_ms":10315.1,"extra":{}}
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38074 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730658.2115102,"request_id":"0193aceef6a845dcba995791f8213055","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4850,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":1049.7,"duration_ms":6340.3,"extra":{}}
+{"ts":1790730661.571348,"request_id":"9cda7b91dd604295acabbf9a0e6b304e","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5606,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":549.4,"duration_ms":4092.1,"extra":{}}
+INFO:     10.42.0.167:54176 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730665.3221304,"request_id":"7baf4e3976d84e02acde8f7017fb7b33","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7819,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":647.3,"duration_ms":911.3,"extra":{}}
+{"ts":1790730663.9595199,"request_id":"02912c7c27c54d51aad20526fd1cee75","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5606,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":149.1,"duration_ms":3493.0,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730659.2871997,"request_id":"c06ade90c3c449b7b7c4ef7c91cfe4a9","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5741,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":554.6,"duration_ms":8432.3,"extra":{}}
+INFO:     10.42.0.1:33112 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33116 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:32904 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33132 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:58028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730669.7596216,"request_id":"011fba3eb10d483da6ca6df3b675d32e","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6057,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":534.7,"duration_ms":7918.8,"extra":{}}
+INFO:     10.42.0.1:38054 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730673.723194,"request_id":"7dccf7851fa0435d99985faa7548a97c","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":14898,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":1425.4,"duration_ms":5064.3,"extra":{}}
+INFO:     10.42.0.1:38058 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:58028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730670.1283615,"request_id":"5bf92c64f1cc4ebd92425519ad71e589","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6463,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":723.3,"duration_ms":12974.0,"extra":{}}
+INFO:     10.42.0.1:38068 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730672.4793046,"request_id":"132aac308fbe4d2d8cc571552fb7496b","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6059,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":542.7,"duration_ms":12210.8,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36388 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:32904 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36396 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:50136 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730679.9471338,"request_id":"da359457098745a4afbada1160ee3deb","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5299,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":506.5,"duration_ms":10341.5,"extra":{}}
+INFO:     10.42.0.167:50142 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730690.184501,"request_id":"b0b8a70556c5481f9e07cd016cee70a9","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4885,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":497.1,"duration_ms":778.6,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730680.8770065,"request_id":"7a35134258b54a07bebbb7a947f3a618","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5152,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":523.3,"duration_ms":12320.5,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36412 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:58028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730695.0080645,"request_id":"ef08a24032f9437a8ed23b38281e746d","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3355,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":366.6,"duration_ms":631.4,"extra":{}}
+INFO:     10.42.0.167:58028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730688.1720693,"request_id":"5c3789c1eda441148fdf39590cc66cf2","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5723,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":693.0,"duration_ms":8439.9,"extra":{}}
+{"ts":1790730688.6069472,"request_id":"197716ac31364dc0a64ffcee1996b920","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5693,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":1017.3,"duration_ms":8246.0,"extra":{}}
+{"ts":1790730687.3257158,"request_id":"0b6559bba47543d48a89bce62a467e63","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5844,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":548.0,"duration_ms":9669.9,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:41240 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:41246 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730694.1620266,"request_id":"99f4ac5652b343aaa186b8b357b7e4cb","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5884,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":193.6,"duration_ms":7816.1,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730698.2067363,"request_id":"6ccc7eadeb004c09b053c8c13b62289a","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4787,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":651.1,"duration_ms":5084.7,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730696.133487,"request_id":"7734fae460684073aa7a6ece5549ec74","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4699,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":478.0,"duration_ms":8068.9,"extra":{}}
+INFO:     10.42.0.1:41250 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730703.6162229,"request_id":"e35e376a4a0f44a0977b732a487e3566","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3756,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":300.5,"duration_ms":3035.8,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:58028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50500 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50502 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730704.275494,"request_id":"8d01dbd3699a43959e05440350a767e3","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5560,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":519.8,"duration_ms":8068.0,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50516 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:34736 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730708.83578,"request_id":"5e3755334cd24535a2dc2c82b85d6bdb","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4630,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":470.5,"duration_ms":6729.5,"extra":{}}
+{"ts":1790730708.0983071,"request_id":"06c8ec08c36e42f8a4e1bbb8dd2a6d3b","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5299,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":328.0,"duration_ms":8067.7,"extra":{}}
+{"ts":1790730707.8435001,"request_id":"339de175ee36483b862b042ae1e437c3","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4990,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":483.1,"duration_ms":8577.5,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:58028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:51240 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:51252 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:34746 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:34748 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730715.0677025,"request_id":"296d7d2b81dd47eea359f2e9e68ff471","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4568,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":411.7,"duration_ms":7286.9,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730712.5195584,"request_id":"c0230c1aa62c4b3e8d65ad97c9bd8ca8","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5891,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":544.6,"duration_ms":10990.6,"extra":{}}
+{"ts":1790730717.2226992,"request_id":"50d21d28962c43dd9f52a6efbe74a18c","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5687,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":486.5,"duration_ms":6858.9,"extra":{}}
+INFO:     10.42.0.1:51258 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730717.1914904,"request_id":"f0aa8501b8704153a00f4be6d274dfa7","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4949,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":489.5,"duration_ms":8374.7,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730720.2394123,"request_id":"9c5e03abd4714d42b42cbe1d151ab543","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5303,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":509.4,"duration_ms":8089.2,"extra":{}}
+INFO:     10.42.0.1:35786 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35800 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730721.0965557,"request_id":"ad0808f8252940399fad3e60bcf1db7e","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3852,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":500.1,"duration_ms":9711.3,"extra":{}}
+INFO:     10.42.0.167:34748 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730720.2654388,"request_id":"a19678c66c554cb1a19ad5d09c48b6c6","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6151,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":959.7,"duration_ms":11946.9,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730726.2221231,"request_id":"d7e0a191a7664f08a77813ec4906f38d","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8872,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":747.6,"duration_ms":6862.6,"extra":{}}
+{"ts":1790730730.980103,"request_id":"7cc96db55ad340bf86492a1b561f39c0","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3979,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":398.0,"duration_ms":2773.1,"extra":{}}
+INFO:     10.42.0.1:35806 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730727.0960371,"request_id":"b14f46ab04834104b8bcb0111c41fbb9","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7170,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":664.6,"duration_ms":10090.2,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730729.7723513,"request_id":"1bf424e487a947ebb1ca0a134544a470","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6523,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":594.5,"duration_ms":8126.7,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52994 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:53006 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730737.7320817,"request_id":"6e0251a3ef834ea5be5be0590b56b4b9","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3938,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":326.8,"duration_ms":2470.0,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47162 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:53018 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730738.8842134,"request_id":"7c28db7fc6e44be584d60219045ba485","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4234,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":411.9,"duration_ms":5629.6,"extra":{}}
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43924 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43940 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730738.445363,"request_id":"b3d2e7d0807949a6b920715d8c7600b3","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7170,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":135.0,"duration_ms":11163.8,"extra":{}}
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54492 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730740.9072907,"request_id":"05ada16efc2344818ef913f1cbc44a1f","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5163,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":707.3,"duration_ms":10949.9,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730744.8422668,"request_id":"cdebcfbb1e464ed7b9c74b6c07781372","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8872,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":401.4,"duration_ms":8358.8,"extra":{}}
+INFO:     10.42.0.1:43944 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730744.0553255,"request_id":"d29e849c7be342228aa86a9c1569b0dc","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5891,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":159.3,"duration_ms":11553.9,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730749.7255812,"request_id":"65a3ef28ae064aefb9e335ab6e224b0f","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7050,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":653.0,"duration_ms":8036.9,"extra":{}}
+{"ts":1790730750.9022567,"request_id":"fd1af860922c459fb17a278927d8e7cf","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4115,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":439.3,"duration_ms":7697.5,"extra":{}}
+INFO:     10.42.0.1:52592 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52596 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47162 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54492 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:42934 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730759.3388264,"request_id":"e161d55c0a0f455a80bbaab62a10dd38","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4926,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":1411.9,"duration_ms":2283.4,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730758.767263,"request_id":"64e33762b5504135affed4ca13491d69","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":10072,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":1245.4,"duration_ms":3962.0,"extra":{}}
+{"ts":1790730755.8926773,"request_id":"03b3ecede3d648a08cb2276afd7198c1","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6405,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":537.7,"duration_ms":7860.1,"extra":{}}
+INFO:     10.42.0.1:52610 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730756.168261,"request_id":"1b0b8de5bfc745bbbfb70c8564122874","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4535,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":439.5,"duration_ms":8850.1,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730759.2281678,"request_id":"840dde365d8e46768a89824e772ed5b5","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4632,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":1419.9,"duration_ms":8702.2,"extra":{}}
+INFO:     10.42.0.1:53370 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:53372 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54492 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730758.571407,"request_id":"097366da388d48b780d66f2c959882ef","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5884,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":557.9,"duration_ms":12234.3,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730765.8886197,"request_id":"2b1d0fcddf5446c58beed1520af2edf7","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5137,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":450.5,"duration_ms":6754.2,"extra":{}}
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730766.2396197,"request_id":"663e113938bd4b819cb29eb5ef5c6d72","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7140,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":663.9,"duration_ms":6988.3,"extra":{}}
+INFO:     10.42.0.1:53386 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60556 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60568 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730768.926096,"request_id":"981233197ca84f08aeb0959e0254d21a","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5697,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":554.4,"duration_ms":10862.0,"extra":{}}
+{"ts":1790730772.0523376,"request_id":"5ef24df605724a4891a2d2e5411c58af","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6656,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":634.6,"duration_ms":9303.5,"extra":{}}
+{"ts":1790730774.2755172,"request_id":"8ec3046fd9c347b8bd9e034c5e04adf2","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5004,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":416.5,"duration_ms":7417.5,"extra":{}}
+INFO:     10.42.0.167:54172 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730774.198655,"request_id":"00cb9aa13afb49709d9e8354581c3c06","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5141,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":521.6,"duration_ms":8164.3,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730782.2053673,"request_id":"d10a5d656efb4736a5e7c2b0781ee9f7","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6953,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":592.4,"duration_ms":1898.8,"extra":{}}
+INFO:     10.42.0.1:60584 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:57460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730782.975854,"request_id":"3f9491d064814898b185bf3f2eea1e18","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4850,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":480.6,"duration_ms":3360.6,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44562 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44572 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730784.803586,"request_id":"15a87015a74c49da8d8dccd55ea318c3","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":1255,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":203.2,"duration_ms":4968.0,"extra":{}}
+{"ts":1790730781.3633535,"request_id":"fcdeb95ea0c44e40a5776fdda4aa5389","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5525,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":503.3,"duration_ms":8661.2,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730786.9205859,"request_id":"6632912109344bd69e244c3c4cd62c47","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5367,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":512.1,"duration_ms":5893.5,"extra":{}}
+INFO:     10.42.0.1:44580 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57660 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57674 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45398 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45418 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45420 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730802.532621,"request_id":"fae984d06f5d42f9b69e15b0a573634f","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3355,"max_tokens":900,"guard_cached":true,"guard_ms":3.6,"ttft_ms":383.8,"duration_ms":640.8,"extra":{}}
+{"ts":1790730795.897317,"request_id":"78e76319d55844a49534c76c6b9da889","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6059,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":537.2,"duration_ms":8096.2,"extra":{}}
+{"ts":1790730802.5192575,"request_id":"f559ce4f90ee4b7c98366e6451a3477f","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6953,"max_tokens":900,"guard_cached":true,"guard_ms":0.8,"ttft_ms":397.0,"duration_ms":1738.2,"extra":{}}
+INFO:     10.42.0.1:57688 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45418 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45420 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730807.4655995,"request_id":"7f179420cd22448f83521a1b6e1c4ef2","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4885,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":634.6,"duration_ms":1290.9,"extra":{}}
+INFO:     10.42.0.1:54942 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45420 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54944 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730800.8147676,"request_id":"e5c5ea05ecff4297bce11497d4c6e17c","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6578,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":598.8,"duration_ms":8732.0,"extra":{}}
+INFO:     10.42.0.167:45398 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:46392 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:46386 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730810.3867877,"request_id":"d76000b478e5408f875c6f62369cad71","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8385,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":768.5,"duration_ms":2344.0,"extra":{}}
+INFO:     10.42.0.167:46400 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45398 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:54954 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730801.829695,"request_id":"0fbad2f3a0744db3927672c43cb4a79c","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5194,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":501.4,"duration_ms":12736.9,"extra":{}}
+INFO:     10.42.0.167:46414 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730814.4244053,"request_id":"b0860db7859143f78eb83cbb04043b4b","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7334,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":600.1,"duration_ms":3096.2,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730807.14751,"request_id":"464631fa5508486b90b196444c1aff49","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5305,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":504.4,"duration_ms":10486.5,"extra":{}}
+{"ts":1790730807.04839,"request_id":"01c225b3ffc3440a9b8bb16e85083803","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5382,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":155.2,"duration_ms":10824.1,"extra":{}}
+{"ts":1790730812.2251327,"request_id":"4bf8797171454c4bad88c625369eb43b","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7905,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":1152.1,"duration_ms":6169.4,"extra":{}}
+INFO:     10.42.0.1:35686 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35690 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730812.1749842,"request_id":"5e6bc45ed5494e3aaf2063e24f254c09","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5222,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":518.6,"duration_ms":9487.6,"extra":{}}
+INFO:     10.42.0.167:45418 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730808.7911744,"request_id":"1b26c8d69dab4e6c841a151878800ed8","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5820,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":519.9,"duration_ms":13938.9,"extra":{}}
+INFO:     10.42.0.167:45420 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35702 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730816.3695576,"request_id":"46828ff28d014d65b98d70e34772bb00","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4984,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":692.2,"duration_ms":8203.2,"extra":{}}
+{"ts":1790730811.99446,"request_id":"a4c010976ccc4fdba9fd6ea1a6fee2f1","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5697,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":735.4,"duration_ms":12724.8,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730820.9429803,"request_id":"5447a47b42e24befb2400408b88f774c","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7499,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":90.2,"duration_ms":5080.3,"extra":{}}
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730813.4887526,"request_id":"e62b9f708f004bb99deef344cd87eff3","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6586,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":602.4,"duration_ms":14464.1,"extra":{}}
+INFO:     10.42.0.1:52770 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52776 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45398 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730826.5380929,"request_id":"68826b2973e74ee9a66584b022e4a142","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5427,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":446.6,"duration_ms":5613.0,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730821.6899607,"request_id":"b545a8cd12344b97bc2891be7404d50f","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6079,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":575.6,"duration_ms":12600.1,"extra":{}}
+INFO:     10.42.0.1:52784 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54156 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730823.2229333,"request_id":"1d72ccbdbf8840c4b789e6a4e9dd26b4","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":9310,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":871.6,"duration_ms":12587.0,"extra":{}}
+{"ts":1790730824.7434754,"request_id":"0a27cb35224649d689923bace5a823c7","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5815,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":534.7,"duration_ms":11634.4,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:43926 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730830.3238342,"request_id":"0b9f8d14fc62451bb79d7b8c97176685","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5938,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":931.5,"duration_ms":9052.3,"extra":{}}
+INFO:     10.42.0.1:43934 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730835.5043225,"request_id":"1949f88def20447cb89866e41fd2b2f8","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5741,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":194.3,"duration_ms":6127.1,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730837.4529533,"request_id":"5dc9a1fd226846e697d4821631d102ed","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6319,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":567.5,"duration_ms":6795.8,"extra":{}}
+INFO:     10.42.0.1:43938 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:51792 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59526 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59536 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730847.2635396,"request_id":"3e834bbab3e94795bfe3a5e8e09c3688","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7334,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":96.3,"duration_ms":2565.0,"extra":{}}
+{"ts":1790730847.6536493,"request_id":"458c390d44294c138c93af0c848a6449","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8473,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":807.8,"duration_ms":3107.4,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:51792 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59538 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:55002 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:55016 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:55028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:37970 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730852.1065903,"request_id":"480ba938167d4aa3ab76e79dfabca3d6","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6057,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":921.6,"duration_ms":7007.5,"extra":{}}
+INFO:     10.42.0.1:37986 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730852.019971,"request_id":"a7c2d0abb56d459da7b883b7a9c3562b","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5089,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":504.5,"duration_ms":8403.1,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730860.623504,"request_id":"b07d8782804d46e8854e2d1b50e68a32","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4926,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":492.0,"duration_ms":1009.0,"extra":{}}
+{"ts":1790730857.9879355,"request_id":"a70ac729b23b4cd29ee8cd4f51bf1857","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3938,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":396.3,"duration_ms":3846.8,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730856.7156694,"request_id":"5059e058af7640f5b18ed6d044ac392d","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5604,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":1047.8,"duration_ms":6936.0,"extra":{}}
+{"ts":1790730855.8662863,"request_id":"a6db45edba834194a309978b6a7f4548","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5152,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":454.6,"duration_ms":8006.6,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38002 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:55002 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730864.367622,"request_id":"3c4309b95e2f4bf180ae2c65f7e03f91","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8385,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":389.4,"duration_ms":1496.3,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:34932 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:34944 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730864.0413723,"request_id":"82ed903a1ebe426ebac9bf6f82ec89c4","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4570,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":403.7,"duration_ms":6401.7,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:34948 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730874.722995,"request_id":"8deb5f6eb0384089b96965ed6c4603fb","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":10111,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":876.8,"duration_ms":1497.4,"extra":{}}
+INFO:     10.42.0.167:54476 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730871.83563,"request_id":"f89f206c3e7c472ea9b4ef0a17fd1bfb","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4949,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":176.5,"duration_ms":6491.2,"extra":{}}
+INFO:     10.42.0.1:57818 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57832 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730876.210055,"request_id":"1195d5cc24db46efb5bb6e5c93dff588","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4667,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":472.1,"duration_ms":6750.2,"extra":{}}
+{"ts":1790730878.5567698,"request_id":"0b8f4379893d4e3ab6b99c486aaf41db","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4787,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":397.2,"duration_ms":4875.4,"extra":{}}
+INFO:     10.42.0.167:54476 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57842 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36444 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730876.8464248,"request_id":"2c95ed180b8443ae8f690b6afff4e394","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5523,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":512.9,"duration_ms":10405.0,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35706 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35722 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36486 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730880.4216142,"request_id":"b990e0e938914ab5b804c73246f58141","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5116,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":524.7,"duration_ms":10998.6,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730883.4435532,"request_id":"e06fded4050346cfb38164856d72e434","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6578,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":822.2,"duration_ms":9297.8,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730885.324373,"request_id":"79be439f993a42ffa0be432e2bd0dde5","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5310,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":507.4,"duration_ms":8944.1,"extra":{}}
+INFO:     10.42.0.1:35738 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36444 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730890.9233038,"request_id":"4413cf4b2d60494db3f7e689cdab5cb2","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4888,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":422.8,"duration_ms":5306.0,"extra":{}}
+{"ts":1790730883.233495,"request_id":"3506b9663dc94b8fa3046fac06197bf8","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4949,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":482.0,"duration_ms":13339.0,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54476 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36486 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:39094 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730889.0956964,"request_id":"1e58beba7b674161a189b5385d35cd74","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5391,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":523.8,"duration_ms":10069.3,"extra":{}}
+INFO:     10.42.0.1:39102 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730898.1020062,"request_id":"b9b9b6d6dcf94155ad7b3bea9ecbdac8","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5723,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":477.1,"duration_ms":5781.2,"extra":{}}
+{"ts":1790730895.3277066,"request_id":"f4e6f58652834afeb88da31e062bc8d3","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4954,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":492.0,"duration_ms":8613.5,"extra":{}}
+{"ts":1790730893.3474116,"request_id":"7c016862f9884fdebe1f0a703b43f40b","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5843,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":553.8,"duration_ms":10803.4,"extra":{}}
+{"ts":1790730898.25353,"request_id":"3db40a8bc6094d74a75da455a385ffcd","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4173,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":434.4,"duration_ms":6122.7,"extra":{}}
+INFO:     10.42.0.1:39106 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730894.4110425,"request_id":"e3eda2b334754c089a2344028e7afc26","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7170,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":661.4,"duration_ms":11793.3,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54476 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47716 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:47730 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730902.088885,"request_id":"e2f8e0f681b74acabc231b817f79e5ff","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6656,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":620.9,"duration_ms":7658.5,"extra":{}}
+INFO:     10.42.0.167:54458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730906.6251283,"request_id":"240b516ba1e54057ab358353dce96a73","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":2715,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":224.6,"duration_ms":4782.3,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730906.906902,"request_id":"2271facbcff04dc1b7d037d9f97a2f7b","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":2715,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":255.1,"duration_ms":6730.0,"extra":{}}
+INFO:     10.42.0.1:47740 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54476 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40356 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40358 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40374 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40382 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730911.8569763,"request_id":"e398d77a3d9f42fc8ab6d7d6424c6df0","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5883,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":489.7,"duration_ms":6885.6,"extra":{}}
+INFO:     10.42.0.1:45018 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40404 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45030 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730910.062005,"request_id":"7ca008bb8f0548e6946a68d33f62a8b8","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6523,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":591.6,"duration_ms":10796.4,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730910.1612306,"request_id":"70a6bed01707409e9a4b60f3c5dcb1ef","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5299,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":958.1,"duration_ms":10918.9,"extra":{}}
+INFO:     10.42.0.167:54458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730916.7623005,"request_id":"583c9906326345289d07cecb26c6ceda","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4937,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":409.8,"duration_ms":7667.8,"extra":{}}
+INFO:     10.42.0.1:45042 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730917.513646,"request_id":"028eaf21d81b4a9db96f8d5f2b40b9df","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5132,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":878.3,"duration_ms":7885.9,"extra":{}}
+INFO:     10.42.0.167:40358 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730920.551754,"request_id":"1cd8d8e488594b068978b3027ef95ff2","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4895,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":422.1,"duration_ms":5908.2,"extra":{}}
+INFO:     10.42.0.167:40382 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730917.4804153,"request_id":"dd6cf123926f499bb3cae3b41e1f9df5","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4719,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":506.1,"duration_ms":9574.7,"extra":{}}
+{"ts":1790730914.1045334,"request_id":"3696eb4d324142099dad9e2b97002a69","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":9313,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":867.0,"duration_ms":13364.1,"extra":{}}
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730916.3971822,"request_id":"ab1fd873f09a4664ae97239e8a75672b","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6404,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":656.8,"duration_ms":11325.3,"extra":{}}
+{"ts":1790730923.1503391,"request_id":"37e8a329414a49678f7db5c78a47d104","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5049,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":510.4,"duration_ms":5273.0,"extra":{}}
+INFO:     10.42.0.1:35284 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730928.3470066,"request_id":"78a8042a2b4c465ca949da82ceec114a","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5665,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":480.5,"duration_ms":727.1,"extra":{}}
+INFO:     10.42.0.1:35298 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730925.6968951,"request_id":"1587a7621d4048d9b56110b50eb4e6fa","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4457,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":895.7,"duration_ms":4943.5,"extra":{}}
+{"ts":1790730917.6721342,"request_id":"5108bd2d5f7a424aa7ebb0860b488387","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6089,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":1527.6,"duration_ms":13626.9,"extra":{}}
+{"ts":1790730921.8747733,"request_id":"81a8661319b2478292304574b762d0b0","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3616,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":391.3,"duration_ms":9581.7,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54476 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730925.4051437,"request_id":"5be5d896fa53475c9c9d8554edbba7bb","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4699,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":499.6,"duration_ms":8750.2,"extra":{}}
+INFO:     10.42.0.1:35304 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40358 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730932.8645637,"request_id":"6658f478ceb64546983ee447b640a475","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4647,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":482.4,"duration_ms":2619.1,"extra":{}}
+{"ts":1790730931.649001,"request_id":"f86365f1970f4301bd3460e09c65b672","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5367,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":451.6,"duration_ms":4332.0,"extra":{}}
+{"ts":1790730931.711632,"request_id":"a6eb8346c7394b8b97e182c09facf461","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3938,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":395.9,"duration_ms":4277.0,"extra":{}}
+INFO:     10.42.0.167:45408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55742 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730932.308727,"request_id":"bfe6b3754509442c9f72512a6ea95c09","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6035,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":542.9,"duration_ms":7092.4,"extra":{}}
+INFO:     10.42.0.1:55754 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730934.8139277,"request_id":"4d8b70b7772a4617b0fd2d5dbc55dbc1","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4587,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":470.4,"duration_ms":7724.5,"extra":{}}
+{"ts":1790730936.8444827,"request_id":"4b848c8dd55f428683a534c653619e5a","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4131,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":415.5,"duration_ms":5984.6,"extra":{}}
+INFO:     10.42.0.1:55768 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33248 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33256 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:37364 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33272 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59618 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730569.8040984,"request_id":"aa52126fb6b049d9bb807da3981bcc78","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4415,"max_tokens":900,"guard_cached":false,"guard_ms":72.8,"ttft_ms":524.6,"duration_ms":7598.0,"extra":{}}
+{"ts":1790730570.7438202,"request_id":"1ba478a7c8474cfcb5341a52b21224ec","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5299,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":167.1,"duration_ms":7225.6,"extra":{}}
+{"ts":1790730571.8375192,"request_id":"12d18c6cc9d1430fb16e9b77260e7062","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4719,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":483.3,"duration_ms":6171.3,"extra":{}}
+INFO:     10.42.0.1:33708 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730571.8709204,"request_id":"bbe7d2bbf1a3451fad6f9afe37ff0fa6","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5132,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":857.0,"duration_ms":7033.4,"extra":{}}
+INFO:     10.42.0.1:33722 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47440 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730572.0293336,"request_id":"51871fb89e7c4dcb898399fe3a136085","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6089,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":848.3,"duration_ms":11338.2,"extra":{}}
+INFO:     10.42.0.1:33732 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730580.0544226,"request_id":"a3c695e5594e461ab7682d170d094d26","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4457,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":436.4,"duration_ms":4714.2,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730579.7621357,"request_id":"df1b7208e6cd4da4a1b4ea6ad63202aa","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4699,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":472.2,"duration_ms":8185.1,"extra":{}}
+INFO:     10.42.0.1:42720 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730587.2210932,"request_id":"954034ad7d9641a5a85eabe3bed9b756","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4647,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":469.1,"duration_ms":1832.4,"extra":{}}
+INFO:     10.42.0.165:47440 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.165:47460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:42724 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730588.6877286,"request_id":"081135068aa74c9a83f220502acc71ec","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5047,"max_tokens":900,"guard_cached":false,"guard_ms":63.9,"ttft_ms":549.4,"duration_ms":4569.3,"extra":{}}
+INFO:     10.42.0.1:42734 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730589.131572,"request_id":"e556d6f19c584ea5868c4c744e881af2","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6405,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":136.1,"duration_ms":7824.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57126 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57128 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57142 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36450 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36460 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36476 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33184 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33198 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33210 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57608 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57614 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:57616 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59636 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54174 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59646 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54186 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54200 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54224 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59660 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730636.612032,"request_id":"09d5c37df3f04fd3b965556d9dfd10c8","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5475,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":454.1,"duration_ms":8356.6,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730637.0838628,"request_id":"db4acba644654e3392939bb4dc8cb147","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4723,"max_tokens":900,"guard_cached":true,"guard_ms":3.7,"ttft_ms":482.4,"duration_ms":11110.3,"extra":{}}
+INFO:     10.42.0.1:41242 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:41250 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:32926 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730649.4924912,"request_id":"1f058b39269247b0a393c6aa32207321","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6379,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":918.6,"duration_ms":1229.7,"extra":{}}
+{"ts":1790730640.0735931,"request_id":"9b55a673b50b40c79d16aa5ef394c975","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5141,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":529.1,"duration_ms":11941.3,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730642.614114,"request_id":"e89faf741c4a419e800ed29af8419d3c","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4248,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":440.2,"duration_ms":10239.2,"extra":{}}
+{"ts":1790730640.1273093,"request_id":"257b872cbd2e48759f8cefe09fd2141a","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4570,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":865.6,"duration_ms":12956.2,"extra":{}}
+{"ts":1790730637.941175,"request_id":"f00a200135a04ea894ba9daf92e2debe","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6089,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":938.1,"duration_ms":15648.0,"extra":{}}
+INFO:     10.42.0.1:41254 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54174 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:40530 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:40534 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730645.4687307,"request_id":"91bbb89a82c146e3be048dba3e941dd0","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5004,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":498.6,"duration_ms":15238.3,"extra":{}}
+{"ts":1790730648.5087483,"request_id":"7a55675b254d4d2f991b4a880fc26ac7","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6319,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":744.5,"duration_ms":12313.7,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:40546 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730660.9126394,"request_id":"99b4c2219a5d421eba807803eb68f9bf","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4719,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":495.0,"duration_ms":6262.7,"extra":{}}
+{"ts":1790730654.552158,"request_id":"ca908079f7514e748e1f141da502ec50","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":9310,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":863.8,"duration_ms":13069.5,"extra":{}}
+{"ts":1790730661.476906,"request_id":"7538ec53d5a44090b89f09a4327bb287","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5133,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":156.1,"duration_ms":6372.7,"extra":{}}
+INFO:     10.42.0.1:60858 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60874 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54174 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:58016 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60890 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730669.0221124,"request_id":"a3bae0c910644de88aa6dac0b4b3aaaf","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6761,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":551.3,"duration_ms":6279.2,"extra":{}}
+INFO:     10.42.0.167:49076 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52480 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52484 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730671.1758137,"request_id":"2413a9361f984b26958576b66dabe0a1","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5803,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":541.0,"duration_ms":10738.7,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54174 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730674.8428009,"request_id":"b0d7ed18470047aab225854ad9999753","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6258,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":856.2,"duration_ms":7532.4,"extra":{}}
+INFO:     10.42.0.167:49076 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730681.9345224,"request_id":"390d2d5ccb1a400c8afef110274763e0","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":2581,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":300.3,"duration_ms":1777.4,"extra":{}}
+{"ts":1790730668.839731,"request_id":"87d677173bcf46c39c4941f4b402c9dd","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6050,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":491.8,"duration_ms":15331.0,"extra":{}}
+INFO:     10.42.0.1:52498 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730673.1639028,"request_id":"2b5a6f599c7a4931bd73ed38105065fc","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6403,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":596.3,"duration_ms":11468.2,"extra":{}}
+{"ts":1790730679.4835997,"request_id":"455b66a06307445d95294d3cf7feca66","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4954,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":422.1,"duration_ms":6405.5,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54174 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45394 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45402 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:58016 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730686.45087,"request_id":"aca9eb5264834af0bd5e2a5bb7ea618e","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4173,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":360.1,"duration_ms":4279.8,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:45416 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730682.9925628,"request_id":"4eaf40a5eea14c979eab7388570fcc6b","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5640,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":556.4,"duration_ms":11568.3,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730686.5972872,"request_id":"1f43ad878a8341a295df325b7da438d0","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5687,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":533.7,"duration_ms":10932.0,"extra":{}}
+{"ts":1790730687.446563,"request_id":"560a108b061640b99ef50881eb87cbdd","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5815,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":915.7,"duration_ms":10519.0,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35458 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730688.4287724,"request_id":"77af1bb6c84243efa1f0dbe263f2d0f5","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3616,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":1109.8,"duration_ms":10636.0,"extra":{}}
+INFO:     10.42.0.1:35472 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730691.5075333,"request_id":"6650cd9fdb1b40e6a088d2ff3052c5ce","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4820,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":484.9,"duration_ms":10594.5,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:35476 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730697.956745,"request_id":"b502ca63ffb848538588bcf0bf353a1a","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4819,"max_tokens":900,"guard_cached":true,"guard_ms":0.9,"ttft_ms":483.1,"duration_ms":7646.1,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49598 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49608 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730703.282166,"request_id":"9a60e47f41c541f298d8f4218f6db249","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6651,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":622.9,"duration_ms":7191.4,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730707.7234638,"request_id":"352474870f024c04b98116c9e6f27b3e","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5391,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":449.0,"duration_ms":6220.5,"extra":{}}
+INFO:     10.42.0.1:49612 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730714.9645205,"request_id":"4ee72760203b4defb8c4847df9d598e2","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5207,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":504.6,"duration_ms":760.1,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55178 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730710.8256319,"request_id":"bc049eec21e74eeebdf2b8dcf3c32c7b","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5024,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":480.9,"duration_ms":8143.1,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55186 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730715.7573457,"request_id":"2f29f3fc84d54e7bac0bb7ee10dfed69","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4630,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":131.0,"duration_ms":6721.4,"extra":{}}
+INFO:     10.42.0.1:55190 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730719.048652,"request_id":"df9fb04551d941cf8800ad6391f9248a","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4173,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":303.9,"duration_ms":5573.3,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56384 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56394 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730725.8835273,"request_id":"ec461b1cd1cb482c9f7bcb00cf9d115b","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6650,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":622.2,"duration_ms":6288.1,"extra":{}}
+{"ts":1790730725.915829,"request_id":"ffb20d0b7bb54cedb7752a3ee3b4bb38","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5815,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":1042.8,"duration_ms":6336.3,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56408 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730733.775969,"request_id":"04c3cd8387c9401595f90d07a97c706d","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":9161,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":807.8,"duration_ms":1061.6,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50558 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730732.9317198,"request_id":"89733f1a748243b98911a6c7a3df0c7c","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6010,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":539.2,"duration_ms":6411.6,"extra":{}}
+INFO:     10.42.0.1:50574 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47130 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47138 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47154 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:50580 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730736.0691168,"request_id":"6acad554e4b04475ac68c05ef03eff5d","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4815,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":468.8,"duration_ms":8830.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59332 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730743.385801,"request_id":"38b50ff6a0064fc9a511d643d75f72be","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5133,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":510.0,"duration_ms":5634.2,"extra":{}}
+INFO:     10.42.0.1:59336 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47154 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730741.7047236,"request_id":"389e8605451a42199f63c5686269a522","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5583,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":555.1,"duration_ms":9248.9,"extra":{}}
+{"ts":1790730742.3495662,"request_id":"9aae494270d949bc96bcd703cee51f51","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6586,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":536.4,"duration_ms":9255.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730740.5889843,"request_id":"5b82515878804c619aad845211f843a1","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6080,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":547.8,"duration_ms":11970.8,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:59338 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730747.688868,"request_id":"ab659db3103d4ea1bf81160ca4a512ef","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4888,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":499.2,"duration_ms":7757.6,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:58952 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:58954 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:42950 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730750.2792916,"request_id":"6641364fbf7e4f68a98fb096af9e02fb","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6219,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":648.7,"duration_ms":10992.2,"extra":{}}
+INFO:     10.42.0.167:42948 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730760.236116,"request_id":"df2a7c99a4614dbd900d4c29539382c9","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":9161,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":1123.0,"duration_ms":1410.4,"extra":{}}
+INFO:     10.42.0.167:47154 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730752.6034489,"request_id":"e738edec9866454c97b00eac22e1f4dc","tenant":"load-9","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5832,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":542.2,"duration_ms":10878.5,"extra":{}}
+INFO:     10.42.0.1:58966 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730760.7769623,"request_id":"ca8ad68e457546f98e9c1367300a79a9","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4457,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":465.0,"duration_ms":5485.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730761.5735943,"request_id":"84a126ff140a48e9a0e97a9428f98aed","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4984,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":511.6,"duration_ms":6337.3,"extra":{}}
+INFO:     10.42.0.167:47154 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60992 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60996 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730755.7205372,"request_id":"ce5f8aeaeaea46b780da317fb69f6dab","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4820,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":305.5,"duration_ms":13995.0,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:48226 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:32776 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:48242 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730765.5348868,"request_id":"45b7d56b75e1413f9628db07100de0e9","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5815,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":529.5,"duration_ms":10258.6,"extra":{}}
+{"ts":1790730768.3464792,"request_id":"8ecaa54546644fe2b29a83edfaac9138","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8872,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":155.6,"duration_ms":7895.0,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47154 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:42652 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730772.416923,"request_id":"35bd79da556b41e9b9e0bf135be38fae","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3851,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":639.4,"duration_ms":6876.1,"extra":{}}
+INFO:     10.42.0.1:42666 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730770.265459,"request_id":"07f25be8b816469bacd9dac1dbd670ee","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6080,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":144.7,"duration_ms":9793.4,"extra":{}}
+{"ts":1790730774.2921433,"request_id":"a99a9188b1ff461daf0a346d9e85f2f1","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5303,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":896.2,"duration_ms":6675.3,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730777.195415,"request_id":"5888444e41684775a4eedfd22fc7a5da","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6010,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":665.8,"duration_ms":6750.2,"extra":{}}
+INFO:     10.42.0.1:42676 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730777.244674,"request_id":"b2dc2d2dc4904e8bb0c2d7f81845323e","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4954,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":501.7,"duration_ms":7395.5,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:48242 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:47154 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730785.606714,"request_id":"5ac8e236099d4d0c8d9060a5264dec47","tenant":"load-7","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6953,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":760.2,"duration_ms":2574.0,"extra":{}}
+INFO:     10.42.0.1:40894 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:40910 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730781.1125546,"request_id":"d94a53f1f7bc43e4b5259916d380fc8c","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5137,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":307.7,"duration_ms":9338.0,"extra":{}}
+{"ts":1790730784.785732,"request_id":"b84ea28e97144f08995033b8d737a60b","tenant":"load-5","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8222,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":703.6,"duration_ms":6283.4,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730785.7322178,"request_id":"c527201502394e488622805e34a22ec0","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5676,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":550.2,"duration_ms":6663.6,"extra":{}}
+INFO:     10.42.0.1:40916 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730790.828842,"request_id":"2de685e7af1d439f93f81722d4a8a6c7","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4954,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":487.6,"duration_ms":5627.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730795.3212702,"request_id":"e5bf119f6d484426bfb7b2f17b27d0bf","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5234,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":448.1,"duration_ms":1821.2,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49740 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49750 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49762 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730797.9138076,"request_id":"bd13caa4ac924ab6ae2245cbb871b15f","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5938,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":482.8,"duration_ms":6549.7,"extra":{}}
+{"ts":1790730798.5416672,"request_id":"f96ad31136884f698717f60c444a2abb","tenant":"load-14","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5382,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":499.0,"duration_ms":7515.6,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:46370 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60388 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60400 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:46382 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730806.5175204,"request_id":"331eca7bf59444259875f7a6efc03083","tenant":"load-19","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7499,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":614.5,"duration_ms":5711.6,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:60414 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:56458 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730806.5575497,"request_id":"ac1fc900c8d4433083f5001cc36dfebe","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5741,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":524.1,"duration_ms":11860.1,"extra":{}}
+INFO:     10.42.0.1:39638 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:39644 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730807.8092299,"request_id":"2165d3723a4b4b52ac56a25dd728f77e","tenant":"load-24","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5439,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":763.7,"duration_ms":11865.7,"extra":{}}
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730809.1964672,"request_id":"aa188e28562c4f4e9eae60e61dbf7d73","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5832,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":426.4,"duration_ms":11424.4,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:39652 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730816.4697127,"request_id":"81fd2f951d87419db9f86f5da0e13b41","tenant":"load-3","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4949,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":522.5,"duration_ms":8103.0,"extra":{}}
+INFO:     10.42.0.167:46370 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:46382 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730813.3212478,"request_id":"5fb2d72db1bb484a9afc7ea54548bd3f","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6586,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":653.7,"duration_ms":14381.1,"extra":{}}
+{"ts":1790730820.0328739,"request_id":"9e2288d3e5ce45bd8c3165b456051481","tenant":"load-4","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5644,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":563.6,"duration_ms":8479.0,"extra":{}}
+INFO:     10.42.0.1:55928 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:55940 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54140 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730824.4201796,"request_id":"bc9c4d4f7091482b9cf68c2c82be978c","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4173,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":319.7,"duration_ms":6514.2,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:46370 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:37048 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730831.495617,"request_id":"f170cad0924f4ae6b0356a2630de157c","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6953,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":672.5,"duration_ms":1459.3,"extra":{}}
+INFO:     10.42.0.1:55952 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730828.614062,"request_id":"f5c4296bbc82466faad038bf78dd0d3f","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6423,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":616.6,"duration_ms":7347.3,"extra":{}}
+{"ts":1790730825.0414455,"request_id":"6d06542eee1140f7a9d6b0a023ca3c1d","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6518,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":805.2,"duration_ms":11620.2,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36454 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36464 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730830.2331378,"request_id":"b04ba56a9a9d4665a0aea5db0889d038","tenant":"load-13","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7306,"max_tokens":900,"guard_cached":true,"guard_ms":0.5,"ttft_ms":677.0,"duration_ms":9509.8,"extra":{}}
+{"ts":1790730831.511367,"request_id":"45a088e39be149e9be1b15f8d6d42d5a","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6343,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":1162.8,"duration_ms":8329.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730836.7576394,"request_id":"00fdcd8fd77543d9adf04d9f473f7ff5","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5686,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":529.9,"duration_ms":5926.0,"extra":{}}
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36480 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730843.0153775,"request_id":"7fedf2e224f94d9a94898a6f48f763e8","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4483,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":435.8,"duration_ms":5684.8,"extra":{}}
+INFO:     10.42.0.1:33670 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33684 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:33694 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54998 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:55012 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:53200 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:55030 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:53204 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730851.4754627,"request_id":"91e63ecef5ad4a9bb59a105e7d34cf1a","tenant":"load-23","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6343,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":96.0,"duration_ms":9815.4,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54126 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730856.1588635,"request_id":"e68d8b45c88b4f628e8c82dd75bf56e5","tenant":"load-28","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":8295,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":1088.5,"duration_ms":8243.6,"extra":{}}
+INFO:     10.42.0.1:53216 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730855.500789,"request_id":"66137e0f5b384f57944ccb6844a27867","tenant":"load-26","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":10790,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":1043.3,"duration_ms":9829.1,"extra":{}}
+{"ts":1790730858.5866876,"request_id":"aa98808950b94f91a8f4dc2e8f416a94","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4718,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":500.9,"duration_ms":7389.7,"extra":{}}
+{"ts":1790730862.6541612,"request_id":"69431c28e7b841eba7a41536a2fcaf0f","tenant":"load-1","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3346,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":358.4,"duration_ms":3837.0,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36160 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36162 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:36164 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44468 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44472 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730875.0898368,"request_id":"ffae79d32cf648fc878cabf8c78af466","tenant":"load-6","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5686,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":129.7,"duration_ms":6477.8,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730881.8282087,"request_id":"2e9ec9f5dcaa40f293e371030c860a57","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":2697,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":283.9,"duration_ms":527.7,"extra":{}}
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54488 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:44482 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54494 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56602 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56610 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730883.8387008,"request_id":"8c0f07ae5ad744af89b5d53ec3ff0bb3","tenant":"load-15","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5364,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":447.6,"duration_ms":6425.7,"extra":{}}
+INFO:     10.42.0.167:36472 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54488 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36474 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730882.4943588,"request_id":"1d9fe72899064f79a418d6ded9f3dcba","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5686,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":136.8,"duration_ms":9117.4,"extra":{}}
+{"ts":1790730890.4946272,"request_id":"554f59b5373f4931a5321c634ac823ef","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4885,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":869.3,"duration_ms":1162.4,"extra":{}}
+{"ts":1790730884.4187317,"request_id":"a28ba32966854f98a44b9a79bb995ee6","tenant":"load-16","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4234,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":408.5,"duration_ms":7524.2,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730886.4697776,"request_id":"5c81374da9ff4076a1ec469bc8c6b762","tenant":"load-18","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5815,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":529.4,"duration_ms":5846.4,"extra":{}}
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:56616 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54494 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:36474 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730890.3870733,"request_id":"b3ef2614d381485d9ee0d0c48b123e9f","tenant":"load-21","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4937,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":569.6,"duration_ms":8381.7,"extra":{}}
+INFO:     10.42.0.1:39564 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730889.767756,"request_id":"a5b39dd517de43bf88b06ced509009e6","tenant":"load-20","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":7741,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":724.0,"duration_ms":9628.9,"extra":{}}
+INFO:     10.42.0.1:39568 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730893.8844764,"request_id":"c03804d35017484cbb5d03b8a3592ebd","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5089,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":167.3,"duration_ms":7206.0,"extra":{}}
+{"ts":1790730896.003444,"request_id":"f4542e5b2fa24c15a8bdb3427871b71e","tenant":"load-30","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4483,"max_tokens":900,"guard_cached":true,"guard_ms":0.7,"ttft_ms":723.4,"duration_ms":5259.6,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+{"ts":1790730895.17798,"request_id":"1b2a7262b53e430cbc0196a9a3708a21","tenant":"load-27","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4949,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":158.8,"duration_ms":8635.1,"extra":{}}
+INFO:     10.42.0.1:39584 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730895.4358752,"request_id":"b2174ce1b0294d63a05153ce62e4dcf8","tenant":"load-29","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6639,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":978.2,"duration_ms":10163.5,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49026 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49032 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730902.6418602,"request_id":"7f1f398e94e14ec0aa0dca6efa758950","tenant":"load-2","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6405,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":631.9,"duration_ms":8672.9,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:49034 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40332 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40338 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40346 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40390 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52472 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52488 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730917.5778522,"request_id":"89126ac7ac6548f09ff5f62e3de87307","tenant":"load-17","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":3979,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":1149.8,"duration_ms":3960.2,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:52490 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730913.0097353,"request_id":"b93f88b2c3ba499d9fe45b6c6ed7240d","tenant":"load-8","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4949,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":134.8,"duration_ms":11564.1,"extra":{}}
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40390 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730915.467006,"request_id":"40e44e495d8d44909294e130415d9f3a","tenant":"load-10","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":4415,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":458.9,"duration_ms":12460.5,"extra":{}}
+{"ts":1790730916.3852057,"request_id":"5879fc528dd8430cabd1575d1b3b8533","tenant":"load-12","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5299,"max_tokens":900,"guard_cached":true,"guard_ms":0.4,"ttft_ms":668.4,"duration_ms":12038.1,"extra":{}}
+INFO:     10.42.0.1:38984 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:38988 - "GET /readyz HTTP/1.1" 200 OK
+{"ts":1790730915.8383062,"request_id":"311781627d444b2bba000d0d512ee4d7","tenant":"load-11","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6398,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":644.9,"duration_ms":14250.6,"extra":{}}
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730924.6449192,"request_id":"bc54e43a14534fd4a75bcf4b7349e801","tenant":"load-22","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5714,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":545.4,"duration_ms":8300.4,"extra":{}}
+{"ts":1790730925.8259704,"request_id":"556436de00734864bdcd63a6775dc1e3","tenant":"load-25","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5857,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":938.0,"duration_ms":8604.4,"extra":{}}
+INFO:     10.42.0.1:38998 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.167:54460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.167:40338 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:58666 - "GET /healthz HTTP/1.1" 200 OK
+{"ts":1790730934.3312624,"request_id":"01aed7323a4f40d1ad4e595b752ac392","tenant":"load-31","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":5047,"max_tokens":900,"guard_cached":true,"guard_ms":0.3,"ttft_ms":482.1,"duration_ms":4734.2,"extra":{}}
+INFO:     10.42.0.1:58682 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+{"ts":1790730934.7766426,"request_id":"c74120b5ae244237a077df067f2d849b","tenant":"load-32","request_class":"interactive","step":"quick","status":200,"reason":"ok","stage":"","route":"local","prompt_tokens":6405,"max_tokens":900,"guard_cached":true,"guard_ms":0.6,"ttft_ms":608.4,"duration_ms":8015.6,"extra":{}}
+INFO:     10.42.0.1:58684 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:46112 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     10.42.0.1:46128 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     10.42.0.1:46140 - "GET /readyz HTTP/1.1" 200 OK
+INFO:     10.42.0.10:58800 - "GET /metrics HTTP/1.1" 200 OK

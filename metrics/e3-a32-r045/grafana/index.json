@@ -1,0 +1,71 @@
+{
+ "from": 1790911432.0,
+ "to": 1790912282.0,
+ "tz": "America/Los_Angeles",
+ "images": [
+  {
+   "what": "Cluster",
+   "file": "grafana/01-companion-cluster.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-cluster/cluster?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=1276&kiosk=true",
+   "seconds": 3.9,
+   "bytes": 138854
+  },
+  {
+   "what": "Success and failures",
+   "file": "grafana/02-companion-success.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-success/success-and-failures?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 3.9,
+   "bytes": 135484
+  },
+  {
+   "what": "Gateway + admission: sheds by reason",
+   "file": "grafana/03-companion-gateway.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-gateway/gateway-and-admission?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 3.7,
+   "bytes": 125839
+  },
+  {
+   "what": "Router",
+   "file": "grafana/04-companion-router.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-router/router?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 3.9,
+   "bytes": 165678
+  },
+  {
+   "what": "Queue depth by pod",
+   "file": "grafana/05-companion-queues.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-queues/queue-depth-by-pod?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=1276&kiosk=true",
+   "seconds": 6.8,
+   "bytes": 198170
+  },
+  {
+   "what": "vLLM",
+   "file": "grafana/06-companion-vllm.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-vllm/vllm?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 3.8,
+   "bytes": 175077
+  },
+  {
+   "what": "KV hop store (NIXL and LMCache, our Mooncake)",
+   "file": "grafana/07-companion-hop.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-hop/hop-store?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 3.7,
+   "bytes": 79624
+  },
+  {
+   "what": "Pods / replicas / KEDA: which pool?",
+   "file": "grafana/08-companion-scaling.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-scaling/pods-replicas-keda?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 3.7,
+   "bytes": 90559
+  },
+  {
+   "what": "The Companion app (not in the handout list)",
+   "file": "grafana/09-companion-app.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-app/app?orgId=1&from=1790911432000&to=1790912282000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 3.4,
+   "bytes": 42476
+  }
+ ],
+ "errors": []
+}

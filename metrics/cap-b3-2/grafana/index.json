@@ -1,0 +1,15 @@
+{
+ "from": 1790704084.0,
+ "to": 1790704554.0,
+ "tz": "America/Los_Angeles",
+ "images": [
+  {
+   "what": "Gateway + admission: sheds by reason",
+   "file": "grafana/03-companion-gateway.png",
+   "url": "http://127.0.0.1:3000/render/d/companion-gateway/gateway-and-admission?orgId=1&from=1790704084000&to=1790704554000&tz=America%2FLos_Angeles&width=1600&height=972&kiosk=true",
+   "seconds": 7.7,
+   "bytes": 105813
+  }
+ ],
+ "errors": []
+}

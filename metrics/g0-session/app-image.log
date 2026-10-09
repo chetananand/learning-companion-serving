@@ -1,0 +1,5 @@
+sha256:5b0980e9371f3e287f766089ba6e75c194b8c0a0e973750e2e70616d299305e2
+docker.io/companion/app:dev             	saved	
+application/vnd.oci.image.index.v1+json sha256:5b0980e9371f3e287f766089ba6e75c194b8c0a0e973750e2e70616d299305e2
+Importing	elapsed: 13.9s	total:   0.0 B	(0.0 B/s)	
+exit=0

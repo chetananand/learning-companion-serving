@@ -1,0 +1,23 @@
+[
+  {
+    "id": "D-07",
+    "pass": false,
+    "rule": "the current version comes from tier-1 live docs",
+    "rule_ok": false,
+    "time_rule": "full answer <= 60.0 s (SLO-4)",
+    "time_ok": true,
+    "first_token_s": null,
+    "total_s": 10.4,
+    "claims": [],
+    "errors": [
+      {
+        "event": "error",
+        "code": 503,
+        "reason": "timeout_queue",
+        "message": "timeout_queue",
+        "retry_after": "2"
+      }
+    ],
+    "via": []
+  }
+]

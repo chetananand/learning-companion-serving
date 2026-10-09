@@ -1,0 +1,1 @@
+{"query": "sum by (fairness_id) (inference_extension_flow_control_queue_size)", "status": "success", "data": {"resultType": "matrix", "result": []}}

@@ -1,0 +1,1 @@
+{"query": "max by (model_server_pod) (inference_pool_per_pod_queue_size)", "status": "success", "data": {"resultType": "matrix", "result": []}}

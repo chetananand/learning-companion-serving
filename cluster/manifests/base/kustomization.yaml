@@ -1,0 +1,44 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespaces.yaml
+  - platform/redis.yaml
+  - engine/lmcache-server.yaml
+  - engine/vllm-prefill.yaml
+  - engine/vllm-decode.yaml
+  - engine/services.yaml
+  - edge/edge.yaml
+  - warm/warm-controller.yaml
+  - guard/guard.yaml
+  - data/qdrant.yaml
+  - data/sie.yaml
+  - data/browser.yaml
+  - data/test-pages.yaml
+  - app/companion.yaml
+  - app/jobs.yaml
+  - gateway/gateway.yaml
+  - ../router/generated/agent-router.yaml
+  - ../router/generated/inference-objectives.yaml
+  - keda/scaledobjects.yaml
+  - monitoring/rules.yaml
+  - monitoring/monitors.yaml
+configMapGenerator:
+  - name: guard-nemo-config
+    namespace: guard
+    files:
+      - config.yml=../../../control/guard/nemo/config.yml
+      - prompts.yml=../../../control/guard/nemo/prompts.yml
+  - name: companion-dashboards
+    namespace: monitoring
+    options: {labels: {grafana_dashboard: "1"}}
+    files:
+      - monitoring/dashboards/companion-app.json
+      - monitoring/dashboards/companion-cluster.json
+      - monitoring/dashboards/companion-gateway.json
+      - monitoring/dashboards/companion-hop.json
+      - monitoring/dashboards/companion-queues.json
+      - monitoring/dashboards/companion-router.json
+      - monitoring/dashboards/companion-scaling.json
+      - monitoring/dashboards/companion-success.json
+      - monitoring/dashboards/companion-vllm.json
+generatorOptions: {disableNameSuffixHash: true}

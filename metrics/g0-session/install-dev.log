@@ -1,0 +1,254 @@
+wrote cluster/manifests/router/generated/epp-config.yaml
+wrote cluster/manifests/router/generated/router-values.yaml
+wrote cluster/manifests/router/generated/inference-objectives.yaml
+wrote cluster/manifests/router/generated/agent-router.yaml
+
+== GPU sharing: HAMi on node 2, the NVIDIA device plugin on node 1
+node/192-222-52-95 not labeled
+Release "hami" has been upgraded. Happy Helming!
+NAME: hami
+LAST DEPLOYED: Tue Sep 29 01:15:08 2026
+NAMESPACE: kube-system
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+NOTES:
+** Please be patient while the chart is being deployed **
+Resource name: nvidia.com/gpu
+daemonset.apps/nvidia-device-plugin-daemonset configured
+daemonset.apps/nvidia-device-plugin-daemonset patched (no change)
+
+== Gateway API and Inference Extension CRDs
+customresourcedefinition.apiextensions.k8s.io/backendtlspolicies.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/gatewayclasses.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/gateways.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/grpcroutes.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/listenersets.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/referencegrants.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/tlsroutes.gateway.networking.k8s.io configured
+validatingadmissionpolicy.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io configured
+validatingadmissionpolicybinding.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/inferencepools.inference.networking.k8s.io configured
+customresourcedefinition.apiextensions.k8s.io/inferencemodelrewrites.llm-d.ai serverside-applied
+customresourcedefinition.apiextensions.k8s.io/inferenceobjectives.llm-d.ai serverside-applied
+
+== Monitoring: kube-prometheus-stack and the DCGM exporter
+Release "kube-prometheus-stack" has been upgraded. Happy Helming!
+NAME: kube-prometheus-stack
+LAST DEPLOYED: Tue Sep 29 01:15:30 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 4
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=kube-prometheus-stack"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace monitoring get secrets kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=kube-prometheus-stack" -oname)
+  kubectl --namespace monitoring port-forward $POD_NAME 3000
+
+Get your grafana admin user password by running:
+
+  kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo
+
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+Release "dcgm-exporter" has been upgraded. Happy Helming!
+NAME: dcgm-exporter
+LAST DEPLOYED: Tue Sep 29 01:15:59 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods -n monitoring -l "app.kubernetes.io/name=dcgm-exporter,app.kubernetes.io/instance=dcgm-exporter" -o jsonpath="{.items[0].metadata.name}")
+  kubectl -n monitoring port-forward $POD_NAME 8080:9400 &
+  echo "Visit http://127.0.0.1:8080/metrics to use your application"
+
+== KEDA
+Release "keda" has been upgraded. Happy Helming!
+NAME: keda
+LAST DEPLOYED: Tue Sep 29 01:16:03 2026
+NAMESPACE: keda
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+NOTES:
+:::^.     .::::^:     :::::::::::::::    .:::::::::.                   .^.                  
+7???~   .^7????~.     7??????????????.   :?????????77!^.              .7?7.                 
+7???~  ^7???7~.       ~!!!!!!!!!!!!!!.   :????!!!!7????7~.           .7???7.                
+7???~^7????~.                            :????:    :~7???7.         :7?????7.               
+7???7????!.           ::::::::::::.      :????:      .7???!        :7??77???7.              
+7????????7:           7???????????~      :????:       :????:      :???7?5????7.             
+7????!~????^          !77777777777^      :????:       :????:     ^???7?#P7????7.            
+7???~  ^????~                            :????:      :7???!     ^???7J#@J7?????7.           
+7???~   :7???!.                          :????:   .:~7???!.    ~???7Y&@#7777????7.          
+7???~    .7???7:      !!!!!!!!!!!!!!!    :????7!!77????7^     ~??775@@@GJJYJ?????7.         
+7???~     .!????^     7?????????????7.   :?????????7!~:      !????G@@@@@@@@5??????7:        
+::::.       :::::     :::::::::::::::    .::::::::..        .::::JGGGB@@@&7:::::::::        
+                                                                      ?@@#~                  
+                                                                      P@B^                   
+                                                                    :&G:                    
+                                                                    !5.                     
+                                                                    .Kubernetes Event-driven Autoscaling (KEDA) - Application autoscaling made simple.
+
+Get started by deploying Scaled Objects to your cluster:
+    - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
+    - Samples: https://github.com/kedacore/samples
+
+Get information about the deployed ScaledObjects:
+  kubectl get scaledobject [--namespace <namespace>]
+
+Get details about a deployed ScaledObject:
+  kubectl describe scaledobject <scaled-object-name> [--namespace <namespace>]
+
+Get information about the deployed TriggerAuthentications:
+  kubectl get triggerauthentication [--namespace <namespace>]
+
+Get details about a deployed TriggerAuthentication:
+  kubectl describe triggerauthentication <trigger-authentication-name> [--namespace <namespace>]
+
+Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
+  kubectl get hpa [--all-namespaces] [--namespace <namespace>]
+
+Learn more about KEDA:
+- Documentation: https://keda.sh/
+- Support: https://keda.sh/support/
+- File an issue: https://github.com/kedacore/keda/issues/new/choose
+
+== Envoy Gateway with the AI Gateway values, the token rate-limit add-on (Redis), and the InferencePool add-on
+Pulled: docker.io/envoyproxy/gateway-crds-helm:v1.8.4
+Digest: sha256:838d00b2364e478a81f361dbc1e469054b857569e6ff053329d3b9cbe72a5729
+customresourcedefinition.apiextensions.k8s.io/backends.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/backendtrafficpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/clienttrafficpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/envoyextensionpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/envoypatchpolicies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/envoyproxies.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/httproutefilters.gateway.envoyproxy.io serverside-applied
+customresourcedefinition.apiextensions.k8s.io/securitypolicies.gateway.envoyproxy.io serverside-applied
+Pulled: docker.io/envoyproxy/gateway-helm:v1.8.4
+Digest: sha256:a36944cdc32b7e03ea0d561e1d938ac33011fbbe9744fe6e9973a1c7a2f734f7
+Release "eg" has been upgraded. Happy Helming!
+NAME: eg
+LAST DEPLOYED: Tue Sep 29 01:16:13 2026
+NAMESPACE: envoy-gateway-system
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+NOTES:
+**************************************************************************
+*** PLEASE BE PATIENT: Envoy Gateway may take a few minutes to install ***
+**************************************************************************
+
+Envoy Gateway is an open source project for managing Envoy Proxy as a standalone or Kubernetes-based application gateway.
+
+Thank you for installing Envoy Gateway! 🎉
+
+Your release is named: eg. 🎉
+
+Your release is in namespace: envoy-gateway-system. 🎉
+
+To learn more about the release, try:
+
+  $ helm status eg -n envoy-gateway-system
+  $ helm get all eg -n envoy-gateway-system
+
+To have a quickstart of Envoy Gateway, please refer to https://gateway.envoyproxy.io/latest/tasks/quickstart.
+
+To get more details, please visit https://gateway.envoyproxy.io and https://github.com/envoyproxy/gateway.
+Pulled: docker.io/envoyproxy/ai-gateway-crds-helm:v1.1.0
+Digest: sha256:80f47141b734be93e7c0d771da9613288cf1c3528a83cb56f670b149e6c8e3a3
+Release "envoy-ai-gateway-crd" has been upgraded. Happy Helming!
+NAME: envoy-ai-gateway-crd
+LAST DEPLOYED: Tue Sep 29 01:16:24 2026
+NAMESPACE: envoy-ai-gateway-system
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+Pulled: docker.io/envoyproxy/ai-gateway-helm:v1.1.0
+Digest: sha256:8f39aa53022b67c5dee750ffc6c4182e12aae505e8888e69417544e8d744156a
+Release "envoy-ai-gateway" has been upgraded. Happy Helming!
+NAME: envoy-ai-gateway
+LAST DEPLOYED: Tue Sep 29 01:16:30 2026
+NAMESPACE: envoy-ai-gateway-system
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+
+== Our manifests (overlay: dev)
+namespace/monitoring unchanged
+namespace/companion serverside-applied
+namespace/data serverside-applied
+namespace/guard serverside-applied
+namespace/platform serverside-applied
+serviceaccount/warm-controller serverside-applied
+role.rbac.authorization.k8s.io/warm-controller serverside-applied
+rolebinding.rbac.authorization.k8s.io/warm-controller serverside-applied
+configmap/companion-app serverside-applied
+configmap/test-pages serverside-applied
+configmap/guard-nemo-config serverside-applied
+configmap/companion-dashboards serverside-applied
+service/companion-api serverside-applied
+service/companion-ui serverside-applied
+service/edge serverside-applied
+service/vllm-decode serverside-applied
+service/vllm-prefill serverside-applied
+service/warm-controller serverside-applied
+service/browser serverside-applied
+service/qdrant serverside-applied
+service/sie-embed serverside-applied
+service/sie-ocr serverside-applied
+service/test-pages serverside-applied
+service/guard serverside-applied
+service/guard-injection serverside-applied
+service/guard-safety serverside-applied
+service/redis serverside-applied
+deployment.apps/companion-api serverside-applied
+deployment.apps/companion-ui serverside-applied
+deployment.apps/edge serverside-applied
+deployment.apps/vllm-decode serverside-applied
+deployment.apps/vllm-prefill serverside-applied
+deployment.apps/warm-controller serverside-applied
+deployment.apps/browser serverside-applied
+deployment.apps/sie-ocr serverside-applied
+deployment.apps/test-pages serverside-applied
+deployment.apps/guard serverside-applied
+deployment.apps/redis serverside-applied
+statefulset.apps/qdrant serverside-applied
+cronjob.batch/ingest serverside-applied
+cronjob.batch/sweep serverside-applied
+aigatewayroute.aigateway.envoyproxy.io/companion serverside-applied
+daemonset.apps/lmcache-server serverside-applied
+backendtrafficpolicy.gateway.envoyproxy.io/tenant-windows serverside-applied
+envoyproxy.gateway.envoyproxy.io/companion-proxy serverside-applied
+gateway.gateway.networking.k8s.io/companion-gateway serverside-applied
+gatewayclass.gateway.networking.k8s.io/companion serverside-applied
+scaledobject.keda.sh/vllm-decode serverside-applied
+Warning: PollingInterval is configured but is not relevant for scaling. It only affects scaling when minReplicaCount = 0, idleReplicaCount is set, or useCachedMetrics is enabled, but it still controls how often KEDA refreshes the ScaledObject status conditions and events
+scaledobject.keda.sh/vllm-prefill serverside-applied
+inferenceobjective.llm-d.ai/batch serverside-applied
+inferenceobjective.llm-d.ai/interactive serverside-applied
+podmonitor.monitoring.coreos.com/lmcache-server serverside-applied
+podmonitor.monitoring.coreos.com/vllm serverside-applied
+prometheusrule.monitoring.coreos.com/companion-rules serverside-applied
+servicemonitor.monitoring.coreos.com/companion-api serverside-applied
+servicemonitor.monitoring.coreos.com/edge serverside-applied
+servicemonitor.monitoring.coreos.com/warm-controller serverside-applied
+servicemonitor.monitoring.coreos.com/data-plane serverside-applied
+servicemonitor.monitoring.coreos.com/guard-injection serverside-applied
+servicemonitor.monitoring.coreos.com/hami serverside-applied
+networkpolicy.networking.k8s.io/web-egress serverside-applied
+networkpolicy.networking.k8s.io/browser-ingress serverside-applied
+networkpolicy.networking.k8s.io/web-egress serverside-applied
+Error from server (Invalid): Deployment.apps "sie-embed" is invalid: spec.strategy.rollingUpdate: Forbidden: may not be specified when strategy `type` is 'Recreate'
+Error from server (Invalid): Deployment.apps "guard-injection" is invalid: spec.strategy.rollingUpdate: Forbidden: may not be specified when strategy `type` is 'Recreate'
+Error from server (Invalid): Deployment.apps "guard-safety" is invalid: spec.strategy.rollingUpdate: Forbidden: may not be specified when strategy `type` is 'Recreate'
+exit=1
