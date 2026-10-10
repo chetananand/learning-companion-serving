@@ -50,7 +50,7 @@ class Box:
 
 # Admission control + routing (the top band). The app sits outside, at the left.
 APP = Box(0, 243, 230, 84, ["<b>companion-api</b>", "the app"])
-GUARD = Box(462, 54, 320, 84, ["<b>guard models</b>", "is the prompt safe?"])
+GUARD = Box(462, 54, 420, 114, ["<b>guard models</b>", "Prompt Guard 2, Nemotron Safety", "is the prompt safe?"])
 EDGE = Box(462, 228, 320, 114, ["<b>edge</b> (our code)", "admit: block, refuse,", "or pass the call"])
 ROUTER = Box(1020, 54, 660, 114, ["<b>llm-d router</b>", "where: which decode pod? And a prefill pod,",
                                   "if 2,048 or more prompt tokens are not in a cache"])
@@ -69,7 +69,7 @@ BOXES = [APP, GUARD, EDGE, ROUTER, ENVOY, BARRIER, VPRE, SIDECAR, VDEC]
 # (x, y, w, h, title, title position, fill, line, title color, title size)
 FRAMES = [
     (430, 0, 1270, 360, "Admission control + routing", (452, 10), AR_BG, AR_LINE, AR_TEXT, 26),
-    (0, 396, 1700, 380, "Engine (node 1): vLLM pods and LMCache", None, EN_BG, EN_LINE, INK, 26),
+    (0, 396, 1700, 380, "Engine (node 1): Gemma 4 31B FP8 on vLLM", None, EN_BG, EN_LINE, INK, 26),
     (22, 414, 540, 344, "vllm-prefill pod · 1 GPU", (40, 420), POD_BG, EN_LINE, SOFT, 22),
     (1138, 414, 540, 344, "vllm-decode pod · 1 GPU", (-1660, 420), POD_BG, EN_LINE, SOFT, 22),
 ]
@@ -89,8 +89,8 @@ class Arrow:
 
 ARROWS = [
     Arrow(APP.side("right"), EDGE.side("left", 285), "1", "the request", (330, 285), "center"),
-    Arrow(EDGE.side("top", 512), GUARD.side("bottom", 512), "2", "the prompt", (524, 183), "right", bg=AR_BG),
-    Arrow(GUARD.side("bottom", 732), EDGE.side("top", 732), "", "safe or not safe", (744, 183), "right", bg=AR_BG),
+    Arrow(EDGE.side("top", 512), GUARD.side("bottom", 512), "2", "the prompt", (524, 198), "right", bg=AR_BG),
+    Arrow(GUARD.side("bottom", 732), EDGE.side("top", 732), "", "safe or not safe", (744, 198), "right", bg=AR_BG),
     Arrow(EDGE.side("right"), ENVOY.side("left", 285), "3", "the request", (901, 285), "center", bg=AR_BG),
     Arrow(ENVOY.side("top", 1050), ROUTER.side("bottom", 1050), "4", "the prompt", (1062, 198), "right", bg=AR_BG),
     Arrow(ROUTER.side("bottom", 1260), ENVOY.side("top", 1260), "", "the addresses of the picked pods", (1272, 198),

@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = {
     "e3": "/_blob/54f351d14862f0849b7a3206cd05191c", "e9": "/_blob/33d6ecab663862b797ffccf742537e60",
     "hop": "/_blob/bef7f263ef04880cd591661ca8dedf8c", "warm": "/_blob/f6633cb512f077a6b00cb0fbdf1a49ed",
-    "arch": "/_blob/903824f67b6704771896d82c0fb57770",
+    "arch": "/_blob/40be9ee479f4bb16ea86c303db00815c",
     "cluster": "/_blob/c93f5728251ce5c26c873f9fc0da2440", "guard": "/_blob/51874d3a3f4d12ee3c96b0a08ca10aeb",
     "tenant": "/_blob/4466d622d255b88d350409463917aaca", "lmcache": "/_blob/bd6b9524acd3f31f149f04f6244c30d7",
     "queues": "/_blob/8bf5df6c9b3ea7d826771b4f749137af", "pd": "/_blob/64db200fb2311fad8d21915521ec3dc8",
@@ -236,6 +236,26 @@ def slides() -> list[tuple[str, str, str]]:
         "sidecar sends the prompt to the prefill pod, only to compute its KV. 5b: vLLM there sends a copy of the "
         "KV to the LMCache server. 5c: the store barrier replies only after the store. 6: vLLM in the decode pod "
         "loads the stored KV and generates the answer."))
+
+    s.append(("models", "".join([
+        title("The models, and the job of each"),
+        table(["Job", "Model", "Where it runs"],
+              [["The answers and all agent steps", "Gemma 4 31B, FP8 (RedHatAI), on vLLM v0.30.0",
+                "node 1: the prefill pod and the decode pod, one H100 each"],
+               ["Prompt injection check", "Llama Prompt Guard 2, 86M", "node 2: a GPU slice of 4,000 MiB"],
+               ["Content safety check", "Nemotron 3.5 Content Safety, in NeMo Guardrails",
+                "node 2: a GPU slice of 16,000 MiB"],
+               ["Embeddings for the bookmark search", "BAAI bge-m3", "node 2: SIE, a GPU slice of 12,000 MiB"],
+               ["Rerank of the search results", "Qwen3 Reranker 4B", "node 2: SIE, the same slice"],
+               ["Text in figures (OCR)", "LightOnOCR-2, 1B", "node 2: SIE, a GPU slice of 20,000 MiB"]],
+              [30, 38, 32]),
+        p("HAMi cuts one H100 of node 2 into these slices. On the A100 node, the small models shared one GPU.", 24),
+        callout("Why Gemma 4 31B", "A tested FP8 checkpoint that fits one H100. It passed all 7 of our gate tests, "
+                "with 97.5% correct tool calls. We dropped Qwen3.8-27B for its open vLLM bugs in the prefix "
+                "cache."),
+    ]), "These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM. It fits one H100, and "
+        "it passed all 7 of our gate tests, with 97.5% correct tool calls. Small models do the rest: two guard "
+        "models, and the search and OCR models in SIE."))
 
     s.append(("deploy", "".join([
         title("The deployment: two nodes, and an A100 fallback"),
