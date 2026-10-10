@@ -132,13 +132,17 @@ So llm-d, with its flow control and its scheduler, is in the gateway box, and vL
 
 For questions only. This slide shows how llm-d places a call. The policy file holds our numbers, and render.py turns them into the llm-d configuration. There are two scheduling profiles: one for the decode pool and one for the prefill pool. The decode profile runs first.
 
-The prefill profile runs only when llm-d splits the call. Each profile first filters the pods: only warm pods, and only pods with its role. Then each scorer gives each pod a score, and the picker takes the pod with the highest weighted total. Prefix match has the highest weight, 3, so a pod that has the prompt in its KV cache usually wins. But the load scorers together can beat it when that pod is busy.
+The prefill profile runs only when llm-d splits the call. Each profile first filters the pods: only warm pods, and only pods with its role. Then each scorer gives each pod a score, and the picker takes the pod with the highest weighted total. Load means how busy each pod is now, from the metrics of each vLLM pod. Queue depth gives 1 to the pod with the shortest queue and 0 to the pod with the longest queue.
 
-Thus the name: prefix, then load. The two profiles use different scorers. The decode pod keeps the KV of the running sequences, and the next call of a session can use it again. So the decode profile scores the session and the KV use. The prefill profile scores the token load, because a prefill costs compute for each new token.
+KV use gives 1 minus the KV use of the pod. Token load gives 1 minus the tokens in flight, divided by a limit. Prefix match has weight 3, and each load scorer has weight 2. For example, pod A has the prompt in its KV cache, but it has the longest queue and 85% KV use: 3.3 points. Pod B has no prefix match, the shortest queue, and 30% KV use: 3.4 points.
 
-Queue depth is a scorer in both profiles, and it is also an admit input. The flow control counts a pod with 5 queued requests as full. Why not p2c? The llm-d scheduler has no p2c picker. With two pods in a pool, p2c compares both pods, so it is the same as least loaded.
+So pod B gets the call: the load beat the prefix. Thus the name: prefix, then load. A return call of a session also gets the session score on its old pod. Prefix and session give up to 5 points, and the load at most 4. So a session almost always goes back to its pod, and only the flow control stops it when the pods are full.
 
-The stale-metrics test shows that the load scores matter. A frozen copy of the metrics of an empty pod pulled 80% of the work to that pod.
+The two profiles use different scorers. The decode pod keeps the KV of the running sequences, and the next call of a session can use it again. So the decode profile scores the session and the KV use. The prefill profile scores the token load, because a prefill costs compute for each new token. But the token-load scorer used the default limit of 4,194,304 tokens.
+
+Even our prefill test reached only about 14% of it. So this score stayed high, and queue depth was the real load signal for prefill. Queue depth is a scorer in both profiles, and it is also an admit input. The flow control counts a pod with 5 queued requests as full. Why not p2c?
+
+The llm-d scheduler has no p2c picker. With two pods in a pool, p2c compares both pods, so it is the same as least loaded. The stale-metrics test shows that the load scores matter. A frozen copy of the metrics of an empty pod pulled 80% of the work to that pod.
 
 ### A3. The handout questions and their evidence (1 of 2)
 
