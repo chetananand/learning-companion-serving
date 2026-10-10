@@ -152,6 +152,19 @@ def table(head: list[str], rows: list[list[str]], widths: list[int], size: int =
 
 # ----------------------------------------------------------------------------------------------------------------
 
+def flow(steps: list[tuple[str, str, bool]]) -> str:
+    """One user turn as boxes from top to bottom. A step with True occurs only in verified mode (orange)."""
+    parts = []
+    for i, (head, text, verified) in enumerate(steps):
+        if i:
+            label = " verified mode only" if verified and not steps[i - 1][2] else ""
+            parts.append(p(f"↓{label}", 28, ORANGE_TEXT if label else MUTED, 600, "padding-left:24px"))
+        line = ORANGE if verified else LINE
+        parts.append(f'<div style="background:{BOX_BG};border:2px solid {line};border-radius:12px;padding:12px 20px;'
+                     f'display:flex;flex-direction:column;gap:2px">{p(head, 28, INK, 600)}{p(text, 24, SOFT)}</div>')
+    return f'<div style="display:flex;flex-direction:column;gap:6px">{"".join(parts)}</div>'
+
+
 def measured(text: str, label: str = "What we measured") -> str:
     return (f'<div style="display:flex;flex-direction:column;gap:2px">'
             f'<p style="font-size:24px;line-height:1.2;font-weight:600;color:{BLUE};text-transform:uppercase;'
@@ -184,6 +197,29 @@ def slides() -> list[tuple[str, str, str]]:
         p(REPO, 28, DARK_BLUE),
     ]), "I built a learning companion over my bookmarks, on my own vLLM cluster. I walk one request through the "
         "code, and at each step I show what we measured."))
+
+    s.append(("intro", "".join([
+        title("The app: a learning companion over my bookmarks"),
+        two_columns([
+            p("My Notion database has 998 bookmarks of pages that I want to learn from. The companion answers my "
+              "questions from these bookmarks, and it cites a source for each fact.", 28, INK),
+            p("Quick mode: one agent searches the bookmarks, reads a page, and reads a figure with OCR.", 28),
+            p("Verified mode: bookmarks get old, so a second agent checks up to 3 claims on live web pages. Our "
+              "code decides when a live fact wins over a bookmark.", 28),
+            callout("In course terms", "Track B with a Track A tool: an agent that retrieves."),
+            play("Clip 1, 27 s: a verified answer, both claims verified"),
+        ], [
+            flow([("I ask a question", "in the chat of the app", False),
+                  ("One agent finds the facts", "search the bookmarks, read a page, read a figure", False),
+                  ("The answer", "with a source for each fact", False),
+                  ("A second agent checks the claims", "up to 3 claims, on live web pages", True),
+                  ("The final answer", "with the status of each claim", True)]),
+        ]),
+    ]), "First, the app. My Notion database has 998 bookmarks of pages that I want to learn from. The companion "
+        "answers my questions from them and cites each source. In quick mode, one agent searches the bookmarks, "
+        "reads pages, and reads figures with OCR. In verified mode, a second agent checks up to 3 claims on live "
+        "web pages, and our code decides when a live fact wins. Each LLM call of these agents goes to our own "
+        "vLLM cluster. Now clip 1."))
 
     s.append(("arch", "".join([
         title("The path of one LLM call"),
@@ -225,28 +261,26 @@ def slides() -> list[tuple[str, str, str]]:
         "all pods."))
 
     s.append(("app", "".join([
-        title("The app: short agent steps with a cached prefix"),
+        title("What the app sends: short agent steps with a cached prefix"),
         two_columns([
-            p("Quick mode: one agent with tools to search the bookmarks, read a page, and read a figure with OCR.",
-              28),
-            p("Verified mode: a second agent checks up to 3 claims on live web pages. Our code decides when a live "
-              "fact wins over a bookmark.", 28),
-            p("Each LLM call goes to one URL: edge, our front door.", 28),
+            proof("64%", "of the prompt of an agent step was in the prefix cache"),
+            proof("60%", "of the calls had fewer than 2,048 new tokens"),
             measured("We replay recorded app turns. 100% load is 0.9 turns each second: the rate where a soak "
                      "test, which adds load each minute, refused its first call.", "How we load the cluster"),
-            play("Clip 1, 27 s: a verified answer, both claims verified"),
         ], [
             measured("The tokens of 1,606 real app calls, from the Envoy logs of four capture runs."),
             table(["Step", "Calls", "Prompt p50", "Cached share", "New p50"],
                   [["quick", "978", "5,121", "0.19", "4,515"], ["verify", "321", "1,427", "0.65", "133"],
                    ["agent", "303", "2,121", "0.64", "459"]], [22, 16, 22, 22, 18]),
-            proof("64%", "of the prompt of an agent step was in the prefix cache"),
-            proof("60%", "of the calls had fewer than 2,048 new tokens"),
+            p("quick: a step of the quick agent. agent: a step of the second agent. verify: a step of its claim "
+              "checker. Cached share: the part of the prompt that was in the prefix cache.", 24),
+            callout("What this means", "The quick steps carry the bookmark chunks that the search found, so most "
+                    "of their tokens are new: the Track A shape. The agent steps share a long prefix: the Track B "
+                    "shape."),
         ]),
-    ]), "The app is a learning companion over 998 bookmarks. Quick mode is one agent. Verified mode adds a fact "
-        "check on the live web. We measured the tokens of 1,606 real app calls. An agent step found 64% of its "
-        "prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens. This number decides the "
-        "topology later. For the load tests, 100% load is 0.9 app turns each second. Now clip 1."))
+    ]), "This is what the app sends to the cluster. We measured the tokens of 1,606 real app calls. An agent step"
+        " found 64% of its prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens. This number"
+        " decides the topology later. For the load tests, 100% load is 0.9 app turns each second."))
 
     s.append(("guard", "".join([
         strip(["guard", "stay or leave"]),
@@ -599,7 +633,7 @@ def write(root: Path) -> list[tuple[str, str, str]]:
     index = {"v": 4, "createdOnFiles": {"v": 1, "at": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")},
              "lists": "css", "title": "A learning companion on a scarce GPU", "cover": "cover",
              "order": [sid for sid, _, _ in deck],
-             "sections": {"s1": {"description": "The system: the architecture, the deployment, and the app",
+             "sections": {"s1": {"description": "The app, the architecture, and the deployment",
                                  "start": "cover"},
                           "s2": {"description": "One request, end to end: the code, the proof, and the dashboards",
                                  "start": "guard"},

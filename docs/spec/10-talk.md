@@ -47,22 +47,25 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | # | Slide id | Title | Dashboard or chart | Time |
 |---|---|---|---|---|
 | 1 | `cover` | A learning companion on a scarce GPU | - | 0:13 |
-| 2 | `arch` | The path of one LLM call | a flow in the Mermaid style: each box says what it decides or does, each arrow what moves (`tools/arch_diagram.py`) | 1:17 |
-| 3 | `deploy` | The deployment: two nodes, and an A100 fallback | Cluster: GPU use | 0:30 |
-| 4 | `app` | The app: short agent steps with a cached prefix | the token table, clip 1 | 0:35 and 0:27 |
-| 5 | `guard` | Guard and stay or leave happen before any GPU work | Gateway: guard rejects. Success and failures: the leave gate. | 0:35 |
-| 6 | `admit` | Admit: we refuse work at the door, not in the engine | Gateway: tenant rejects in the tenant test | 0:33 |
-| 7 | `place` | Place: prefix match first, then load | Router: P/D decisions. Queue depth for each pod. | 0:35 |
-| 8 | `hop` | The hop: the KV moves through the LMCache server | Hop store: LMCache lookups, and one hop record | 0:43 |
-| 9 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
-| 10 | `hypothesis` | The decode pod was the limit, not prefill compute | vLLM: prompt tokens each second | 0:32 |
-| 11 | `topology` | For our traffic, two whole pods beat a P/D split | the layout test chart | 0:36 |
-| 12 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
-| 13 | `changed` | What the data changed in our design | - | 0:42 |
+| 2 | `intro` | The app: a learning companion over my bookmarks | the flow of one user turn, clip 1 | 0:38 and 0:27 |
+| 3 | `arch` | The path of one LLM call | a flow in the Mermaid style: each box says what it decides or does, each arrow what moves (`tools/arch_diagram.py`) | 1:17 |
+| 4 | `deploy` | The deployment: two nodes, and an A100 fallback | Dashboard 1, Cluster: GPU use | 0:30 |
+| 5 | `app` | What the app sends: short agent steps with a cached prefix | the token table, with a key | 0:27 |
+| 6 | `guard` | Guard and stay or leave happen before any GPU work | Dashboard 3: guard rejects. Dashboard 2: the leave gate. | 0:35 |
+| 7 | `admit` | Admit: we refuse work at the door, not in the engine | Dashboard 3: tenant rejects in the tenant test | 0:33 |
+| 8 | `place` | Place: prefix match first, then load | Dashboard 4: P/D decisions. Dashboard 5: queue depth for each pod. | 0:35 |
+| 9 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 0:43 |
+| 10 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
+| 11 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:32 |
+| 12 | `topology` | For our traffic, two whole pods beat a P/D split | the layout test chart | 0:36 |
+| 13 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
+| 14 | `changed` | What the data changed in our design | - | 0:42 |
 
-Total: 8 minutes 17 seconds of notes and 61 seconds of clips, so 9 minutes 18 seconds. The appendix has 9 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart.
+Total: 8 minutes 47 seconds of notes and 61 seconds of clips, so 9 minutes 48 seconds. The appendix has 9 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart.
 
-On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. Slide 12 shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide. `tools/deck_pdf.py` writes the deck to `docs/talk/deck.pdf` and the speaker notes to `docs/talk/notes.md`. Run it after each change to the deck.
+On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. Slide 12 shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
+
+Slide 2 is now a plain introduction of the app, with clip 1, before the architecture. The token slide (slide 5) explains its table. `tools/deck_pdf.py` writes the deck to `docs/talk/deck.pdf` and the speaker notes to `docs/talk/notes.md`. Run it after each change to the deck.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 
