@@ -76,23 +76,29 @@ Stop six is declare warm. A pod with its weights on the GPU is not warm yet. The
 
 In the restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. The ramp cut it from 57.3 to 14.6 seconds.
 
-### 13. The decode pod was the limit, not prefill compute
+### 13. KV on paper: bytes for each token, and how many sequences fit
+
+Before the cluster, we did the KV math. Gemma 4 31B has two kinds of KV. The full-attention layers need 40,960 bytes for each token. The sliding-window layers add 800 MiB for each sequence, after 1,024 tokens. At the length that our app sends, about 5,000 tokens, one H100 fits 36 sequences, and 17 at the 32K max_len.
+
+FP8 KV doubles both. We kept the model, because it passed all gate tests. With Muse Glimmer, the KV of an 8K sequence is 83% smaller.
+
+### 14. The decode pod was the limit, not prefill compute
 
 The handout asked which limit we expected first. We expected prefill compute for the RAG traffic and KV blocks for the agents. The answer: partly right. The decode pod was the limit. Most agent calls have fewer than 2,048 new tokens.
 
 The router does not split them, so the decode pod runs their prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550.
 
-### 14. For our traffic, two whole pods beat a P/D split
+### 15. For our traffic, two whole pods beat a P/D split
 
 This test sends the same recorded app traffic to two layouts, at three loads. Two whole pods with prefix routing beat one prefill pod and one decode pod at each load, on the H100 and on the A100. At 100% load the TTFT p50 was 0.84 seconds, against 4.59. The split still helps a long uncached prompt. But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint.
 
-### 15. Scale: the planner names the pool
+### 16. Scale: the planner names the pool
 
 Stop seven is scale. The planner rules name the pool: uncached prefill tokens for the prefill pool, and running requests for the decode pool. KEDA reads them. Dashboard 8 shows the decode pods that the planner asks for, and the ready pods. The test allowed at most 2 pods in each pool.
 
 In the scale test, KEDA made the new pod 15 seconds after the request, in both pools. The pod was warm about 4 minutes later, so on a spike that is the real reaction time. The capacity value must match the GPU. Now clip 2, at 8 times speed.
 
-### 16. What the data changed in our design
+### 17. What the data changed in our design
 
 Five things changed in the design because of the data. Two whole pods for our traffic. A store barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU.
 

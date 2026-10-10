@@ -48,30 +48,33 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 |---|---|---|---|---|
 | 1 | `cover` | A learning companion on a scarce GPU | - | 0:13 |
 | 2 | `intro` | The app: a learning companion over my bookmarks | the flow of one user turn, clip 1 | 0:38 and 0:27 |
-| 3 | `arch` | The path of one LLM call | a flow in the Mermaid style: each box says what it decides or does, each arrow what moves (`tools/arch_diagram.py`) | 1:17 |
+| 3 | `arch` | The path of one LLM call | a flow in the Mermaid style: each box says what it decides or does, each arrow what moves (`tools/arch_diagram.py`) | 1:51 |
 | 4 | `models` | The models, and the job of each | a table: the job, the model, and where it runs | 0:24 |
-| 5 | `search` | The bookmark search: ingest once, then search in each turn | two flows: the ingest and the search | 0:35 |
-| 6 | `deploy` | The deployment: two nodes, and an A100 fallback | Dashboard 1, Cluster: GPU use | 0:30 |
+| 5 | `search` | The bookmark search: ingest once, then search in each turn | two flows: the ingest and the search | 1:13 |
+| 6 | `deploy` | The deployment: two nodes, and an A100 fallback | Dashboard 1, Cluster: GPU use | 0:40 |
 | 7 | `app` | What the app sends: short agent steps with a cached prefix | the token table, with a key | 0:44 |
 | 8 | `guard` | Guard and stay or leave happen before any GPU work | Dashboard 3: guard rejects. Dashboard 2: the leave gate. | 0:35 |
 | 9 | `admit` | Admit: we refuse work at the door, not in the engine | Dashboard 3: tenant rejects in the tenant test | 0:33 |
 | 10 | `place` | Place: prefix match first, then load | Dashboard 4: P/D decisions. Dashboard 5: queue depth for each pod. | 0:35 |
-| 11 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 0:43 |
+| 11 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 1:42 |
 | 12 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
-| 13 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:32 |
-| 14 | `topology` | For our traffic, two whole pods beat a P/D split | the layout test chart | 0:36 |
-| 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
-| 16 | `changed` | What the data changed in our design | - | 0:42 |
+| 13 | `capacity` | KV on paper: bytes for each token, and how many sequences fit | a table: the KV of one sequence and the max sequences at three lengths, and the KV cache that vLLM measured | 0:39 |
+| 14 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:32 |
+| 15 | `topology` | For our traffic, two whole pods beat a P/D split | the layout test chart | 0:36 |
+| 16 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
+| 17 | `changed` | What the data changed in our design | - | 0:42 |
 
-Total: 10 minutes 13 seconds of notes and 61 seconds of clips, so 11 minutes 14 seconds. The appendix has 10 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
+Total: 13 minutes 2 seconds of notes and 61 seconds of clips, so 14 minutes 3 seconds. The appendix has 10 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
 
-On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. Slide 12 shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
+On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. The `scale` slide shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
 
-Slide 2 is now a plain introduction of the app, with clip 1, before the architecture. The token slide (slide 5) explains its table. Its notes say what 100% load means and how the agent steps differ from the verify steps. The deck gives the load in turns each minute (100% load is 54), not in turns each second.
+Slide 2 is now a plain introduction of the app, with clip 1, before the architecture. The token slide (`app`) explains its table. Its notes say what 100% load means and how the agent steps differ from the verify steps. The deck gives the load in turns each minute (100% load is 54), not in turns each second.
 
 Slide 4 names each model, its job, and where it runs.
 
 Slide 5 shows the bookmark search. The ingest ran once before all tests. In each turn, SIE embeds the question and reranks what Qdrant finds. The diagram on slide 3 names the LLM and the two guard models. `tools/deck_pdf.py` writes the deck to `docs/talk/deck.pdf` and the speaker notes to `docs/talk/notes.md`. Run it after each change to the deck.
+
+Slide 13 (`capacity`) shows the KV math of Part 1. It gives the bytes for each token. A table gives the KV of one sequence and the maximum number of sequences on one H100 at three lengths. The lengths are 5,121 tokens (the median prompt of the app), 8K, and the 32K max_len. It also shows the KV cache that vLLM gave the decode pod, and the effect of a model switch. Slide 14 says which limiter we expected and if our guess was right.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 
