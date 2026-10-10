@@ -64,7 +64,9 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 16 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 17 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 14 minutes 54 seconds of notes and 61 seconds of clips, so 15 minutes 55 seconds. The appendix has 11 slides. The first one holds the cluster design: each choice, its reason, and the proof. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
+Total: 14 minutes 54 seconds of notes and 61 seconds of clips, so 15 minutes 55 seconds.
+
+The appendix has 12 slides. The first one holds the cluster design: each choice, its reason, and the proof. The second one shows how llm-d places a call: the policy and the scorers. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
 
 On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. The `scale` slide shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
 
@@ -97,18 +99,21 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 | # | Slide id | Title | Evidence |
 |---|---|---|---|
 | A1 | `a-design` | The cluster design: each choice, its reason, and the proof | `DESIGN.md`, Part 2; `docs/spec/05-capacity-plan.md`, sections 4 and 7; ADR-002, ADR-005, and ADR-008 |
-| A2 | `a-questions-1` | The handout questions and their evidence (1 of 2) | `DESIGN.md`, Part 8 |
-| A3 | `a-questions-2` | The handout questions and their evidence (2 of 2) | `DESIGN.md`, Part 8 |
-| A4 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
-| A5 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
-| A6 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
-| A7 | `a-part5` | The queue questions, with the notebook answers | `notebook/part5_queue.ipynb` |
-| A8 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
-| A9 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
-| A10 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
-| A11 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
+| A2 | `a-place` | How llm-d places a call: the policy and the scorers | `control/router/policy.yaml:15` and `:36`; `control/router/render.py:50`; `DESIGN.md`, Part 4 |
+| A3 | `a-questions-1` | The handout questions and their evidence (1 of 2) | `DESIGN.md`, Part 8 |
+| A4 | `a-questions-2` | The handout questions and their evidence (2 of 2) | `DESIGN.md`, Part 8 |
+| A5 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
+| A6 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
+| A7 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
+| A8 | `a-part5` | The queue questions, with the notebook answers | `notebook/part5_queue.ipynb` |
+| A9 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
+| A10 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
+| A11 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
+| A12 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
 
 Slide A1 holds the defense of the cluster design. Each row has the choice, the reason, and the proof. The rows are the GPU, the model, the topology, the slices, the concurrency, the hop backend, the overflow, the two boxes, and the scale. Its notes give the answer to the question that each row can get, for example "why not a cheaper GPU?" or "why not Mooncake?".
+
+Slide A2 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
 
 ## 5. The bad answers of the handout, and our answers
 

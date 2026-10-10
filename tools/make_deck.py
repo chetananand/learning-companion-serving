@@ -664,6 +664,47 @@ def slides() -> list[tuple[str, str, str]]:
         "engine box. Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, "
         "and running sequences grow the decode pool."))
 
+    s.append(("a-place", "".join([
+        p("Appendix", 24, ORANGE_TEXT, 600),
+        title("How llm-d places a call: the policy and the scorers"),
+        two_columns([
+            code([("control/router/policy.yaml:15", "policy: prefix_then_load"),
+                  ("control/router/policy.yaml:36", "weights: decode, prefill"),
+                  ("control/router/render.py:50", "render_epp_config()")]),
+            table(["Scorer", "Decode", "Prefill", "What it scores"], [
+                ["prefix match", "3", "3", "the part of the prompt in the KV cache of the pod"],
+                ["session", "2", "-", "the pod that served the session before"],
+                ["queue depth", "2", "2", "the requests that wait on the pod"],
+                ["KV use", "2", "-", "the KV cache use of the pod"],
+                ["token load", "-", "2", "the load of the pod in tokens"],
+                ["ramp", "2", "2", "a new pod gets 10%, 25%, 50%, then 100%"],
+            ], [22, 11, 11, 56], size=22),
+            p("Filters first: only warm pods, and only pods with the role of the profile. Then the picker takes "
+              "the pod with the highest total score.", 22),
+        ], [
+            callout("The policy", "All runs used prefix_then_load. The other choices are least_loaded and random. "
+                    "The llm-d scheduler has no p2c picker. With two pods in a pool, p2c is the same as least "
+                    "loaded."),
+            callout("Queue depth: a scorer and an admit input", "The queue scorer is in both profiles. The flow "
+                    "control also reads the queue depth: at 5 queued requests, a pod is full."),
+            measured("Stale-metrics test: one pod sends a frozen copy of its metrics from an empty moment."),
+            proof("80% of the work", "went to that pod. With real metrics, it got 51%."),
+        ], left_w=900),
+    ]), "For questions only. This slide shows how llm-d places a call. The policy file holds our numbers, and "
+        "render.py turns them into the llm-d configuration. There are two scheduling profiles: one for the decode"
+        " pool and one for the prefill pool. The decode profile runs first. The prefill profile runs only when "
+        "llm-d splits the call. Each profile first filters the pods: only warm pods, and only pods with its role."
+        " Then each scorer gives each pod a score, and the picker takes the pod with the highest weighted total. "
+        "Prefix match has the highest weight, 3, so a pod that has the prompt in its KV cache usually wins. But "
+        "the load scorers together can beat it when that pod is busy. Thus the name: prefix, then load. The two "
+        "profiles use different scorers. The decode pod keeps the KV of the running sequences, and the next call "
+        "of a session can use it again. So the decode profile scores the session and the KV use. The prefill "
+        "profile scores the token load, because a prefill costs compute for each new token. Queue depth is a "
+        "scorer in both profiles, and it is also an admit input. The flow control counts a pod with 5 queued "
+        "requests as full. Why not p2c? The llm-d scheduler has no p2c picker. With two pods in a pool, p2c "
+        "compares both pods, so it is the same as least loaded. The stale-metrics test shows that the load scores"
+        " matter. A frozen copy of the metrics of an empty pod pulled 80% of the work to that pod."))
+
     q1 = [["What is the app? Shared and unique tokens?", "64% of an agent prompt is in the cache", "Envoy logs"],
           ["What dies at guard, admit, place, queue?", "400 prompt_injection, 429 tenant_tokens, 503",
            "docs/results.md"],

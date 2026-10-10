@@ -128,42 +128,54 @@ The LMCache server gave a hop TTFT of 0.52 to 0.78 seconds. Overflow: only an in
 
 So llm-d, with its flow control and its scheduler, is in the gateway box, and vLLM is the engine box. Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, and running sequences grow the decode pool.
 
-### A2. The handout questions and their evidence (1 of 2)
+### A2. How llm-d places a call: the policy and the scorers
+
+For questions only. This slide shows how llm-d places a call. The policy file holds our numbers, and render.py turns them into the llm-d configuration. There are two scheduling profiles: one for the decode pool and one for the prefill pool. The decode profile runs first.
+
+The prefill profile runs only when llm-d splits the call. Each profile first filters the pods: only warm pods, and only pods with its role. Then each scorer gives each pod a score, and the picker takes the pod with the highest weighted total. Prefix match has the highest weight, 3, so a pod that has the prompt in its KV cache usually wins. But the load scorers together can beat it when that pod is busy.
+
+Thus the name: prefix, then load. The two profiles use different scorers. The decode pod keeps the KV of the running sequences, and the next call of a session can use it again. So the decode profile scores the session and the KV use. The prefill profile scores the token load, because a prefill costs compute for each new token.
+
+Queue depth is a scorer in both profiles, and it is also an admit input. The flow control counts a pod with 5 queued requests as full. Why not p2c? The llm-d scheduler has no p2c picker. With two pods in a pool, p2c compares both pods, so it is the same as least loaded.
+
+The stale-metrics test shows that the load scores matter. A frozen copy of the metrics of an empty pod pulled 80% of the work to that pod.
+
+### A3. The handout questions and their evidence (1 of 2)
 
 For questions only. Each answer points at a file in the repo.
 
-### A3. The handout questions and their evidence (2 of 2)
+### A4. The handout questions and their evidence (2 of 2)
 
 For questions only. Each answer points at a file in the repo.
 
-### A4. A raw /metrics scrape of a live engine
+### A5. A raw /metrics scrape of a live engine
 
 For questions only. These lines come from the live engine, the edge, and the store barrier.
 
-### A5. Faults that we found and fixed
+### A6. Faults that we found and fixed
 
 For questions only. The session logs list each fault with its fix and its test.
 
-### A6. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
+### A7. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
 
 For questions only. Twelve fixed demo questions test the whole app.
 
-### A7. The queue questions, with the notebook answers
+### A8. The queue questions, with the notebook answers
 
 For questions only. The answers, with plots, are in notebook/part5_queue.ipynb.
 
-### A8. The cost of each GPU block
+### A9. The cost of each GPU block
 
 For questions only. Each block is in docs/budget-ledger.md. A spend guard stopped each GPU at the limits.
 
-### A9. The hop: the LMCache server against NIXL
+### A10. The hop: the LMCache server against NIXL
 
 For questions only. NIXL between two pods used TCP, because the nodes have no RDMA.
 
-### A10. The scale test: the planner against KEDA, in each pool
+### A11. The scale test: the planner against KEDA, in each pool
 
 For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool scaled only after we set its capacity value for the A100.
 
-### A11. The hop at production scale: what we keep, what we change
+### A12. The hop at production scale: what we keep, what we change
 
 For questions only. The one-token request is production quality, and the barrier is not. Under load, it hit its half-second cap on most split calls, so a production hop needs a store signal for each request.
