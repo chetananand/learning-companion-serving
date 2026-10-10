@@ -885,6 +885,53 @@ def slides() -> list[tuple[str, str, str]]:
         "But the ramp is a score, not a cap. In the first 10 seconds, the empty pod got 75% of the calls, because"
         " the queue scorer likes an empty queue. So the ramp needs a cap."))
 
+    record = ['{"src": "10.42.1.21", "dst": "10.42.1.20",', ' "tokens": 2371, "prefix_tokens": 2304,',
+              ' "backend": "lmcache", "first_byte_ms": 496}']
+    s.append(("a-warm", "".join([
+        p("Appendix", 24, ORANGE_TEXT, 600),
+        title("The hop record, and a cold pod against a warm pod"),
+        two_columns([
+            p("Same pod: llm-d picks only the decode pod. The KV is already there, so there is no hop and no "
+              "record.", 24, INK),
+            p("Two pods: one hop record for each split call, from the Envoy log:", 24, INK),
+            (f'<div style="background:{CODE_BG};border-radius:12px;padding:12px 20px">'
+             f'<p style="font-family:{MONO};font-size:22px;line-height:1.4;color:{INK}">'
+             f'{"<br>".join(e(x) for x in record)}</p></div>'),
+            p("The field src is the prefill pod, and dst is the decode pod. The field prefix_tokens is the part of "
+              "the prompt that the decode pod did not compute. The field first_byte_ms is the TTFT.", 22),
+            callout("The warmup routine", "Our system prompts, the shapes of our app, one split call through the "
+                    "prefill pod, and a 4,000-token probe. The pod is warm only if the probe TTFT is at most 1.5 "
+                    "times the warm baseline."),
+        ], [
+            measured("Restart test: we deleted the one decode pod at 70% load. The TTFT of the calls on the new "
+                     "pod, in its first minute."),
+            table(["", "No warmup", "Warmup"], [
+                ["TTFT p95", "10.9 s", "7.3 s"],
+                ["TTFT p50", "1.29 s", "1.03 s"],
+                ["Outage", "275 s", "290 s"],
+            ], [40, 30, 30]),
+            p("Minutes 2 to 4: a TTFT p95 near 12.7 s in both arms. The warmup helps only the first minute.", 24,
+              INK),
+        ], left_w=860),
+    ]), "For questions only. This slide answers the hop and warmth questions. Same pod: when llm-d picks only the"
+        " decode pod, the KV is already there. The decode pod computes the prompt or finds it in its cache, so "
+        "there is no hop and no record. Two pods: when llm-d splits a call, the prefill pod computes the KV and "
+        "stores a copy in the LMCache server. The decode pod loads it. The script hop_records.py writes one "
+        "record for each split call, from the Envoy log. The record has the source pod, the destination pod, the "
+        "tokens, the cached tokens, and the backend. In this record, the decode pod got 2,304 of 2,371 tokens "
+        "from the cache. It computed the rest again: the tokens after the last full LMCache chunk of 256 tokens. "
+        "Is the new pod warm? A pod with its weights on the GPU is not warm yet. Its first calls can be slow, "
+        "because its prefix cache is empty and some one-time work runs on the first calls. Warm the box and then "
+        "re-quote the TTFT means this: send warmup calls first, and then measure the TTFT again. We did this as "
+        "two arms of the restart test. We deleted the one decode pod at 70% load. With no warmup, the "
+        "first-minute TTFT p95 on the new pod was 10.9 seconds. With the warmup, it was 7.3 seconds. The warmup "
+        "made the outage 15 seconds longer. In minutes 2 to 4, both arms had a p95 near 12.7 seconds, so the "
+        "warmup helps only the first minute. Our warmup routine sends our system prompts and the shapes of our "
+        "app. A new decode pod also gets one split call through the prefill pod, so the hop path is warm too. "
+        "Then a 4,000-token probe runs. The pod gets the warm label only if the probe TTFT is at most 1.5 times "
+        "the warm baseline. Then the ramp starts. In the scale test, each new pod got the warm label 225 to 235 "
+        "seconds after the request."))
+
     s.append(("a-cost", "".join([
         p("Appendix", 24, ORANGE_TEXT, 600),
         title("The cost of each GPU block"),

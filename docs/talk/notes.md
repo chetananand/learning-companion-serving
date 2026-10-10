@@ -204,18 +204,32 @@ But vLLM v0.30 does not count these aborts in its success counter, so we have no
 
 But the ramp is a score, not a cap. In the first 10 seconds, the empty pod got 75% of the calls, because the queue scorer likes an empty queue. So the ramp needs a cap.
 
-### A9. The cost of each GPU block
+### A9. The hop record, and a cold pod against a warm pod
+
+For questions only. This slide answers the hop and warmth questions. Same pod: when llm-d picks only the decode pod, the KV is already there. The decode pod computes the prompt or finds it in its cache, so there is no hop and no record. Two pods: when llm-d splits a call, the prefill pod computes the KV and stores a copy in the LMCache server.
+
+The decode pod loads it. The script hop_records.py writes one record for each split call, from the Envoy log. The record has the source pod, the destination pod, the tokens, the cached tokens, and the backend. In this record, the decode pod got 2,304 of 2,371 tokens from the cache. It computed the rest again: the tokens after the last full LMCache chunk of 256 tokens.
+
+Is the new pod warm? A pod with its weights on the GPU is not warm yet. Its first calls can be slow, because its prefix cache is empty and some one-time work runs on the first calls. Warm the box and then re-quote the TTFT means this: send warmup calls first, and then measure the TTFT again. We did this as two arms of the restart test.
+
+We deleted the one decode pod at 70% load. With no warmup, the first-minute TTFT p95 on the new pod was 10.9 seconds. With the warmup, it was 7.3 seconds. The warmup made the outage 15 seconds longer. In minutes 2 to 4, both arms had a p95 near 12.7 seconds, so the warmup helps only the first minute.
+
+Our warmup routine sends our system prompts and the shapes of our app. A new decode pod also gets one split call through the prefill pod, so the hop path is warm too. Then a 4,000-token probe runs. The pod gets the warm label only if the probe TTFT is at most 1.5 times the warm baseline. Then the ramp starts.
+
+In the scale test, each new pod got the warm label 225 to 235 seconds after the request.
+
+### A10. The cost of each GPU block
 
 For questions only. Each block is in docs/budget-ledger.md. A spend guard stopped each GPU at the limits.
 
-### A10. The hop: the LMCache server against NIXL
+### A11. The hop: the LMCache server against NIXL
 
 For questions only. NIXL between two pods used TCP, because the nodes have no RDMA.
 
-### A11. The scale test: the planner against KEDA, in each pool
+### A12. The scale test: the planner against KEDA, in each pool
 
 For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool scaled only after we set its capacity value for the A100.
 
-### A12. The hop at production scale: what we keep, what we change
+### A13. The hop at production scale: what we keep, what we change
 
 For questions only. The one-token request is production quality, and the barrier is not. Under load, it hit its half-second cap on most split calls, so a production hop needs a store signal for each request.

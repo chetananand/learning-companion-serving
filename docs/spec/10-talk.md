@@ -66,7 +66,7 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 
 Total: 14 minutes 54 seconds of notes and 61 seconds of clips, so 15 minutes 55 seconds.
 
-The appendix has 12 slides. The first one holds the cluster design: each choice, its reason, and the proof. The second one shows how llm-d places a call: the policy and the scorers. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
+The appendix has 13 slides. The first one holds the cluster design: each choice, its reason, and the proof. The second one shows how llm-d places a call: the policy and the scorers. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
 
 On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. The `scale` slide shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
 
@@ -106,16 +106,19 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 | A6 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
 | A7 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
 | A8 | `a-part5` | The queue questions: our answers and the proof | `notebook/part5_queue.ipynb` |
-| A9 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
-| A10 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
-| A11 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
-| A12 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
+| A9 | `a-warm` | The hop record, and a cold pod against a warm pod | `metrics/e3-c-150/hops.jsonl`; `notebook/part5_queue.ipynb`, the restart test; `DESIGN.md`, Part 6 |
+| A10 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
+| A11 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
+| A12 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
+| A13 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
 
 Slide A1 holds the defense of the cluster design. Each row has the choice, the reason, and the proof. The rows are the GPU, the model, the topology, the slices, the concurrency, the hop backend, the overflow, the two boxes, and the scale. Its notes give the answer to the question that each row can get, for example "why not a cheaper GPU?" or "why not Mooncake?".
 
 Slide A2 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
 
 Slide A8 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
+
+Slide A9 answers the hop and warmth questions. It shows one hop record from the Envoy log, and the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s. Its notes say what "warm the box and re-quote the TTFT" means.
 
 ## 5. The bad answers of the handout, and our answers
 
