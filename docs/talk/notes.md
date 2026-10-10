@@ -112,42 +112,56 @@ And llm-d must apply a cache clear. At 10 times the traffic I add decode capacit
 
 ## Appendix (for questions only)
 
-### A1. The handout questions and their evidence (1 of 2)
+### A1. The cluster design: each choice, its reason, and the proof
+
+For questions only. Each row gives a choice of the cluster design, the reason, and the proof. GPU: why not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper.
+
+The H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two whole pods were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets its own scale signal.
+
+The data showed that most agent calls are short, so for our traffic two whole pods win. Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, and at 24K tokens, about 20 fit.
+
+We chose 24, between them. The data showed that 32 is better, and no pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda nodes had no RDMA. NIXL over TCP took more than 4 seconds.
+
+The LMCache server gave a hop TTFT of 0.52 to 0.78 seconds. Overflow: only an interactive call that llm-d refused for capacity may leave. A 429 never leaves. The overflow was off in all runs, so these calls got a 503. Two boxes: the handout puts admit, place, and the queue in the gateway.
+
+So llm-d, with its flow control and its scheduler, is in the gateway box, and vLLM is the engine box. Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, and running sequences grow the decode pool.
+
+### A2. The handout questions and their evidence (1 of 2)
 
 For questions only. Each answer points at a file in the repo.
 
-### A2. The handout questions and their evidence (2 of 2)
+### A3. The handout questions and their evidence (2 of 2)
 
 For questions only. Each answer points at a file in the repo.
 
-### A3. A raw /metrics scrape of a live engine
+### A4. A raw /metrics scrape of a live engine
 
 For questions only. These lines come from the live engine, the edge, and the store barrier.
 
-### A4. Faults that we found and fixed
+### A5. Faults that we found and fixed
 
 For questions only. The session logs list each fault with its fix and its test.
 
-### A5. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
+### A6. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
 
 For questions only. Twelve fixed demo questions test the whole app.
 
-### A6. The queue questions, with the notebook answers
+### A7. The queue questions, with the notebook answers
 
 For questions only. The answers, with plots, are in notebook/part5_queue.ipynb.
 
-### A7. The cost of each GPU block
+### A8. The cost of each GPU block
 
 For questions only. Each block is in docs/budget-ledger.md. A spend guard stopped each GPU at the limits.
 
-### A8. The hop: the LMCache server against NIXL
+### A9. The hop: the LMCache server against NIXL
 
 For questions only. NIXL between two pods used TCP, because the nodes have no RDMA.
 
-### A9. The scale test: the planner against KEDA, in each pool
+### A10. The scale test: the planner against KEDA, in each pool
 
 For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool scaled only after we set its capacity value for the A100.
 
-### A10. The hop at production scale: what we keep, what we change
+### A11. The hop at production scale: what we keep, what we change
 
 For questions only. The one-token request is production quality, and the barrier is not. Under load, it hit its half-second cap on most split calls, so a production hop needs a store signal for each request.

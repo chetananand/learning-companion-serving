@@ -612,6 +612,58 @@ def slides() -> list[tuple[str, str, str]]:
 
     # ----------------------------------------------------------------------------------------------------------
     # The appendix (for questions only).
+    num = {sid: n for n, (sid, _, _) in enumerate(s, 1)}  # the main slide numbers, for the references below
+    design = [
+        ["GPU", "H100 SXM 80 GB. Each vLLM pod gets a full GPU.",
+         "The smallest GPU with FP8 compute that meets the TTFT goal. An A6000 leaves 6.8 GiB for KV.",
+         "TTFT on paper at 8K: 0.62 s, against 3.95 s (A100) and 7.96 s (A6000)."],
+        ["Model", "Gemma 4 31B FP8. Weights: 30.4 GiB. KV at 5,121 tokens: 0.98 GiB.",
+         "It passed all 7 gate tests, with 97.5% correct tool calls.", f"The KV math (slide {num['capacity']})"],
+        ["Topology", "1 prefill pod and 1 decode pod. A call splits only at 2,048 or more uncached tokens.",
+         "Short or cached calls stay on the decode pod, with no hop. Each pool has its own scale signal.",
+         f"For our traffic, two whole pods were faster (slide {num['topology']})."],
+        ["Slices", "None for vLLM. HAMi slices one GPU for SIE and the guard models.",
+         "The KV needs all the free HBM. The small models need 52 GB in total.",
+         f"The deployment (slide {num['deploy']})"],
+        ["Concurrency", "Decode: 24 sequences. Prefill: 8. Max length: 32,768 tokens.",
+         "At 8K, 32 sequences fit, and at 24K, about 20. At 24, the time between tokens stays near 20 ms.",
+         "With 32 sequences, the TTFT p50 fell from 4.59 s to 2.10 s."],
+        ["Hop backend", "The LMCache server (our name: lmcache), with our store barrier",
+         "Gemma 4 runs on it. NIXL over TCP took 4.1 to 4.3 s. Mooncake had no Gemma 4 test.",
+         f"Hop TTFT: 0.52 to 0.78 s (slide {num['hop']})"],
+        ["Overflow", "qwen3.8-27b on the Superlinked API, only for an interactive 503 or 529",
+         "Quality near ours, the same API, and a Redis limiter on the cost. It was off in all runs.",
+         "The gate marked the 124 interactive timeout calls."],
+        ["Two boxes, two workers", "Gateway: edge, the Envoy AI Gateway, and llm\u2011d. Engine: two vLLM pods.",
+         "The handout puts admit, place, and the queue in the gateway, and vLLM in the engine.",
+         f"The architecture (slide {num['arch']})"],
+        ["Scale", "KEDA, for each pool. Prefill: uncached prefill tokens. Decode: running sequences.",
+         "Each pool grows on its own signal, so only the hot pool grows.",
+         f"A new decode pod 15 s after the request (slide {num['scale']})"],
+    ]
+    s.append(("a-design", "".join([
+        p("Appendix", 24, ORANGE_TEXT, 600),
+        title("The cluster design: each choice, its reason, and the proof"),
+        table(["Item", "Our choice", "Why", "Proof"], design, [11, 29, 35, 25], size=22),
+    ]), "For questions only. Each row gives a choice of the cluster design, the reason, and the proof. GPU: why "
+        "not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 "
+        "compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper. The "
+        "H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. On "
+        "2026-10-01, no H100 had stock, so one A100 node ran the tests. "
+        "Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two whole "
+        "pods were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets "
+        "its own scale signal. The data showed that most agent calls are short, so for our traffic two whole pods "
+        "win. Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do "
+        "not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, "
+        "and at 24K tokens, about 20 fit. We chose 24, between them. The data showed that 32 is better, and no "
+        "pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda "
+        "nodes had no RDMA. NIXL over TCP took more than 4 seconds. The LMCache server gave a hop TTFT of 0.52 "
+        "to 0.78 seconds. Overflow: only an interactive call that llm-d refused for capacity may leave. A 429 "
+        "never leaves. The overflow was off in all runs, so these calls got a 503. Two boxes: the handout puts "
+        "admit, place, and the queue in the gateway. So llm-d, with its flow control and its scheduler, is in "
+        "the gateway box, and vLLM is the engine box. Scale: we scale the pool that is the limit. Uncached "
+        "prefill tokens grow the prefill pool, and running sequences grow the decode pool."))
+
     q1 = [["What is the app? Shared and unique tokens?", "64% of an agent prompt is in the cache", "Envoy logs"],
           ["What dies at guard, admit, place, queue?", "400 prompt_injection, 429 tenant_tokens, 503",
            "docs/results.md"],
@@ -783,7 +835,7 @@ def write(root: Path) -> list[tuple[str, str, str]]:
                           "s2": {"description": "One request, end to end: the code, the proof, and the dashboards",
                                  "start": "guard"},
                           "s3": {"description": "The results and what the data changed", "start": "hypothesis"},
-                          "s4": {"description": "Appendix, for questions only", "start": "a-questions-1"}},
+                          "s4": {"description": "Appendix, for questions only", "start": "a-design"}},
              "faces": {"ibm-plex-sans": {"family": "IBM Plex Sans",
                                          "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600"
                                                  "&display=swap"},
