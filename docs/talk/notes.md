@@ -26,7 +26,9 @@ These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM.
 
 ### 5. The deployment: two nodes, and an A100 fallback
 
-The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine: one prefill pod and one decode pod, each on a full GPU. The LMCache server uses its CPU RAM. Node 2 runs everything else, and HAMi slices one GPU for the small models. On 2026-10-01 no H100 had stock, so one node with eight A100 GPUs ran all pods.
+The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine: one prefill pod and one decode pod, each on a full GPU. The LMCache server may use up to 250 GiB of the 450 GiB of CPU RAM on node 1. In the A100 tests, it held up to 214 GiB. Node 2 runs everything else, and HAMi slices one GPU for the small models.
+
+On 2026-10-01 no H100 had stock, so one node with eight A100 GPUs ran all pods.
 
 ### 6. What the app sends: short agent steps with a cached prefix
 

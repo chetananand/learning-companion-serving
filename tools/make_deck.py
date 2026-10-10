@@ -261,8 +261,8 @@ def slides() -> list[tuple[str, str, str]]:
         title("The deployment: two nodes, and an A100 fallback"),
         two_columns([
             callout("Node 1 · 2 × H100 SXM 80 GB · the engine",
-                    "vllm-prefill on GPU 0 and vllm-decode on GPU 1, each on a full GPU. lmcache-server: 250 GiB of "
-                    "host RAM."),
+                    "vllm-prefill on GPU 0 and vllm-decode on GPU 1, each on a full GPU. The LMCache server: up to "
+                    "250 GiB of the 450 GiB of CPU RAM."),
             callout("Node 2 · 1 × H100 80 GB · control and data",
                     "HAMi slices of one GPU for the SIE and guard models. edge, guard, Envoy, the router, the app, "
                     "Qdrant, Redis, Prometheus, Grafana, and KEDA."),
@@ -275,10 +275,10 @@ def slides() -> list[tuple[str, str, str]]:
                   "Dashboard 1 · Cluster: the use of each engine GPU at 150% load. Both GPUs are at 100%.",
                   896),
         ]),
-    ]), "The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine: one prefill pod and one "
-        "decode pod, each on a full GPU. The LMCache server uses its CPU RAM. Node 2 runs everything else, and HAMi "
-        "slices one GPU for the small models. On 2026-10-01 no H100 had stock, so one node with eight A100 GPUs ran "
-        "all pods."))
+    ]), "The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine: one prefill pod and one"
+        " decode pod, each on a full GPU. The LMCache server may use up to 250 GiB of the 450 GiB of CPU RAM on "
+        "node 1. In the A100 tests, it held up to 214 GiB. Node 2 runs everything else, and HAMi slices one GPU "
+        "for the small models. On 2026-10-01 no H100 had stock, so one node with eight A100 GPUs ran all pods."))
 
     s.append(("app", "".join([
         title("What the app sends: short agent steps with a cached prefix"),

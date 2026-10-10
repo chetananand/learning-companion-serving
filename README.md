@@ -62,7 +62,7 @@ flowchart TB
 ## The system in short
 
 - Engine: vLLM v0.30.0 with `RedHatAI/gemma-4-31B-it-FP8-dynamic` on H100 SXM 80 GB. One prefill pod and one decode pod. The llm-d P/D decider splits a request with 2,048 or more uncached tokens.
-- KV: the KV cache of each vLLM pod is in its GPU memory. The LMCache server keeps a copy of the KV in CPU RAM (250 GiB on the engine node), and the hop goes through it. A store barrier in the prefill pod holds the reply until the store ends.
+- KV: the KV cache of each vLLM pod is in its GPU memory. The LMCache server keeps a copy of the KV in CPU RAM, with a cap of 250 GiB on the engine node. The hop goes through it. A store barrier in the prefill pod holds the reply until the store ends.
 - Admission control + routing: `edge` does guard stage 1, admit, and stay or leave. The Envoy AI Gateway holds the tenant token windows. The llm-d router decides where: the scorers, the P/D decider, the warm gate, and the ramp. Its flow control holds a call when all pods are full.
 - Overflow: `edge` can send a refused call to a hosted API (ADR-008), but the overflow was off in all runs. So a call that may leave gets a 503.
 - Guard: Llama Prompt Guard 2 and NeMo Guardrails with Nemotron Content Safety, on node 2. A rejected request never reaches a serving GPU.
