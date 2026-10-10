@@ -1,9 +1,9 @@
 """The architecture slide: the path of one LLM call (docs/spec/10-talk.md, slide 3).
 
-A hand-placed flow in the Mermaid style. Each box says who decides or does the work. Each arrow names what moves,
-with its step number. Solid arrows occur for each call. Dashed orange arrows occur only when the router also picks
-a prefill pod. The page has a fixed size of 1,700 x 776 px, and the slide shows it at that size, so the text stays
-at 24 px.
+A hand-placed flow in the Mermaid style. Each box says who decides or does the work. Each arrow names what moves, with
+its step number. Solid arrows occur for each call. Dashed orange arrows occur only when llm-d also picks a prefill
+pod. The llm-d box shows its two jobs: the admit part (flow control) and the where part (scheduler). The page has a
+fixed size of 1,700 x 776 px, and the slide shows it at that size, so the text stays at 24 px.
 
 Usage: python3 tools/arch_diagram.py   (writes plots/slides/arch.html)
 Then RENDER writes plots/slides/arch.png at 2x with headless Chrome. The page prints OVERFLOW lines in its
@@ -52,14 +52,16 @@ class Box:
 APP = Box(0, 243, 230, 84, ["<b>companion-api</b>", "the app"])
 GUARD = Box(462, 54, 420, 114, ["<b>guard models</b>", "Prompt Guard 2, Nemotron Safety", "is the prompt safe?"])
 EDGE = Box(462, 228, 320, 114, ["<b>edge</b> (our code)", "admit: block, refuse,", "or pass the call"])
-ROUTER = Box(1020, 54, 660, 114, ["<b>llm-d router</b>", "where: which decode pod? And a prefill pod,",
-                                  "if 2,048 or more prompt tokens are not in a cache"])
+# llm-d does two jobs: its flow control is the last admit check, and its scheduler decides where.
+ROUTER = Box(920, 30, 760, 150, ["<b>llm-d</b>", "admit (flow control): hold the call while the pods are full",
+                                 "where (scheduler): which decode pod? And a prefill pod,",
+                                 "if 2,048 or more prompt tokens are not in a cache"])
 ENVOY = Box(1020, 228, 420, 114, ["<b>Envoy AI Gateway</b>", "admit: is the tenant within", "its token budget?"])
 # The engine (the bottom band): the prefill pod at the left, the decode pod at the right, LMCache between them.
 BARRIER = Box(42, 460, 500, 114, ["<b>store barrier</b> (our code)", "holds the reply until LMCache",
                                   "has stored the KV copy"])
 VPRE = Box(42, 630, 500, 114, ["<b>vLLM</b> · KV cache in GPU memory", "computes the KV of the prompt"])
-SIDECAR = Box(1158, 460, 500, 114, ["<b>routing sidecar</b> (llm-d)", "if the router picked a prefill pod,",
+SIDECAR = Box(1158, 460, 500, 114, ["<b>routing sidecar</b> (llm-d)", "if llm-d picked a prefill pod,",
                                     "it first sends the prompt there"])
 VDEC = Box(1158, 630, 500, 114, ["<b>vLLM</b> · KV cache in GPU memory", "computes the KV that it does not have,",
                                  "then generates the answer token by token"])
@@ -92,8 +94,8 @@ ARROWS = [
     Arrow(EDGE.side("top", 512), GUARD.side("bottom", 512), "2", "the prompt", (524, 198), "right", bg=AR_BG),
     Arrow(GUARD.side("bottom", 732), EDGE.side("top", 732), "", "safe or not safe", (744, 198), "right", bg=AR_BG),
     Arrow(EDGE.side("right"), ENVOY.side("left", 285), "3", "the request", (901, 285), "center", bg=AR_BG),
-    Arrow(ENVOY.side("top", 1050), ROUTER.side("bottom", 1050), "4", "the prompt", (1062, 198), "right", bg=AR_BG),
-    Arrow(ROUTER.side("bottom", 1260), ENVOY.side("top", 1260), "", "the addresses of the picked pods", (1272, 198),
+    Arrow(ENVOY.side("top", 1050), ROUTER.side("bottom", 1050), "4", "the prompt", (1062, 204), "right", bg=AR_BG),
+    Arrow(ROUTER.side("bottom", 1260), ENVOY.side("top", 1260), "", "the addresses of the picked pods", (1272, 204),
           "right", bg=AR_BG),
     Arrow(ENVOY.side("bottom", 1300), SIDECAR.side("top", 1300), "5", "the request", (1312, 378), "right"),
     Arrow(SIDECAR.side("left", 496), BARRIER.side("right", 496), "5a", "the prompt, to compute its KV", (850, 496),
@@ -150,7 +152,7 @@ def legend_html() -> str:
         a = Arrow((4, y), (70, y), "", "", (0, 0), "right", dashed=dashed)
         return line_svg(a)
     svg = f'<svg width="80" height="120" style="left:0;top:0">{sample(30, False)}{sample(84, True)}</svg>'
-    rows = [(14, "every call", INK), (68, "only when the router also<br>picked a prefill pod", ORANGE_TEXT),
+    rows = [(14, "every call", INK), (68, "only when llm-d also<br>picked a prefill pod", ORANGE_TEXT),
             (146, "The answer tokens go back<br>to the app on the same path.", SOFT)]
     text = "".join(f'<div class="leg" style="left:{88 if i < 2 else 4}px;top:{top}px;color:{c}">{t}</div>'
                    for i, (top, t, c) in enumerate(rows))

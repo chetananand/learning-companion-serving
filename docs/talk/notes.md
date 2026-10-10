@@ -14,13 +14,15 @@ Each LLM call of these agents goes to our own vLLM cluster. Now clip 1.
 
 ### 3. The path of one LLM call
 
-This is the path of one LLM call. Admission control decides if the call may enter, and the router decides where it goes. Each box decides or does one thing, and each arrow names what moves. 1: the app sends the request to edge, our code. 2: edge asks the guard models if the prompt is safe.
+This is the path of one LLM call. Admission control decides if the call may enter, and routing decides where it goes. Each box says what it decides or does, and each arrow names what moves. 1: the app sends the request to edge, our code. 2: edge asks the guard models if the prompt is safe.
 
-3: edge sends the request to the Envoy AI Gateway, which checks the token budget of the tenant. 4: Envoy sends the prompt to the llm-d router, and the router sends back only the pod addresses. 5: Envoy sends the request to the decode pod. Each request enters this pod through the llm-d routing sidecar, a small proxy next to vLLM. The router only decides, so the sidecar runs the steps.
+3: edge sends the request to the Envoy AI Gateway, which checks the token budget of the tenant. 4: Envoy sends the prompt to llm-d. The llm-d box shows two jobs. Its flow control is the last admit check: it holds the call in a queue while the pods are full. Then its scheduler picks the pods, and llm-d sends back only the pod addresses.
 
-For most calls, the router picks no prefill pod, and the sidecar passes the request straight to vLLM. The orange steps occur only when the router also picked a prefill pod. 5a: the sidecar sends the prompt to the prefill pod and asks for only one token, so that pod only computes the KV. 5b: vLLM there sends a copy of the KV to the LMCache server. 5c: the store barrier replies only after the store.
+5: Envoy sends the request to the decode pod. Each request enters this pod through the llm-d routing sidecar, a small proxy next to vLLM. The sidecar runs the steps, because llm-d only decides. For most calls, llm-d picks no prefill pod, and the sidecar passes the request straight to vLLM. The orange steps occur only when llm-d also picked a prefill pod.
 
-6: the sidecar sends the request to its own vLLM, which loads the stored KV and generates the answer. The sidecar never moves the KV itself. In our mode, the KV goes through the LMCache server.
+5a: the sidecar sends the prompt to the prefill pod and asks for only one token, so that pod only computes the KV. 5b: vLLM there sends a copy of the KV to the LMCache server. 5c: the store barrier replies only after the store. 6: the sidecar sends the request to its own vLLM, which loads the stored KV and generates the answer. The sidecar never moves the KV itself.
+
+In our mode, the KV goes through the LMCache server.
 
 ### 4. The models, and the job of each
 
@@ -64,9 +66,9 @@ The key is a hash of the last user message. So the next LLM calls of the same tu
 
 Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway counts the tokens and the requests of each tenant in each minute. Its rate-limit service keeps these counts in Redis. When a tenant is over its budget, it gets a 429 at once, with no wait.
 
-Redis is not a queue. It has four jobs: the tenant counts, the guard verdicts, the overflow limits, and the web search results of the app. The queue is in llm-d, in its own memory. It has two priority bands with a time limit: 10 seconds for an interactive call, and 120 seconds for a batch call. At 5 queued requests or 90% KV use on a pod, llm-d stops the dispatch to that pod.
+Redis is not a queue. It has four jobs: the tenant counts, the guard verdicts, the overflow limits, and the web search results of the app. The queue is in the flow control of llm-d, in its own memory. Flow control is the admit part of llm-d: it decides if and when a call goes to a pod. Then the scheduler of llm-d decides which pod, and the place slide shows it.
 
-In all load tests the engine preempted nothing, because llm-d refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and the others kept their service.
+The queue has two priority bands with a time limit: 10 seconds for an interactive call, and 120 seconds for a batch call. The pods are full at 5 queued requests or 90% KV use. Then the flow control holds the calls in the queue. In all load tests the engine preempted nothing, because the flow control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and the others kept their service.
 
 ### 11. Place: prefix match first, then load
 

@@ -16,7 +16,7 @@ The app is a learning companion over the Notion Bookmarks database of its owner.
 
 ## Architecture
 
-The path of one LLM call. This is slide 3 of the talk, and `tools/arch_diagram.py` draws it. Each box says what it decides or does, and each arrow names what moves. Solid arrows occur for each call. The orange dashed arrows occur only when the router also picks a prefill pod.
+The path of one LLM call. This is slide 3 of the talk, and `tools/arch_diagram.py` draws it. Each box says what it decides or does, and each arrow names what moves. Solid arrows occur for each call. The orange dashed arrows occur only when llm-d also picks a prefill pod. The llm-d box shows its two jobs: its flow control is the last admit check, and its scheduler decides where.
 
 ![The path of one LLM call: the app, admission control and routing, and the engine, in steps 1 to 6](plots/slides/arch.png)
 
@@ -37,12 +37,12 @@ flowchart TB
     direction LR
     edge[edge, our code<br/>admit: block, refuse,<br/>or pass the call] -->|the request| envoy[Envoy AI Gateway<br/>admit: is the tenant within<br/>its token budget?]
     edge <-->|the prompt, safe or not| guard[guard models<br/>NeMo Guardrails,<br/>Prompt Guard 2]
-    envoy <-->|the prompt, the pod addresses| epp[llm-d router<br/>where: which decode pod,<br/>and a prefill pod for<br/>a long new prompt]
+    envoy <-->|the prompt, the pod addresses| epp[llm-d<br/>admit: flow control holds the call<br/>while the pods are full<br/>where: which decode pod,<br/>and a prefill pod for<br/>a long new prompt]
     wc[warm-controller<br/>warm label, ramp label]
   end
   subgraph eng["Engine (node 1): vLLM pods and LMCache"]
     direction LR
-    dec[vllm-decode pod<br/>routing sidecar + vLLM] -.->|if the router picked a prefill pod:<br/>the prompt, to compute its KV| pre[vllm-prefill pod<br/>store barrier + vLLM]
+    dec[vllm-decode pod<br/>routing sidecar + vLLM] -.->|if llm-d picked a prefill pod:<br/>the prompt, to compute its KV| pre[vllm-prefill pod<br/>store barrier + vLLM]
     pre -.->|a copy of the KV| lmc[(LMCache server<br/>CPU RAM)]
     lmc -->|the stored KV, if any| dec
   end

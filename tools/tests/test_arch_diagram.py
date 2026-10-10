@@ -29,5 +29,11 @@ def test_each_arrow_is_straight_and_ends_on_a_box_border():
 def test_the_page_has_the_new_names_and_no_old_labels():
     page = ad.page()
     assert "Admission control + routing" in page and "LMCache server" in page
-    for old in ("Gateway (our policy)", "gateway box", "qwen", "overflow API", "max 1 token", "LMCache tier"):
+    for old in ("Gateway (our policy)", "gateway box", "qwen", "overflow API", "max 1 token", "LMCache tier",
+                "the router", "llm-d router"):
         assert old not in page, old
+
+
+def test_the_llm_d_box_shows_both_jobs():
+    lines = " ".join(ad.ROUTER.lines)
+    assert "admit (flow control)" in lines and "where (scheduler)" in lines

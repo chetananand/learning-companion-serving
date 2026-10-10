@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = {
     "e3": "/_blob/54f351d14862f0849b7a3206cd05191c", "e9": "/_blob/33d6ecab663862b797ffccf742537e60",
     "hop": "/_blob/bef7f263ef04880cd591661ca8dedf8c", "warm": "/_blob/f6633cb512f077a6b00cb0fbdf1a49ed",
-    "arch": "/_blob/40be9ee479f4bb16ea86c303db00815c",
+    "arch": "/_blob/ea2cc8cd93f9a3412a5f996150e1a655",
     "cluster": "/_blob/c93f5728251ce5c26c873f9fc0da2440", "guard": "/_blob/51874d3a3f4d12ee3c96b0a08ca10aeb",
     "tenant": "/_blob/4466d622d255b88d350409463917aaca", "lmcache": "/_blob/bd6b9524acd3f31f149f04f6244c30d7",
     "queues": "/_blob/8bf5df6c9b3ea7d826771b4f749137af", "pd": "/_blob/64db200fb2311fad8d21915521ec3dc8",
@@ -235,22 +235,23 @@ def slides() -> list[tuple[str, str, str]]:
     s.append(("arch", "".join([
         title("The path of one LLM call"),
         (f'<img src="{ASSETS["arch"]}" alt="Flow diagram of one LLM call: the app, admission control and routing '
-         f'(edge, guard models, Envoy AI Gateway, llm-d router), and the engine (prefill pod, decode pod, LMCache '
+         f'(edge, guard models, Envoy AI Gateway, llm-d), and the engine (prefill pod, decode pod, LMCache '
          f'server), steps 1 to 6" style="width:1700px;height:{round(1700 * SIZES["arch"][1] / SIZES["arch"][0])}px;'
          f'object-fit:contain;align-self:center">'),
-    ]), "This is the path of one LLM call. Admission control decides if the call may enter, and the router "
-        "decides where it goes. Each box decides or does one thing, and each arrow names what moves. 1: the app "
-        "sends the request to edge, our code. 2: edge asks the guard models if the prompt is safe. 3: edge sends "
-        "the request to the Envoy AI Gateway, which checks the token budget of the tenant. 4: Envoy sends the "
-        "prompt to the llm-d router, and the router sends back only the pod addresses. 5: Envoy sends the request"
-        " to the decode pod. Each request enters this pod through the llm-d routing sidecar, a small proxy next "
-        "to vLLM. The router only decides, so the sidecar runs the steps. For most calls, the router picks no "
-        "prefill pod, and the sidecar passes the request straight to vLLM. The orange steps occur only when the "
-        "router also picked a prefill pod. 5a: the sidecar sends the prompt to the prefill pod and asks for only "
-        "one token, so that pod only computes the KV. 5b: vLLM there sends a copy of the KV to the LMCache "
-        "server. 5c: the store barrier replies only after the store. 6: the sidecar sends the request to its own "
-        "vLLM, which loads the stored KV and generates the answer. The sidecar never moves the KV itself. In our "
-        "mode, the KV goes through the LMCache server."))
+    ]), "This is the path of one LLM call. Admission control decides if the call may enter, and routing decides "
+        "where it goes. Each box says what it decides or does, and each arrow names what moves. 1: the app sends "
+        "the request to edge, our code. 2: edge asks the guard models if the prompt is safe. 3: edge sends the "
+        "request to the Envoy AI Gateway, which checks the token budget of the tenant. 4: Envoy sends the prompt "
+        "to llm-d. The llm-d box shows two jobs. Its flow control is the last admit check: it holds the call in a"
+        " queue while the pods are full. Then its scheduler picks the pods, and llm-d sends back only the pod "
+        "addresses. 5: Envoy sends the request to the decode pod. Each request enters this pod through the llm-d "
+        "routing sidecar, a small proxy next to vLLM. The sidecar runs the steps, because llm-d only decides. For"
+        " most calls, llm-d picks no prefill pod, and the sidecar passes the request straight to vLLM. The orange"
+        " steps occur only when llm-d also picked a prefill pod. 5a: the sidecar sends the prompt to the prefill "
+        "pod and asks for only one token, so that pod only computes the KV. 5b: vLLM there sends a copy of the KV"
+        " to the LMCache server. 5c: the store barrier replies only after the store. 6: the sidecar sends the "
+        "request to its own vLLM, which loads the stored KV and generates the answer. The sidecar never moves the"
+        " KV itself. In our mode, the KV goes through the LMCache server."))
 
     s.append(("models", "".join([
         title("The models, and the job of each"),
@@ -412,10 +413,10 @@ def slides() -> list[tuple[str, str, str]]:
         title("Admit: we refuse work at the door, not in the engine"),
         two_columns([
             code([("control/router/policy.yaml", "tenants, flow_control"), ("control/edge/admit.py:23", "slice_oom")]),
-            p("Each tenant has a token budget for each minute. At 5 queued requests or 90% KV use on a pod, llm-d "
-              "stops the dispatch to that pod.", 28),
+            p("Each tenant has a token budget for each minute. While the pods are full (5 queued requests or 90% KV "
+              "use), the llm-d flow control holds the calls.", 28),
             measured("In all load tests, from 50% to 150% load: the preemptions in the vLLM engine."),
-            proof("0 preemptions", "Before the KV was full, llm-d refused the extra work."),
+            proof("0 preemptions", "Before the KV was full, flow control refused the extra work."),
             measured("Tenant test: one noisy tenant over its token budget, at 100% load."),
             p("55 calls of the noisy tenant got 429 tenant_tokens. The other tenants kept their service.", 28, INK,
               600),
@@ -423,17 +424,20 @@ def slides() -> list[tuple[str, str, str]]:
             image("tenant", "Grafana panel: tenant rate-limit rejects, tenant_tokens",
                   "Dashboard 3 · Gateway + admission: the 429 tenant_tokens rejects each second in the tenant "
                   "test", 896),
-            callout("Redis and the queue", "Redis holds the tenant counts. The queue is in llm-d."),
+            callout("Redis and the queue", "Redis holds the tenant counts. The queue is in the flow control of llm-d. "
+                    "Flow control is the admit part of llm-d."),
         ]),
     ]), "Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway counts the tokens and the "
         "requests of each tenant in each minute. Its rate-limit service keeps these counts in Redis. When a "
         "tenant is over its budget, it gets a 429 at once, with no wait. Redis is not a queue. It has four jobs: "
         "the tenant counts, the guard verdicts, the overflow limits, and the web search results of the app. The "
-        "queue is in llm-d, in its own memory. It has two priority bands with a time limit: 10 seconds for an "
-        "interactive call, and 120 seconds for a batch call. At 5 queued requests or 90% KV use on a pod, llm-d "
-        "stops the dispatch to that pod. In all load tests the engine preempted nothing, because llm-d refused "
-        "the extra work first. In the tenant test the noisy tenant got 55 429 replies, and the others kept their "
-        "service."))
+        "queue is in the flow control of llm-d, in its own memory. Flow control is the admit part of llm-d: it "
+        "decides if and when a call goes to a pod. Then the scheduler of llm-d decides which pod, and the place "
+        "slide shows it. The queue has two priority bands with a time limit: 10 seconds for an interactive call, "
+        "and 120 seconds for a batch call. The pods are full at 5 queued requests or 90% KV use. Then the flow "
+        "control holds the calls in the queue. In all load tests the engine preempted nothing, because the flow "
+        "control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and the "
+        "others kept their service."))
 
     s.append(("place", "".join([
         strip(["place"]),
