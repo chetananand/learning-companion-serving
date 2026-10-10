@@ -272,15 +272,18 @@ def slides() -> list[tuple[str, str, str]]:
             table(["Step", "Calls", "Prompt p50", "Cached share", "New p50"],
                   [["quick", "978", "5,121", "0.19", "4,515"], ["verify", "321", "1,427", "0.65", "133"],
                    ["agent", "303", "2,121", "0.64", "459"]], [22, 16, 22, 22, 18]),
-            p("quick: a step of the quick agent. agent: a step of the second agent. verify: a step of its claim "
-              "checker. Cached share: the part of the prompt that was in the prefix cache.", 24),
+            p("The quick steps come from the quick agent. The agent steps come from the second agent, which picks "
+              "the claims and writes the final answer. The verify steps come from its helper, which checks one "
+              "claim. Cached share: the part of the prompt that was in the prefix cache.", 24),
             callout("What this means", "The quick steps carry the bookmark chunks that the search found, so most "
                     "of their tokens are new: the Track A shape. The agent steps share a long prefix: the Track B "
                     "shape."),
         ]),
-    ]), "This is what the app sends to the cluster. We measured the tokens of 1,606 real app calls. An agent step"
-        " found 64% of its prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens. This number"
-        " decides the topology later. For the load tests, 100% load is 0.9 app turns each second."))
+    ]), "This is what the app sends to the cluster. The second agent has two parts. The agent steps pick the "
+        "claims and write the final answer. The verify steps check one claim each, on the web. An agent step "
+        "found 64% of its prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens. In the load "
+        "tests, we replay recorded app turns. A turn is one question with all its LLM calls. 100% load is 0.9 "
+        "turns each second: the rate where the soak test refused its first call."))
 
     s.append(("guard", "".join([
         strip(["guard", "stay or leave"]),
