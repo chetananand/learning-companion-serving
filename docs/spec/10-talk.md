@@ -100,8 +100,8 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 |---|---|---|---|
 | A1 | `a-design` | The cluster design: each choice, its reason, and the proof | `DESIGN.md`, Part 2; `docs/spec/05-capacity-plan.md`, sections 4 and 7; ADR-002, ADR-005, and ADR-008 |
 | A2 | `a-place` | How llm-d places a call: the policy and the scorers | `control/router/policy.yaml:15` and `:36`; `control/router/render.py:50`; `DESIGN.md`, Part 4 |
-| A3 | `a-questions-1` | The handout questions and their evidence (1 of 2) | `DESIGN.md`, Part 8 |
-| A4 | `a-questions-2` | The handout questions and their evidence (2 of 2) | `DESIGN.md`, Part 8 |
+| A3 | `a-questions-1` | The handout questions: our answers and the evidence (1 of 2) | `DESIGN.md`, Part 8 |
+| A4 | `a-questions-2` | The handout questions: our answers and the evidence (2 of 2) | `DESIGN.md`, Part 8 |
 | A5 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
 | A6 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
 | A7 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
@@ -117,6 +117,8 @@ Slide A1 holds the defense of the cluster design. Each row has the choice, the r
 Slide A2 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
 
 Slide A8 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
+
+Slides A3 and A4 answer the 13 questions of Part 8. Each row has a full answer and a file or a scrape. The notes give the details of each answer, in the same style as slide A8.
 
 Slide A9 answers the hop and warmth questions. It shows one hop record from the Envoy log. It also shows the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s. Its notes say what "warm the box and re-quote the TTFT" means.
 

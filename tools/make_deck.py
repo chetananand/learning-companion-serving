@@ -720,28 +720,109 @@ def slides() -> list[tuple[str, str, str]]:
         "pods, so it is the same as least loaded. The stale-metrics test shows that the load scores matter. A "
         "frozen copy of the metrics of an empty pod pulled 80% of the work to that pod."))
 
-    q1 = [["What is the app? Shared and unique tokens?", "64% of an agent prompt is in the cache", "Envoy logs"],
-          ["What dies at guard, admit, place, queue?", "400 prompt_injection, 429 tenant_tokens, 503",
-           "docs/results.md"],
-          ["Where do we stop work that will time out?", "band time limits: 10 s and 120 s", "policy.yaml:45"],
-          ["Where do we protect KV?", "llm-d flow control holds the calls at 90% KV use", "policy.yaml:57"],
-          ["Where do we give priority to interactive?", "priority bands, holdback policy", "policy.yaml:47"],
-          ["Where do we stop one tenant?", "Envoy AI Gateway token windows", "policy.yaml:61"],
-          ["Where do we hop? What is not copied?", "2,048+ uncached tokens, and the last part chunk", "hops.jsonl"]]
-    q2 = [["Where do we evict? What becomes a ghost?", "vLLM and LMCache evict, and a cleared prefix",
-           "ghost_probe.py"],
-          ["Where does the engine scheduler sit?", "inside each vLLM pod, after our queue", "manifests/engine"],
-          ["What limited concurrency?", "the decode pod", "vLLM dashboard"],
-          ["Four production alerts?", "TTFT burn, shed rate, KV pressure, hop failures", "rules.yaml"],
-          ["If we scale, which pool?", "the pool that the planner names", "rules.yaml"],
-          ["What changes at 10 times the traffic?", "decode capacity, 32 sequences, fp8 KV", "DESIGN.md"],
-          ["Three wrong knobs?", "prefill pods, longer queues, lower split", "DESIGN.md"]]
+    q1 = [["What is the app? Which tokens are common, and which are unique?",
+           "RAG and agent steps over the bookmarks. Shared: system prompt, tools, session history. Unique: question, "
+           "chunks, pages.",
+           "metrics/cap-b1/envoy-access.log: an agent step finds 64% of its prompt in the cache."],
+          ["What dies at the guard, admit, place, and queue?",
+           "Guard: unsafe prompts (400). Admit: a tenant over its budget (429). Queue: a wait past the time limit "
+           "(503). Place: no ready pod (503).",
+           "docs/results.md: 22 of 22 attacks, 55 tenant 429 replies, 273 timeouts at 150% load."],
+          ["Where do I prevent work that will time out?",
+           "In the llm-d queue: 10 s for interactive and 120 s for batch. Edge sets each call to half of its time "
+           "left.",
+           "control/router/policy.yaml:46 to :48, and the timeout_queue panel of dashboard 3"],
+          ["Where do I protect KV?",
+           "The llm-d flow control holds calls while the pods are full, so the KV stays near 90% or below. vLLM "
+           "preemption is the last line.",
+           "control/router/policy.yaml:55, and 0 preemptions in the raw scrape of a live engine"],
+          ["Where do I prioritize interactive traffic?",
+           "Interactive goes before batch in the llm-d queue. Batch waits from 70% fullness, interactive only at "
+           "100%.",
+           "control/router/policy.yaml:46 to :54. At 100% load: 89 batch and 11 interactive sheds."],
+          ["Where do I limit one tenant, so that it cannot take the GPU?",
+           "The Envoy AI Gateway counts the tokens and requests of each tenant in Redis. Over the budget: a 429 that "
+           "never leaves.",
+           "control/router/policy.yaml:61. 55 429 replies for the noisy tenant, none for the others."],
+          ["Where do I hop, and what is not copied?",
+           "llm-d splits a call at 2,048 or more uncached tokens. The decode pod computes again only the tokens "
+           "after the last full chunk of 256.",
+           "hops.jsonl of each P/D run: 2,304 of 2,371 tokens came from the cache."]]
+    q2 = [["Where do I evict, and what becomes a ghost if I skip it?",
+           "vLLM and LMCache evict their oldest blocks. If llm-d misses a clear, the next call of each warm session "
+           "misses: a ghost.",
+           "metrics/e7b-*/kv-events.json and tools/ghost_probe.py: 15 of 15 sessions missed once."],
+          ["Where does the engine scheduler sit, against our admit, place, and queue?",
+           "Inside each vLLM pod, after our admit, place, and queue. We set its flags, and we do not change its "
+           "code.",
+           "cluster/manifests/base/engine/vllm-decode.yaml:34 to :38"],
+          ["What limited concurrency on this GPU for this app?",
+           "The decode pod. Most calls do not split, so it does their prefill and their decode, at 24 sequences.",
+           "Dashboard 6: 16,200 prompt tokens each second on the decode pod, 4,550 on the prefill pod."],
+          ["Four production alerts?",
+           "Interactive TTFT budget burn, a shed rate above 5%, KV pressure (above 92%, or preemptions), and hop "
+           "failures.",
+           "cluster/manifests/base/monitoring/rules.yaml:25 to :40"],
+          ["If I scale, which pool: prefill tokens or decode slots?",
+           "Decode first, on running sequences against 60% of 24 slots. Prefill on uncached prefill tokens against "
+           "70% of its capacity.",
+           "rules.yaml:18 and :22. KEDA made a decode pod 15 s after the request."],
+          ["What changes at 10 times the traffic?",
+           "More decode capacity first: more pods, 32 sequences, and FP8 KV. More CPU RAM for LMCache.",
+           "32 sequences: TTFT p50 from 4.59 s to 2.10 s. FP8 KV: twice the tokens."],
+          ["Which three knobs are the wrong next move?",
+           "More prefill pods, a longer queue, and a lower split threshold.",
+           "The prefill pod was not the limit. A longer wait still misses the goal. Each split costs more."]]
+    notes_q = {"a-questions-1": (
+        "For questions only. Each answer points at a file or a scrape in the repo. The app is a learning "
+        "companion over the bookmarks of its owner, with RAG and agent steps on Gemma 4 31B. The shared "
+        "tokens are the system prompt, the tool schemas, and the history of a session. The unique tokens are "
+        "the question, the retrieved chunks, the fetched pages, and the OCR text. The Envoy logs of the "
+        "capture runs give the numbers. An agent step finds 64% of its prompt in the cache, and 31% of all "
+        "prompt tokens were in the cache. What dies where: the guard stops an unsafe prompt with a 400, "
+        "before any GPU work. Admit stops a tenant over its budget with a 429. The queue stops a call that "
+        "waits past its time limit with a 503. Place gives a 503 when no pod is ready. Time limits: the llm-d"
+        " queue has a time limit for each band. Edge sets the limit of each call to half of its time left. So"
+        " a call that cannot finish in time leaves before it uses the GPU. KV: the llm-d flow control holds "
+        "calls while the pods are full, so the KV of a pod stays near 90% or below. vLLM preemption is only "
+        "the last line, and no run preempted. Priority: interactive calls go before batch calls in the llm-d "
+        "queue. Batch calls already wait at 70% fullness, and interactive calls only at 100%. vLLM also "
+        "schedules by priority. At 100% load, llm-d shed 89 batch calls and 11 interactive calls. One tenant:"
+        " the Envoy AI Gateway counts the tokens and the requests of each tenant in Redis. A tenant over its "
+        "budget gets a 429, and a 429 never leaves the cluster. In the tenant test, the noisy tenant got 55 "
+        "429 replies, and no other tenant got one. But the TTFT p95 of the others stayed near 10 seconds, "
+        "because 100% load in this layout is above the limit of the engine. The hop: llm-d splits a call at "
+        "2,048 or more uncached tokens. The decode pod loads the KV from the LMCache server. It computes "
+        "again only the tokens after the last full chunk of 256 tokens."),
+               "a-questions-2": (
+        "For questions only. Evict and ghosts: vLLM evicts blocks of its GPU prefix cache when it needs "
+        "space. The LMCache server evicts its oldest chunks at 90% of its 250 GiB cap. llm-d learns of each "
+        "eviction from the KV events of vLLM. A ghost is a prefix that llm-d still places on a pod after the "
+        "pod cleared it. We cleared the prefix cache of one pod during a run. The pod sent one "
+        "AllBlocksCleared event, and llm-d did not act on it. The next call of each warm session went to the "
+        "cleared pod and missed the cache once, in 15 of 15 sessions. A ghost costs one prefill of the "
+        "session history. The engine scheduler sits inside each vLLM pod, after our admit, place, and queue. "
+        "vLLM does continuous batching, chunked prefill, its waiting queue, preemption, and the KV blocks. We"
+        " only set its flags. The limit on concurrency was the decode pod. Most agent calls have fewer than "
+        "2,048 new tokens, so llm-d does not split them, and the decode pod also does their prefill. At 100% "
+        "load it processed 16,200 prompt tokens each second, and the prefill pod 4,550. The alerts: an "
+        "interactive TTFT budget burn, a shed rate above 5%, KV pressure, and hop failures. KV pressure means"
+        " a KV use above 92% for 5 minutes, or preemptions. We also alert when the guard is down or an engine"
+        " stalls. Scale: decode first, because the decode pod is the limit. The planner asks for decode pods "
+        "from the running sequences, and for prefill pods from the uncached prefill tokens. In the scale "
+        "test, KEDA made a new decode pod 15 seconds after the request. At 10 times the traffic: more decode "
+        "capacity first, 32 sequences on each decode pod, and FP8 KV. With 32 sequences, the TTFT p50 fell "
+        "from 4.59 to 2.10 seconds, and FP8 KV doubled the tokens of each pod. Also more CPU RAM for LMCache,"
+        " because it keeps the prefixes of the sessions. The wrong knobs: more prefill pods, because the "
+        "prefill pod had little work. A longer queue, because calls then wait longer and still miss the TTFT "
+        "goal. A lower split threshold, because each split pays the prefill, the hold, and the load from "
+        "LMCache.")}
     for sid, rows, part in (("a-questions-1", q1, "1 of 2"), ("a-questions-2", q2, "2 of 2")):
         s.append((sid, "".join([
             p("Appendix", 24, ORANGE_TEXT, 600),
-            title(f"The handout questions and their evidence ({part})"),
-            table(["Question", "Answer", "Evidence"], rows, [38, 40, 22]),
-        ]), "For questions only. Each answer points at a file in the repo."))
+            title(f"The handout questions: our answers and the evidence ({part})"),
+            table(["Question", "Our answer", "File or scrape"], rows, [24, 46, 30], size=21),
+        ]), notes_q[sid]))
 
     scrape = [
         "# the vllm-decode pod",
