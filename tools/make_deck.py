@@ -243,10 +243,14 @@ def slides() -> list[tuple[str, str, str]]:
         "sends the request to edge, our code. 2: edge asks the guard models if the prompt is safe. 3: edge sends "
         "the request to the Envoy AI Gateway, which checks the token budget of the tenant. 4: Envoy sends the "
         "prompt to the llm-d router, and the router sends back only the pod addresses. 5: Envoy sends the request"
-        " to the decode pod. The orange steps occur only when the router also picked a prefill pod. 5a: the "
-        "sidecar sends the prompt to the prefill pod, only to compute its KV. 5b: vLLM there sends a copy of the "
-        "KV to the LMCache server. 5c: the store barrier replies only after the store. 6: vLLM in the decode pod "
-        "loads the stored KV and generates the answer."))
+        " to the decode pod. Each request enters this pod through the llm-d routing sidecar, a small proxy next "
+        "to vLLM. The router only decides, so the sidecar runs the steps. For most calls, the router picks no "
+        "prefill pod, and the sidecar passes the request straight to vLLM. The orange steps occur only when the "
+        "router also picked a prefill pod. 5a: the sidecar sends the prompt to the prefill pod and asks for only "
+        "one token, so that pod only computes the KV. 5b: vLLM there sends a copy of the KV to the LMCache "
+        "server. 5c: the store barrier replies only after the store. 6: the sidecar sends the request to its own "
+        "vLLM, which loads the stored KV and generates the answer. The sidecar never moves the KV itself. In our "
+        "mode, the KV goes through the LMCache server."))
 
     s.append(("models", "".join([
         title("The models, and the job of each"),
