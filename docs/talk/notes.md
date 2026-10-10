@@ -48,13 +48,27 @@ The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine:
 
 On 2026-10-01 no H100 had stock, so one node with eight A100 GPUs ran all pods.
 
-### 8. What the app sends: short agent steps with a cached prefix
+### 8. The cluster design: each choice, its reason, and the proof
+
+Each row gives a choice of the cluster design, the reason, and the proof. GPU: why not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper. The H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node.
+
+On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two colocated replicas were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets its own scale signal. The data showed that most agent calls are short, so for our traffic two colocated replicas win.
+
+Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, and at 24K tokens, about 20 fit. We chose 24, between them.
+
+The data showed that 32 is better, and no pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda nodes had no RDMA. NIXL over TCP took more than 4 seconds. The LMCache server gave a hop TTFT of 0.52 to 0.78 seconds.
+
+Overflow: only an interactive call that llm-d refused for capacity may leave. A 429 never leaves. The overflow was off in all runs, so these calls got a 503. Two boxes: the handout puts admit, place, and the queue in the gateway. So llm-d, with its flow control and its scheduler, is in the gateway box, and vLLM is the engine box.
+
+Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, and running sequences grow the decode pool.
+
+### 9. What the app sends: short agent steps with a cached prefix
 
 This is what the app sends to the cluster. The second agent has two parts. The agent steps pick the claims and write the final answer. The verify steps check one claim each, on the web. An agent step found 64% of its prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens.
 
 In the load tests, we replay recorded app turns. A turn is one question with all its LLM calls. 100% load is 54 turns each minute, on average: the rate where the soak test refused its first call.
 
-### 9. Guard and stay or leave happen before any GPU work
+### 10. Guard and stay or leave happen before any GPU work
 
 Stop one is the guard. `inspect()` runs fixed rules on the CPU, then Prompt Guard 2 and NeMo Guardrails. We sent 200 chat turns, 22 of them attacks. The guard blocked all 22 attacks and no normal turn. Edge keeps each verdict in Redis for 1 hour.
 
@@ -62,7 +76,7 @@ The key is a hash of the last user message. So the next LLM calls of the same tu
 
 `should_leave()` keeps 429, 500, and slice_oom on our cluster. Only an interactive capacity refusal may leave. At 150% load the gate let only the 124 interactive 503 calls go, and no 429. Redis also holds the limits of the overflow API. The overflow was off in all runs, so these calls got a 503.
 
-### 10. Admit: we refuse work at the door, not in the engine
+### 11. Admit: we refuse work at the door, not in the engine
 
 Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway counts the tokens and the requests of each tenant in each minute. Its rate-limit service keeps these counts in Redis. When a tenant is over its budget, it gets a 429 at once, with no wait.
 
@@ -72,11 +86,11 @@ The queue has two priority bands with a time limit: 10 seconds for an interactiv
 
 But the TTFT p95 of the others stayed near 10 seconds, because at 100% load the P/D layout is above the limit of the engine.
 
-### 11. Place: prefix match first, then load
+### 12. Place: prefix match first, then load
 
 Stop four is place. The llm-d scheduler scores each pod: the prefix match counts most, then the session, the queue depth, the KV use, and the ramp. A pod with metrics older than 2 seconds counts as full. In the stale-metrics test, a frozen copy of the metrics of an empty pod pulled 80% of the work to that pod. And after a cache clear, llm-d still sent the warm sessions to the cleared pod.
 
-### 12. The hop: the KV moves through the LMCache server
+### 13. The hop: the KV moves through the LMCache server
 
 Stop five is the hop. The llm-d scheduler splits a request only when 2,048 or more of its tokens are not in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. There is no vLLM request for a prefill only, and one token is the smallest request. The pass that computes the KV of the prompt also gives this token, so it costs almost nothing.
 
@@ -84,31 +98,59 @@ The decode pod does not use this token: it writes the whole answer itself. The L
 
 If someone asks if this is production quality: the one-token request is, and the barrier is not. Under load on the A100 node, the barrier hit its half-second cap on 72% to 99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, and two or more pods in each pool.
 
-### 13. A pod with its weights on the GPU is not warm yet
+### 14. A pod with its weights on the GPU is not warm yet
 
 Stop six is declare warm. A pod with its weights on the GPU is not warm yet. The warm controller sends our system prompts, the shapes of our app, and a 4,000-token probe. The pod gets the warm label only if the probe is fast enough. Then it gets 10% of the traffic weight, and more while the TTFT holds.
 
 In the restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. The ramp cut it from 57.3 to 14.6 seconds.
 
-### 14. The decode pod was the limit, not prefill compute
-
-The handout asked which limit we expected first. We expected prefill compute for the RAG traffic and KV blocks for the agents. The answer: partly right. The decode pod was the limit. Most agent calls have fewer than 2,048 new tokens.
-
-The llm-d scheduler does not split them, so the decode pod runs their prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550.
-
-### 15. For our traffic, two colocated replicas beat a P/D split
-
-This test sends the same recorded app traffic to two layouts, at three loads. A colocated replica is one vLLM pod that does the prefill and the decode of its calls. Two colocated replicas with prefix routing beat one prefill pod and one decode pod at each load, on the H100 and on the A100. At 100% load the TTFT p50 was 0.84 seconds, against 4.59. The split still helps a long uncached prompt.
-
-But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint.
-
-### 16. Scale: the planner names the pool
+### 15. Scale: the planner names the pool
 
 Stop seven is scale. The planner rules name the pool: uncached prefill tokens for the prefill pool, and running requests for the decode pool. KEDA reads them. Dashboard 8 shows the decode pods that the planner asks for, and the ready pods. The test allowed at most 2 pods in each pool.
 
 In the scale test, KEDA made the new pod 15 seconds after the request, in both pools. The pod was warm about 4 minutes later, so on a spike that is the real reaction time. The capacity value must match the GPU. Now clip 2, at 8 times speed.
 
-### 17. What the data changed in our design
+### 16. The decode pod was the limit, not prefill compute
+
+The handout asked which limit we expected first. We expected prefill compute for the RAG traffic and KV blocks for the agents. The answer: partly right. The decode pod was the limit. Most agent calls have fewer than 2,048 new tokens.
+
+The llm-d scheduler does not split them, so the decode pod runs their prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550.
+
+### 17. For our traffic, two colocated replicas beat a P/D split
+
+This test sends the same recorded app traffic to two layouts, at three loads. A colocated replica is one vLLM pod that does the prefill and the decode of its calls. Two colocated replicas with prefix routing beat one prefill pod and one decode pod at each load, on the H100 and on the A100. At 100% load the TTFT p50 was 0.84 seconds, against 4.59. The split still helps a long uncached prompt.
+
+But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint.
+
+### 18. The handout questions: our answers and the evidence (1 of 2)
+
+These are the questions of the handout. Each answer points at a file or a scrape in the repo. The app is a learning companion over the bookmarks of its owner, with RAG and agent steps on Gemma 4 31B. The shared tokens are the system prompt, the tool schemas, and the history of a session. The unique tokens are the question, the retrieved chunks, the fetched pages, and the OCR text.
+
+The Envoy logs of the capture runs give the numbers. An agent step finds 64% of its prompt in the cache, and 31% of all prompt tokens were in the cache. What dies where: the guard stops an unsafe prompt with a 400, before any GPU work. Admit stops a tenant over its budget with a 429. The queue stops a call that waits past its time limit with a 503.
+
+Place gives a 503 when no pod is ready. Time limits: the llm-d queue has a time limit for each band. Edge sets the limit of each call to half of its time left. So a call that cannot finish in time leaves before it uses the GPU. KV: the llm-d flow control holds calls while the pods are full, so the KV of a pod stays near 90% or below.
+
+vLLM preemption is only the last line, and no run preempted. Priority: interactive calls go before batch calls in the llm-d queue. Batch calls already wait at 70% fullness, and interactive calls only at 100%. vLLM also schedules by priority. At 100% load, llm-d shed 89 batch calls and 11 interactive calls.
+
+One tenant: the Envoy AI Gateway counts the tokens and the requests of each tenant in Redis. A tenant over its budget gets a 429, and a 429 never leaves the cluster. In the tenant test, the noisy tenant got 55 429 replies, and no other tenant got one. But the TTFT p95 of the others stayed near 10 seconds, because 100% load in this layout is above the limit of the engine. The hop: llm-d splits a call at 2,048 or more uncached tokens.
+
+The decode pod loads the KV from the LMCache server. It computes again only the tokens after the last full chunk of 256 tokens.
+
+### 19. The handout questions: our answers and the evidence (2 of 2)
+
+Evict and ghosts: vLLM evicts blocks of its GPU prefix cache when it needs space. The LMCache server evicts its oldest chunks at 90% of its 250 GiB cap. llm-d learns of each eviction from the KV events of vLLM. A ghost is a prefix that llm-d still places on a pod after the pod cleared it. We cleared the prefix cache of one pod during a run.
+
+The pod sent one AllBlocksCleared event, and llm-d did not act on it. The next call of each warm session went to the cleared pod and missed the cache once, in 15 of 15 sessions. A ghost costs one prefill of the session history. The engine scheduler sits inside each vLLM pod, after our admit, place, and queue. The engine does continuous batching, chunked prefill, its waiting queue, preemption, and the KV blocks.
+
+We only set its flags. The limit on concurrency was the decode pod. Most agent calls have fewer than 2,048 new tokens, so llm-d does not split them, and the decode pod also does their prefill. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550. The alerts: an interactive TTFT budget burn, a shed rate above 5%, KV pressure, and hop failures.
+
+KV pressure means a KV use above 92% for 5 minutes, or preemptions. We also alert when the guard is down or an engine stalls. Scale: decode first, because the decode pod is the limit. The planner asks for decode pods from the running sequences, and for prefill pods from the uncached prefill tokens. In the scale test, KEDA made a new decode pod 15 seconds after the request.
+
+At 10 times the traffic: more decode capacity first, 32 sequences on each decode pod, and FP8 KV. With 32 sequences, the TTFT p50 fell from 4.59 to 2.10 seconds, and FP8 KV doubled the tokens of each pod. Also more CPU RAM for LMCache, because it keeps the prefixes of the sessions. The wrong knobs: more prefill pods, because the prefill pod had little work. A longer queue, because calls then wait longer and still miss the TTFT goal.
+
+A lower split threshold, because each split pays the prefill, the hold, and the load from LMCache.
+
+### 20. What the data changed in our design
 
 Five things changed in the design because of the data. Two colocated replicas for our traffic. A store barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU.
 
@@ -116,21 +158,7 @@ And llm-d must apply a cache clear. At 10 times the traffic I add decode capacit
 
 ## Appendix (for questions only)
 
-### A1. The cluster design: each choice, its reason, and the proof
-
-For questions only. Each row gives a choice of the cluster design, the reason, and the proof. GPU: why not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper.
-
-The H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two colocated replicas were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets its own scale signal.
-
-The data showed that most agent calls are short, so for our traffic two colocated replicas win. Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, and at 24K tokens, about 20 fit.
-
-We chose 24, between them. The data showed that 32 is better, and no pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda nodes had no RDMA. NIXL over TCP took more than 4 seconds.
-
-The LMCache server gave a hop TTFT of 0.52 to 0.78 seconds. Overflow: only an interactive call that llm-d refused for capacity may leave. A 429 never leaves. The overflow was off in all runs, so these calls got a 503. Two boxes: the handout puts admit, place, and the queue in the gateway.
-
-So llm-d, with its flow control and its scheduler, is in the gateway box, and vLLM is the engine box. Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, and running sequences grow the decode pool.
-
-### A2. How llm-d places a call: the policy and the scorers
+### A1. How llm-d places a call: the policy and the scorers
 
 For questions only. This slide shows how llm-d places a call. Two different things in llm-d answer two different questions. The queue order of the flow control answers: which waiting call goes next, and when? Interactive calls go before batch calls, tenants take turns, and the first in goes out first.
 
@@ -150,63 +178,7 @@ So this score stayed high, and queue depth was the real load signal for prefill.
 
 With two pods in a pool, p2c compares both pods, so it is the same as least loaded. The stale-metrics test shows that the load scores matter. A frozen copy of the metrics of an empty pod pulled 80% of the work to that pod.
 
-### A3. The handout questions: our answers and the evidence (1 of 2)
-
-For questions only. Each answer points at a file or a scrape in the repo. The app is a learning companion over the bookmarks of its owner, with RAG and agent steps on Gemma 4 31B. The shared tokens are the system prompt, the tool schemas, and the history of a session. The unique tokens are the question, the retrieved chunks, the fetched pages, and the OCR text.
-
-The Envoy logs of the capture runs give the numbers. An agent step finds 64% of its prompt in the cache, and 31% of all prompt tokens were in the cache. What dies where: the guard stops an unsafe prompt with a 400, before any GPU work. Admit stops a tenant over its budget with a 429. The queue stops a call that waits past its time limit with a 503.
-
-Place gives a 503 when no pod is ready. Time limits: the llm-d queue has a time limit for each band. Edge sets the limit of each call to half of its time left. So a call that cannot finish in time leaves before it uses the GPU. KV: the llm-d flow control holds calls while the pods are full, so the KV of a pod stays near 90% or below.
-
-vLLM preemption is only the last line, and no run preempted. Priority: interactive calls go before batch calls in the llm-d queue. Batch calls already wait at 70% fullness, and interactive calls only at 100%. vLLM also schedules by priority. At 100% load, llm-d shed 89 batch calls and 11 interactive calls.
-
-One tenant: the Envoy AI Gateway counts the tokens and the requests of each tenant in Redis. A tenant over its budget gets a 429, and a 429 never leaves the cluster. In the tenant test, the noisy tenant got 55 429 replies, and no other tenant got one. But the TTFT p95 of the others stayed near 10 seconds, because 100% load in this layout is above the limit of the engine. The hop: llm-d splits a call at 2,048 or more uncached tokens.
-
-The decode pod loads the KV from the LMCache server. It computes again only the tokens after the last full chunk of 256 tokens.
-
-### A4. The handout questions: our answers and the evidence (2 of 2)
-
-For questions only. Evict and ghosts: vLLM evicts blocks of its GPU prefix cache when it needs space. The LMCache server evicts its oldest chunks at 90% of its 250 GiB cap. llm-d learns of each eviction from the KV events of vLLM. A ghost is a prefix that llm-d still places on a pod after the pod cleared it.
-
-We cleared the prefix cache of one pod during a run. The pod sent one AllBlocksCleared event, and llm-d did not act on it. The next call of each warm session went to the cleared pod and missed the cache once, in 15 of 15 sessions. A ghost costs one prefill of the session history. The engine scheduler sits inside each vLLM pod, after our admit, place, and queue.
-
-vLLM does continuous batching, chunked prefill, its waiting queue, preemption, and the KV blocks. We only set its flags. The limit on concurrency was the decode pod. Most agent calls have fewer than 2,048 new tokens, so llm-d does not split them, and the decode pod also does their prefill. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550.
-
-The alerts: an interactive TTFT budget burn, a shed rate above 5%, KV pressure, and hop failures. KV pressure means a KV use above 92% for 5 minutes, or preemptions. We also alert when the guard is down or an engine stalls. Scale: decode first, because the decode pod is the limit. The planner asks for decode pods from the running sequences, and for prefill pods from the uncached prefill tokens.
-
-In the scale test, KEDA made a new decode pod 15 seconds after the request. At 10 times the traffic: more decode capacity first, 32 sequences on each decode pod, and FP8 KV. With 32 sequences, the TTFT p50 fell from 4.59 to 2.10 seconds, and FP8 KV doubled the tokens of each pod. Also more CPU RAM for LMCache, because it keeps the prefixes of the sessions. The wrong knobs: more prefill pods, because the prefill pod had little work.
-
-A longer queue, because calls then wait longer and still miss the TTFT goal. A lower split threshold, because each split pays the prefill, the hold, and the load from LMCache.
-
-### A5. Traps that the handout names, and what our design does
-
-For questions only. The handout names traps: bad answers that it marks down. This slide shows what our design does in place of each trap, and the proof. The benchmark: a fixed batch in a benchmark is not our SLO. Our SLO comes from the app.
-
-The interactive TTFT p95 must be at most 1.5 seconds for prompts up to 8K tokens, on a warm pod. The load tests replay the recorded calls of our app. A full cache: a new replica of the same size starts with an empty cache, and it splits the prefixes between more pods. We first make the KV smaller: FP8 KV gave each pod twice the tokens. The LMCache server keeps the prefixes in CPU RAM.
-
-Then we scale the pool that the planner names. The KV move: our code does not move KV bytes. The LMCache connector in vLLM moves them. Our code records the hop and holds the prefill answer until the store ends. Ready: a pod with its weights on the GPU is not warm.
-
-The warmup cut the first-minute TTFT p95 from 10.9 to 7.3 seconds. The overflow: we name the model and the limiter. Only an interactive 503 or 529 may leave, and a Redis limiter caps the requests, the tokens, and the cost. The overflow was off in all runs. The scheduler: vLLM schedules inside each pod, and we only set its flags.
-
-Our gateway decides what enters, the order of the waiting calls, and the pod. A 429: the leave gate keeps each 429 on our cluster. In the 150% test, it let only 124 interactive 503 calls go. OOM: the gateway does not fix the memory of the engine. vLLM manages the GPU memory.
-
-Our gateway keeps the load below the point of preemption, and no run preempted. A prompt that is too long for the model gets a 413 at edge. RAG: the search is not a phase of the engine. It runs outside the LLM, with SIE and Qdrant. Its chunks become prompt tokens, so the engine sees only prefill and decode.
-
-Wall seconds: we compare models for each token, with the KV bytes and the time between tokens. Each load test replays the same recorded traffic in each arm. A cold pod: our SLO runs use warm pods. The first minute of a new pod is a separate measure.
-
-### A6. A raw /metrics scrape of a live engine
-
-For questions only. These lines come from the live engine, the edge, and the store barrier.
-
-### A7. Faults that we found and fixed
-
-For questions only. The session logs list each fault with its fix and its test.
-
-### A8. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
-
-For questions only. Twelve fixed demo questions test the whole app.
-
-### A9. The queue questions: our answers and the proof
+### A2. The queue questions: our answers and the proof
 
 For questions only. Our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue, and the handout does not ask for one. It puts admit, place, and the queue in the gateway. We set the rules of the queue in the policy file.
 
@@ -242,7 +214,7 @@ But vLLM v0.30 does not count these aborts in its success counter, so we have no
 
 But the ramp is a score, not a cap. In the first 10 seconds, the empty pod got 75% of the calls, because the queue scorer likes an empty queue. So the ramp needs a cap.
 
-### A10. The hop record, and a cold pod against a warm pod
+### A3. The hop record, and a cold pod against a warm pod
 
 For questions only. This slide answers the hop and warmth questions. Same pod: when llm-d picks only the decode pod, the KV is already there. The decode pod computes the prompt or finds it in its cache, so there is no hop and no record. Two pods: when llm-d splits a call, the prefill pod computes the KV and stores a copy in the LMCache server.
 
@@ -256,18 +228,46 @@ Our warmup routine sends our system prompts and the shapes of our app. A new dec
 
 In the scale test, each new pod got the warm label 225 to 235 seconds after the request.
 
-### A11. The cost of each GPU block
-
-For questions only. Each block is in docs/budget-ledger.md. A spend guard stopped each GPU at the limits.
-
-### A12. The hop: the LMCache server against NIXL
+### A4. The hop: the LMCache server against NIXL
 
 For questions only. NIXL between two pods used TCP, because the nodes have no RDMA.
 
-### A13. The scale test: the planner against KEDA, in each pool
+### A5. The hop at production scale: what we keep, what we change
+
+For questions only. The one-token request is production quality, and the barrier is not. Under load, it hit its half-second cap on most split calls, so a production hop needs a store signal for each request.
+
+### A6. The scale test: the planner against KEDA, in each pool
 
 For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool scaled only after we set its capacity value for the A100.
 
-### A14. The hop at production scale: what we keep, what we change
+### A7. Traps that the handout names, and what our design does
 
-For questions only. The one-token request is production quality, and the barrier is not. Under load, it hit its half-second cap on most split calls, so a production hop needs a store signal for each request.
+For questions only. The handout names traps: bad answers that it marks down. This slide shows what our design does in place of each trap, and the proof. The benchmark: a fixed batch in a benchmark is not our SLO. Our SLO comes from the app.
+
+The interactive TTFT p95 must be at most 1.5 seconds for prompts up to 8K tokens, on a warm pod. The load tests replay the recorded calls of our app. A full cache: a new replica of the same size starts with an empty cache, and it splits the prefixes between more pods. We first make the KV smaller: FP8 KV gave each pod twice the tokens. The LMCache server keeps the prefixes in CPU RAM.
+
+Then we scale the pool that the planner names. The KV move: our code does not move KV bytes. The LMCache connector in vLLM moves them. Our code records the hop and holds the prefill answer until the store ends. Ready: a pod with its weights on the GPU is not warm.
+
+The warmup cut the first-minute TTFT p95 from 10.9 to 7.3 seconds. The overflow: we name the model and the limiter. Only an interactive 503 or 529 may leave, and a Redis limiter caps the requests, the tokens, and the cost. The overflow was off in all runs. The scheduler: vLLM schedules inside each pod, and we only set its flags.
+
+Our gateway decides what enters, the order of the waiting calls, and the pod. A 429: the leave gate keeps each 429 on our cluster. In the 150% test, it let only 124 interactive 503 calls go. OOM: the gateway does not fix the memory of the engine. vLLM manages the GPU memory.
+
+Our gateway keeps the load below the point of preemption, and no run preempted. A prompt that is too long for the model gets a 413 at edge. RAG: the search is not a phase of the engine. It runs outside the LLM, with SIE and Qdrant. Its chunks become prompt tokens, so the engine sees only prefill and decode.
+
+Wall seconds: we compare models for each token, with the KV bytes and the time between tokens. Each load test replays the same recorded traffic in each arm. A cold pod: our SLO runs use warm pods. The first minute of a new pod is a separate measure.
+
+### A8. A raw /metrics scrape of a live engine
+
+For questions only. These lines come from the live engine, the edge, and the store barrier.
+
+### A9. Faults that we found and fixed
+
+For questions only. The session logs list each fault with its fix and its test.
+
+### A10. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
+
+For questions only. Twelve fixed demo questions test the whole app.
+
+### A11. The cost of each GPU block
+
+For questions only. Each block is in docs/budget-ledger.md. A spend guard stopped each GPU at the limits.

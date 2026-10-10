@@ -53,20 +53,23 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 5 | `search` | The bookmark search: ingest once, then search in each turn | two flows: the ingest and the search | 1:13 |
 | 6 | `capacity` | KV on paper: bytes for each token, and how many sequences fit | a table: the KV of one sequence and the max sequences at three lengths, and the KV cache that vLLM measured | 0:39 |
 | 7 | `deploy` | The deployment: two nodes, and an A100 fallback | Dashboard 1, Cluster: GPU use | 0:40 |
-| 8 | `app` | What the app sends: short agent steps with a cached prefix | the token table, with a key | 0:44 |
-| 9 | `guard` | Guard and stay or leave happen before any GPU work | Dashboard 3: guard rejects. Dashboard 2: the leave gate. | 1:07 |
-| 10 | `admit` | Admit: we refuse work at the door, not in the engine | Dashboard 3: tenant rejects in the tenant test | 1:33 |
-| 11 | `place` | Place: prefix match first, then load | Dashboard 4: P/D decisions. Dashboard 5: queue depth for each pod. | 0:35 |
-| 12 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 1:42 |
-| 13 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
-| 14 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
-| 15 | `topology` | For our traffic, two colocated replicas beat a P/D split | the layout test chart | 0:44 |
-| 16 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
-| 17 | `changed` | What the data changed in our design | - | 0:41 |
+| 8 | `design` | The cluster design: each choice, its reason, and the proof | a table: each choice, its reason, and the proof | 2:36 |
+| 9 | `app` | What the app sends: short agent steps with a cached prefix | the token table, with a key | 0:44 |
+| 10 | `guard` | Guard and stay or leave happen before any GPU work | Dashboard 3: guard rejects. Dashboard 2: the leave gate. | 1:07 |
+| 11 | `admit` | Admit: we refuse work at the door, not in the engine | Dashboard 3: tenant rejects in the tenant test | 1:44 |
+| 12 | `place` | Place: prefix match first, then load | Dashboard 4: P/D decisions. Dashboard 5: queue depth for each pod. | 0:35 |
+| 13 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 1:42 |
+| 14 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
+| 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
+| 16 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
+| 17 | `topology` | For our traffic, two colocated replicas beat a P/D split | the layout test chart | 0:44 |
+| 18 | `questions-1` | The handout questions: our answers and the evidence (1 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
+| 19 | `questions-2` | The handout questions: our answers and the evidence (2 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
+| 20 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 14 minutes 54 seconds of notes and 61 seconds of clips, so 15 minutes 55 seconds.
+Total: 23 minutes 28 seconds of notes and 61 seconds of clips, so 24 minutes 29 seconds.
 
-The appendix has 14 slides. The first one holds the cluster design: each choice, its reason, and the proof. The second one shows how llm-d places a call: the policy and the scorers. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
+The appendix has 11 slides, in the order of the handout parts. First come place, queue, hop and warmth, the two hop slides, the scale test chart, and the traps of the handout. Then the evidence: a raw scrape, the faults, the demo check, and the cost.
 
 On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. The `scale` slide shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
 
@@ -78,7 +81,7 @@ Slide 5 shows the bookmark search. The ingest ran once before all tests. In each
 
 Slide 6 (`capacity`) shows the KV math of Part 1. It comes after the bookmark search and before the deployment. It gives the bytes for each token. A table gives the KV of one sequence and the maximum number of sequences on one H100 at three lengths. The lengths are 5,121 tokens (the median prompt of the app), 8K, and the 32K max_len.
 
-Slide 6 also shows the KV cache that vLLM gave the decode pod, and the effect of a model switch. Slide 14 says which limiter we expected and if our guess was right.
+Slide 6 also shows the KV cache that vLLM gave the decode pod, and the effect of a model switch. The hypothesis slide (slide 16) says which limiter we expected and if our guess was right.
 
 The admit slide has a box: "Redis holds the tenant counts. The queue is in the flow control of llm-d. Flow control is the admit part of llm-d." Redis is not a queue. The notes of the guard slide say that edge keeps each guard verdict in Redis for 1 hour, and that Redis holds the overflow limits. The notes of the admit slide give the four jobs of Redis and the two priority bands of the llm-d queue.
 
@@ -87,6 +90,8 @@ The llm-d box of the architecture diagram shows the two jobs of llm-d. Its flow 
 All slides and notes now say "llm-d", not "the router". Where the job matters, they say "the llm-d flow control" (admit) or "the llm-d scheduler" (where). Only the file paths in `control/router/` and the handout name "Dashboard 4 · Router" keep the word. Appendix A1 names the Envoy AI Gateway, not the Agent Router.
 
 The deck, the report, the README, the results, the notebook, and the E3 chart now say "two colocated replicas". This is the term of the handout, in place of "two whole pods". A colocated replica is one vLLM pod that does the prefill and the decode of its calls. The session logs in `metrics/` keep the old words.
+
+On the night of 2026-10-09, the deck got a new order: 20 main slides in four sections, and the appendix. The sections are the app and the system, capacity and the cluster design, one request end to end, and the results with the handout questions. Three slides moved from the appendix into the main deck. They are the cluster design (`design`, slide 8) and the two handout question slides (`questions-1` and `questions-2`, slides 18 and 19). The scale slide now comes before the results. `tools/make_deck.py` holds the order in two lists, `MAIN` and `APPENDIX`, and the cross-references take the slide numbers from them.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 
@@ -98,34 +103,31 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 
 | # | Slide id | Title | Evidence |
 |---|---|---|---|
-| A1 | `a-design` | The cluster design: each choice, its reason, and the proof | `DESIGN.md`, Part 2; `docs/spec/05-capacity-plan.md`, sections 4 and 7; ADR-002, ADR-005, and ADR-008 |
-| A2 | `a-place` | How llm-d places a call: the policy and the scorers | `control/router/policy.yaml:15` and `:36`; `control/router/render.py:50`; `DESIGN.md`, Part 4 |
-| A3 | `a-questions-1` | The handout questions: our answers and the evidence (1 of 2) | `DESIGN.md`, Part 8 |
-| A4 | `a-questions-2` | The handout questions: our answers and the evidence (2 of 2) | `DESIGN.md`, Part 8 |
-| A5 | `a-bad` | Traps that the handout names, and what our design does | section 5 of this file |
-| A6 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
-| A7 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
-| A8 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
-| A9 | `a-part5` | The queue questions: our answers and the proof | `notebook/part5_queue.ipynb` |
-| A10 | `a-warm` | The hop record, and a cold pod against a warm pod | `metrics/e3-c-150/hops.jsonl`; `notebook/part5_queue.ipynb`, the restart test; `DESIGN.md`, Part 6 |
+| A1 | `a-place` | How llm-d places a call: the policy and the scorers | `control/router/policy.yaml:15` and `:36`; `control/router/render.py:50`; `DESIGN.md`, Part 4 |
+| A2 | `a-part5` | The queue questions: our answers and the proof | `notebook/part5_queue.ipynb` |
+| A3 | `a-warm` | The hop record, and a cold pod against a warm pod | `metrics/e3-c-150/hops.jsonl`; `notebook/part5_queue.ipynb`, the restart test; `DESIGN.md`, Part 6 |
+| A4 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
+| A5 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
+| A6 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
+| A7 | `a-bad` | Traps that the handout names, and what our design does | section 5 of this file |
+| A8 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
+| A9 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
+| A10 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
 | A11 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
-| A12 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
-| A13 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
-| A14 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
 
-Slide A1 holds the defense of the cluster design. Each row has the choice, the reason, and the proof. The rows are the GPU, the model, the topology, the slices, the concurrency, the hop backend, the overflow, the two boxes, and the scale. Its notes give the answer to the question that each row can get, for example "why not a cheaper GPU?" or "why not Mooncake?".
+The main slide 8 (`design`) holds the defense of the cluster design. Each row has the choice, the reason, and the proof. The rows are the GPU, the model, the topology, the slices, the concurrency, the hop backend, the overflow, the two boxes, and the scale. Its notes give the answer to the question that each row can get, for example "why not a cheaper GPU?" or "why not Mooncake?".
 
-Slide A2 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
+The main slides 18 and 19 (`questions-1` and `questions-2`) answer the 13 questions of Part 8. Each row has a full answer and a file or a scrape. The notes give the details of each answer.
 
-Slide A9 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
+Slide A1 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
 
-Slides A3 and A4 answer the 13 questions of Part 8. Each row has a full answer and a file or a scrape. The notes give the details of each answer, in the same style as slide A9.
+Slide A2 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
 
-Slide A10 answers the hop and warmth questions. It shows one hop record from the Envoy log. It also shows the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s. Its notes say what "warm the box and re-quote the TTFT" means.
+Slide A3 answers the hop and warmth questions. It shows one hop record from the Envoy log. It also shows the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s.
 
 ## 5. The bad answers of the handout, and our answers
 
-Appendix slide A5 shows this table: "Traps that the handout names, and what our design does". Its notes explain each row (handout L799 to L832).
+Appendix slide A7 shows this table: "Traps that the handout names, and what our design does". Its notes explain each row (handout L799 to L832).
 
 | The trap | What our design does, and the proof |
 |---|---|

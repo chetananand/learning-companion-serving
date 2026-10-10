@@ -188,6 +188,13 @@ def play(text: str) -> str:
             f'height:36px"></x-icon>{p(text, 28, INK, 600)}</div>')
 
 
+# The deck order. slides() builds the slides in any order, and then sorts them by these lists.
+MAIN = ["cover", "intro", "arch", "models", "search", "capacity", "deploy", "design", "app", "guard", "admit",
+        "place", "hop", "warm", "scale", "hypothesis", "topology", "questions-1", "questions-2", "changed"]
+APPENDIX = ["a-place", "a-part5", "a-warm", "a-hop", "a-production", "a-scale", "a-bad", "a-scrape", "a-faults",
+            "a-demo", "a-cost"]
+
+
 def slides() -> list[tuple[str, str, str]]:
     """(id, body html, notes) for each slide, in order. The section wrapper and the footer come later.
 
@@ -613,7 +620,7 @@ def slides() -> list[tuple[str, str, str]]:
 
     # ----------------------------------------------------------------------------------------------------------
     # The appendix (for questions only).
-    num = {sid: n for n, (sid, _, _) in enumerate(s, 1)}  # the main slide numbers, for the references below
+    num = {sid: n for n, sid in enumerate(MAIN, 1)}  # the main slide numbers, for the references below
     design = [
         ["GPU", "H100 SXM 80 GB. Each vLLM pod gets a full GPU.",
          "The smallest GPU with FP8 compute that meets the TTFT goal. An A6000 leaves 6.8 GiB for KV.",
@@ -642,11 +649,10 @@ def slides() -> list[tuple[str, str, str]]:
          "Each pool grows on its own signal, so only the hot pool grows.",
          f"A new decode pod 15 s after the request (slide {num['scale']})"],
     ]
-    s.append(("a-design", "".join([
-        p("Appendix", 24, ORANGE_TEXT, 600),
+    s.append(("design", "".join([
         title("The cluster design: each choice, its reason, and the proof"),
         table(["Item", "Our choice", "Why", "Proof"], design, [11, 29, 35, 25], size=22),
-    ]), "For questions only. Each row gives a choice of the cluster design, the reason, and the proof. GPU: why "
+    ]), "Each row gives a choice of the cluster design, the reason, and the proof. GPU: why "
         "not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 "
         "compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper. The"
         " H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. "
@@ -774,53 +780,51 @@ def slides() -> list[tuple[str, str, str]]:
           ["Which three knobs are the wrong next move?",
            "More prefill pods, a longer queue, and a lower split threshold.",
            "The prefill pod was not the limit. A longer wait still misses the goal. Each split costs more."]]
-    notes_q = {"a-questions-1": (
-        "For questions only. Each answer points at a file or a scrape in the repo. The app is a learning "
-        "companion over the bookmarks of its owner, with RAG and agent steps on Gemma 4 31B. The shared "
-        "tokens are the system prompt, the tool schemas, and the history of a session. The unique tokens are "
-        "the question, the retrieved chunks, the fetched pages, and the OCR text. The Envoy logs of the "
-        "capture runs give the numbers. An agent step finds 64% of its prompt in the cache, and 31% of all "
-        "prompt tokens were in the cache. What dies where: the guard stops an unsafe prompt with a 400, "
-        "before any GPU work. Admit stops a tenant over its budget with a 429. The queue stops a call that "
-        "waits past its time limit with a 503. Place gives a 503 when no pod is ready. Time limits: the llm-d"
-        " queue has a time limit for each band. Edge sets the limit of each call to half of its time left. So"
-        " a call that cannot finish in time leaves before it uses the GPU. KV: the llm-d flow control holds "
-        "calls while the pods are full, so the KV of a pod stays near 90% or below. vLLM preemption is only "
-        "the last line, and no run preempted. Priority: interactive calls go before batch calls in the llm-d "
-        "queue. Batch calls already wait at 70% fullness, and interactive calls only at 100%. vLLM also "
-        "schedules by priority. At 100% load, llm-d shed 89 batch calls and 11 interactive calls. One tenant:"
-        " the Envoy AI Gateway counts the tokens and the requests of each tenant in Redis. A tenant over its "
-        "budget gets a 429, and a 429 never leaves the cluster. In the tenant test, the noisy tenant got 55 "
-        "429 replies, and no other tenant got one. But the TTFT p95 of the others stayed near 10 seconds, "
-        "because 100% load in this layout is above the limit of the engine. The hop: llm-d splits a call at "
-        "2,048 or more uncached tokens. The decode pod loads the KV from the LMCache server. It computes "
-        "again only the tokens after the last full chunk of 256 tokens."),
-               "a-questions-2": (
-        "For questions only. Evict and ghosts: vLLM evicts blocks of its GPU prefix cache when it needs "
-        "space. The LMCache server evicts its oldest chunks at 90% of its 250 GiB cap. llm-d learns of each "
-        "eviction from the KV events of vLLM. A ghost is a prefix that llm-d still places on a pod after the "
-        "pod cleared it. We cleared the prefix cache of one pod during a run. The pod sent one "
-        "AllBlocksCleared event, and llm-d did not act on it. The next call of each warm session went to the "
-        "cleared pod and missed the cache once, in 15 of 15 sessions. A ghost costs one prefill of the "
-        "session history. The engine scheduler sits inside each vLLM pod, after our admit, place, and queue. "
-        "vLLM does continuous batching, chunked prefill, its waiting queue, preemption, and the KV blocks. We"
-        " only set its flags. The limit on concurrency was the decode pod. Most agent calls have fewer than "
-        "2,048 new tokens, so llm-d does not split them, and the decode pod also does their prefill. At 100% "
-        "load it processed 16,200 prompt tokens each second, and the prefill pod 4,550. The alerts: an "
-        "interactive TTFT budget burn, a shed rate above 5%, KV pressure, and hop failures. KV pressure means"
-        " a KV use above 92% for 5 minutes, or preemptions. We also alert when the guard is down or an engine"
-        " stalls. Scale: decode first, because the decode pod is the limit. The planner asks for decode pods "
-        "from the running sequences, and for prefill pods from the uncached prefill tokens. In the scale "
-        "test, KEDA made a new decode pod 15 seconds after the request. At 10 times the traffic: more decode "
-        "capacity first, 32 sequences on each decode pod, and FP8 KV. With 32 sequences, the TTFT p50 fell "
-        "from 4.59 to 2.10 seconds, and FP8 KV doubled the tokens of each pod. Also more CPU RAM for LMCache,"
-        " because it keeps the prefixes of the sessions. The wrong knobs: more prefill pods, because the "
-        "prefill pod had little work. A longer queue, because calls then wait longer and still miss the TTFT "
-        "goal. A lower split threshold, because each split pays the prefill, the hold, and the load from "
-        "LMCache.")}
-    for sid, rows, part in (("a-questions-1", q1, "1 of 2"), ("a-questions-2", q2, "2 of 2")):
+    notes_q = {"questions-1": (
+        "These are the questions of the handout. Each answer points at a file or a scrape in the repo. The "
+        "app is a learning companion over the bookmarks of its owner, with RAG and agent steps on Gemma 4 "
+        "31B. The shared tokens are the system prompt, the tool schemas, and the history of a session. The "
+        "unique tokens are the question, the retrieved chunks, the fetched pages, and the OCR text. The Envoy"
+        " logs of the capture runs give the numbers. An agent step finds 64% of its prompt in the cache, and "
+        "31% of all prompt tokens were in the cache. What dies where: the guard stops an unsafe prompt with a"
+        " 400, before any GPU work. Admit stops a tenant over its budget with a 429. The queue stops a call "
+        "that waits past its time limit with a 503. Place gives a 503 when no pod is ready. Time limits: the "
+        "llm-d queue has a time limit for each band. Edge sets the limit of each call to half of its time "
+        "left. So a call that cannot finish in time leaves before it uses the GPU. KV: the llm-d flow control"
+        " holds calls while the pods are full, so the KV of a pod stays near 90% or below. vLLM preemption is"
+        " only the last line, and no run preempted. Priority: interactive calls go before batch calls in the "
+        "llm-d queue. Batch calls already wait at 70% fullness, and interactive calls only at 100%. vLLM also"
+        " schedules by priority. At 100% load, llm-d shed 89 batch calls and 11 interactive calls. One "
+        "tenant: the Envoy AI Gateway counts the tokens and the requests of each tenant in Redis. A tenant "
+        "over its budget gets a 429, and a 429 never leaves the cluster. In the tenant test, the noisy tenant"
+        " got 55 429 replies, and no other tenant got one. But the TTFT p95 of the others stayed near 10 "
+        "seconds, because 100% load in this layout is above the limit of the engine. The hop: llm-d splits a "
+        "call at 2,048 or more uncached tokens. The decode pod loads the KV from the LMCache server. It "
+        "computes again only the tokens after the last full chunk of 256 tokens."),
+               "questions-2": (
+        "Evict and ghosts: vLLM evicts blocks of its GPU prefix cache when it needs space. The LMCache server"
+        " evicts its oldest chunks at 90% of its 250 GiB cap. llm-d learns of each eviction from the KV "
+        "events of vLLM. A ghost is a prefix that llm-d still places on a pod after the pod cleared it. We "
+        "cleared the prefix cache of one pod during a run. The pod sent one AllBlocksCleared event, and llm-d"
+        " did not act on it. The next call of each warm session went to the cleared pod and missed the cache "
+        "once, in 15 of 15 sessions. A ghost costs one prefill of the session history. The engine scheduler "
+        "sits inside each vLLM pod, after our admit, place, and queue. The engine does continuous batching, "
+        "chunked prefill, its waiting queue, preemption, and the KV blocks. We only set its flags. The limit "
+        "on concurrency was the decode pod. Most agent calls have fewer than 2,048 new tokens, so llm-d does "
+        "not split them, and the decode pod also does their prefill. At 100% load it processed 16,200 prompt "
+        "tokens each second, and the prefill pod 4,550. The alerts: an interactive TTFT budget burn, a shed "
+        "rate above 5%, KV pressure, and hop failures. KV pressure means a KV use above 92% for 5 minutes, or"
+        " preemptions. We also alert when the guard is down or an engine stalls. Scale: decode first, because"
+        " the decode pod is the limit. The planner asks for decode pods from the running sequences, and for "
+        "prefill pods from the uncached prefill tokens. In the scale test, KEDA made a new decode pod 15 "
+        "seconds after the request. At 10 times the traffic: more decode capacity first, 32 sequences on each"
+        " decode pod, and FP8 KV. With 32 sequences, the TTFT p50 fell from 4.59 to 2.10 seconds, and FP8 KV "
+        "doubled the tokens of each pod. Also more CPU RAM for LMCache, because it keeps the prefixes of the "
+        "sessions. The wrong knobs: more prefill pods, because the prefill pod had little work. A longer "
+        "queue, because calls then wait longer and still miss the TTFT goal. A lower split threshold, because"
+        " each split pays the prefill, the hold, and the load from LMCache.")}
+    for sid, rows, part in (("questions-1", q1, "1 of 2"), ("questions-2", q2, "2 of 2")):
         s.append((sid, "".join([
-            p("Appendix", 24, ORANGE_TEXT, 600),
             title(f"The handout questions: our answers and the evidence ({part})"),
             table(["Question", "Our answer", "File or scrape"], rows, [24, 46, 30], size=21),
         ]), notes_q[sid]))
@@ -1126,7 +1130,9 @@ def slides() -> list[tuple[str, str, str]]:
         ], [needs_html], left_w=820),
     ]), "For questions only. The one-token request is production quality, and the barrier is not. Under load, it "
         "hit its half-second cap on most split calls, so a production hop needs a store signal for each request."))
-    return s
+    by_id = {sid: (sid, body, notes) for sid, body, notes in s}
+    assert sorted(by_id) == sorted(MAIN + APPENDIX), set(by_id) ^ set(MAIN + APPENDIX)
+    return [by_id[sid] for sid in MAIN + APPENDIX]
 
 
 JARGON = re.compile(r"\b(E\d{1,2}|G\d|H-\d+|D-\d+|M\d|F2|SLO-\d|U-\d+|ADR-\d+|RATE100)\b|rule F2|\bfault \d+"
@@ -1152,12 +1158,13 @@ def write(root: Path) -> list[tuple[str, str, str]]:
     index = {"v": 4, "createdOnFiles": {"v": 1, "at": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")},
              "lists": "css", "title": "A learning companion on a scarce GPU", "cover": "cover",
              "order": [sid for sid, _, _ in deck],
-             "sections": {"s1": {"description": "The app, the architecture, the KV math, and the deployment",
-                                 "start": "cover"},
-                          "s2": {"description": "One request, end to end: the code, the proof, and the dashboards",
-                                 "start": "guard"},
-                          "s3": {"description": "The results and what the data changed", "start": "hypothesis"},
-                          "s4": {"description": "Appendix, for questions only", "start": "a-design"}},
+             "sections": {"s1": {"description": "The app and the system", "start": "cover"},
+                          "s2": {"description": "Capacity and the cluster design", "start": "capacity"},
+                          "s3": {"description": "One request, end to end: the code, the proof, and the "
+                                                "dashboards", "start": "app"},
+                          "s4": {"description": "The results and the handout questions",
+                                 "start": "hypothesis"},
+                          "s5": {"description": "Appendix, for questions only", "start": "a-place"}},
              "faces": {"ibm-plex-sans": {"family": "IBM Plex Sans",
                                          "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600"
                                                  "&display=swap"},
