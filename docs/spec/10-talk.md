@@ -63,13 +63,13 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 16 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
 | 17 | `topology` | For our traffic, two colocated replicas beat a P/D split | the layout test chart | 0:44 |
-| 18 | `latency` | TTFT and ITL: P/D missed both SLOs at each load | a table of TTFT and ITL p95 against the SLOs, and Dashboard 6: ITL p95 for P/D and colocated at 100% load | 1:55 |
+| 18 | `latency` | TTFT and ITL: P/D missed both SLOs at each load | a table of TTFT and ITL p95 against the SLOs, and Dashboard 6: ITL p95 for P/D and colocated at 100% load | 2:19 |
 | 19 | `ttft-points` | TTFT at three points: under load, calls wait before the engine | a table of the TTFT at the client, the gateway, the engine, and the llm-d queue | 1:44 |
 | 20 | `questions-1` | The handout questions: our answers and the evidence (1 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
 | 21 | `questions-2` | The handout questions: our answers and the evidence (2 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
 | 22 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 31 minutes 0 seconds of notes and 61 seconds of clips, so 32 minutes 1 seconds.
+Total: 31 minutes 23 seconds of notes and 61 seconds of clips, so 32 minutes 24 seconds.
 
 The appendix has 11 slides, in the order of the handout parts. First come place, queue, hop and warmth, the two hop slides, the scale test chart, and the traps of the handout. Then the evidence: a raw scrape, the faults, the demo check, and the cost.
 

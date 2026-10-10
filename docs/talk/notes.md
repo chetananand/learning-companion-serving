@@ -142,7 +142,9 @@ One call at a time, the gate test gave a TTFT of 0.90 seconds and an ITL p95 of 
 
 At 100% load, they were a little above the TTFT limit, at 1.57 seconds, and at the ITL limit, 50 milliseconds. At 150% load, both layouts missed both SLOs. Why is the ITL of P/D high? Most calls do not split, so the decode pod also computes their prompts. Each step of the decode pod then carries prefill chunks next to the decode streams, and each stream waits longer for its next token.
 
-The split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for an 8K prompt. The TTFT that the app saw also includes the wait in our queue. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod.
+The split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for an 8K prompt. The TTFT that the app saw also includes the wait in our queue. We measure the ITL at the engine. A check at the client agrees. The mean time for each output token of a streaming call was the same as in the engine.
+
+With two colocated replicas at 100% load, both were 38 milliseconds. So edge and Envoy add no time between tokens. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod.
 
 ### 19. TTFT at three points: under load, calls wait before the engine
 

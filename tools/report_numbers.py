@@ -226,6 +226,44 @@ def ttft_points() -> str:
                      "Engine TTFT p95 (s)", "llm-d queue wait p95 (s)"], rows))
 
 
+def decode_series(r: Any, name: str) -> dict[int, float]:
+    """One Prometheus series of the pod `vllm-decode`, by time."""
+    for s in r.prom(name):
+        if "decode" in s.labels.get("pod", ""):
+            return {int(t): v for t, v in zip(s.t, s.v, strict=True)}
+    return {}
+
+
+def itl_client_check() -> str:
+    """The time between tokens, seen at the client and in the engine (E3, H100)."""
+    from app.loadgen.replay import percentile
+
+    rows = []
+    for load in (50, 100, 150):
+        for arm, name in (("c", "P/D"), ("a", "two colocated replicas")):
+            run_id = f"e3-{arm}-{load}"
+            r = proof.load_run(run_id)
+            tpot = []
+            for line in (proof.METRICS / run_id / "client.jsonl").open():
+                c = json.loads(line)
+                if (c["request_class"] == "interactive" and c["stream"] and c["status"] == 200 and c["ttft_s"]
+                        and (c.get("output_tokens") or 0) >= 2 and not c.get("aborted")):
+                    tpot.append((c["latency_s"] - c["ttft_s"]) / (c["output_tokens"] - 1))
+            running, gen = decode_series(r, "vllm_running"), decode_series(r, "vllm_generation_tokens_rate")
+            mean = [running[k] / gen[k] for k in running if k in gen and gen[k] > 1 and running[k] > 0]
+            itl = list(decode_series(r, "vllm_itl_p95").values())
+            rows.append([f"{name}, {load}%", f"`{run_id}`", len(tpot), round(percentile(tpot, 0.5) * 1000),
+                         round(statistics.median(mean) * 1000) if mean else None,
+                         round(statistics.median(itl) * 1000) if itl else None])
+    return ("The client: for each streaming call, the time from the first token to the last token, divided by the "
+            "output tokens minus 1. The table gives the median over the calls. The engine mean: the running "
+            "sequences of the pod `vllm-decode`, divided by its generated tokens each second. The table gives the "
+            "median over the run. This value also counts the calls that are still in prefill, so it reads a little "
+            "high under heavy load.\n\n"
+            + table(["Layout and load", "Run", "Streaming calls", "Client mean time each token (ms)",
+                     "Engine mean time each token (ms)", "Engine ITL p95 (ms)"], rows))
+
+
 def e3_a100() -> str:
     """2026-10-01 on 8 x A100 80 GB (no H100 had stock): 32 decode sequences, load levels for this GPU."""
     rows = []
@@ -406,6 +444,7 @@ def build() -> str:
             for load in (50, 100, 150) for arm in ("c", "a")])),
         ("E3 Latency: TTFT and ITL against SLO-1 and SLO-2 (H100)", latency()),
         ("E3 TTFT at three points: the client, the gateway, and the engine (H100)", ttft_points()),
+        ("E3 The time between tokens at the client and in the engine (H100)", itl_client_check()),
         ("E4 The hop: LMCache server against NIXL", e4()),
         ("E5 The split decision", e5()),
         ("E6 Prefix cache and KV format (M2, 100%)", e6()),

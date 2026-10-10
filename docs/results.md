@@ -73,6 +73,19 @@ The same streaming interactive calls at the client (the first answer token) and 
 | P/D, 150% | `e3-c-150` | 416 | 21.45 | 21.34 | 16.90 | 9.53 |
 | two colocated replicas, 150% | `e3-a-150` | 480 | 21.10 | 20.79 | 9.60 | 8.28 |
 
+## E3 The time between tokens at the client and in the engine (H100)
+
+The client: for each streaming call, the time from the first token to the last token, divided by the output tokens minus 1. The table gives the median over the calls. The engine mean: the running sequences of the pod `vllm-decode`, divided by its generated tokens each second. The table gives the median over the run. This value also counts the calls that are still in prefill, so it reads a little high under heavy load.
+
+| Layout and load | Run | Streaming calls | Client mean time each token (ms) | Engine mean time each token (ms) | Engine ITL p95 (ms) |
+|---|---|---|---|---|---|
+| P/D, 50% | `e3-c-50` | 172 | 32 | 31 | 84 |
+| two colocated replicas, 50% | `e3-a-50` | 181 | 25 | 28 | 36 |
+| P/D, 100% | `e3-c-100` | 333 | 48 | 52 | 192 |
+| two colocated replicas, 100% | `e3-a-100` | 342 | 38 | 38 | 50 |
+| P/D, 150% | `e3-c-150` | 416 | 51 | 54 | 206 |
+| two colocated replicas, 150% | `e3-a-150` | 480 | 41 | 51 | 129 |
+
 ## E4 The hop: LMCache server against NIXL
 
 | Hop | Run | Prefix | Ok | TTFT median (s) | Cached tokens (median) | Prompt tokens (median) |

@@ -118,7 +118,7 @@ The TTFT at three points, for the same streaming calls (p95):
 
 - The client and the gateway differ by 0.1 to 0.3 s: the relay of the first answer token.
 - Between the gateway and the engine are the guard, the llm-d queue, and the hop. When the pods are full, most of the TTFT is this wait before the engine.
-- We measure the ITL only at the engine. The proxies (edge, Envoy, and the routing sidecar) pass each chunk on as it comes, so they add little to the time between two tokens. The TTFT is different, because the guard, the queue, and the hop all come before the first token. We did not measure the ITL at the client.
+- We measure the ITL only at the engine. The proxies (edge, Envoy, and the routing sidecar) pass each chunk on as it comes, so they add little to the time between two tokens. The TTFT is different, because the guard, the queue, and the hop all come before the first token. A check at the client agrees. We compared the mean time for each output token of a streaming call with the mean of the engine. The two were 0 to 4 ms apart in five runs, and 10 ms apart in one run at 150% load. For example, both were 38 ms with two colocated replicas at 100% load (`docs/results.md`).
 - On the dashboards: dashboard 6 shows the engine TTFT and ITL for each pod. Dashboard 3 shows the edge TTFT of all calls. A call that does not stream counts its full answer there, so that panel reads higher. Only about one in five interactive calls streams: the answer calls.
 
 ## Part 2. Cluster design
