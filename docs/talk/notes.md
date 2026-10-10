@@ -26,9 +26,11 @@ These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM.
 
 ### 5. The bookmark search: ingest once, then search in each turn
 
-This is the bookmark search. The ingest ran once, as a job in the cluster, before all tests. It fetched each bookmarked page and cut the text into chunks. The page check hid any part of a page that looked like an order to the LLM. Then SIE turned each chunk into a vector in Qdrant.
+This is the bookmark search. The ingest ran once, as a job in the cluster, before all tests. It fetched each bookmarked page and cut the text into chunks. The page check hid any part of a page that looked like an order to the LLM. The check has a limit.
 
-In each turn, SIE turns the question into a vector. Qdrant finds 30 chunks by vector and by keyword, and SIE reranks them. The agent gets the top 8. SIE serves only the small models, so the search makes no LLM call.
+In our test with 50 injected pages, it caught only half of them, even at a more sensitive setting. It flagged no real page. So the safety model and our code rule for live facts are the next layers. Then SIE turned each chunk into a vector in Qdrant. In each turn, SIE turns the question into a vector.
+
+Qdrant finds 30 chunks by vector and by keyword, and SIE reranks them. The agent gets the top 8. SIE serves only the small models, so the search makes no LLM call.
 
 ### 6. The deployment: two nodes, and an A100 fallback
 
