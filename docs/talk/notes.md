@@ -28,7 +28,7 @@ The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine:
 
 This is what the app sends to the cluster. The second agent has two parts. The agent steps pick the claims and write the final answer. The verify steps check one claim each, on the web. An agent step found 64% of its prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens.
 
-In the load tests, we replay recorded app turns. A turn is one question with all its LLM calls. 100% load is 0.9 turns each second: the rate where the soak test refused its first call.
+In the load tests, we replay recorded app turns. A turn is one question with all its LLM calls. 100% load is 54 turns each minute, on average: the rate where the soak test refused its first call.
 
 ### 6. Guard and stay or leave happen before any GPU work
 

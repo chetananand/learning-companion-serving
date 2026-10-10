@@ -52,12 +52,13 @@ def _p50(run_id: str, base: Path) -> float | None:
 def e3(out: Path = OUT, base: Path = proof.METRICS) -> tuple[Path, dict[str, Any]]:
     """E3 on both GPUs: the interactive TTFT p50 of P/D (layout C) against two whole pods (layout A)."""
     h100 = [(f"{p}%", f"e3-c-{p}", f"e3-a-{p}") for p in (50, 100, 150)]
-    a100 = [("0.15", "e3-c32-r015", "e3-a32-r015"), ("0.30", "e3-c32-r030", "e3-a32-r030"),
-            ("0.45", "e3-c32-50", "e3-a32-r045")]
+    # the A100 loads: 0.15, 0.30, and 0.45 turns each second, shown as turns each minute
+    a100 = [("9", "e3-c32-r015", "e3-a32-r015"), ("18", "e3-c32-r030", "e3-a32-r030"),
+            ("27", "e3-c32-50", "e3-a32-r045")]
     fig, axes = plt.subplots(1, 2, figsize=(14, 6), sharey=False)
     numbers: dict[str, Any] = {}
-    panels = (("2 x H100, 24 decode sequences", h100, "load (100% = 0.9 app turns each second)"),
-              ("8 x A100, 32 decode sequences", a100, "load (app turns each second)"))
+    panels = (("2 x H100, 24 decode sequences", h100, "load (100% = 54 app turns each minute)"),
+              ("8 x A100, 32 decode sequences", a100, "load (app turns each minute)"))
     for ax, (title, rows, xlabel) in zip(axes, panels, strict=True):
         c = [_p50(rc, base) or 0 for _, rc, _ in rows]
         a = [_p50(ra, base) or 0 for _, _, ra in rows]

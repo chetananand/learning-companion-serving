@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 ASSETS = {
-    "e3": "/_blob/afeb47ee34a57bb7538b39a0ef536bc1", "e9": "/_blob/33d6ecab663862b797ffccf742537e60",
+    "e3": "/_blob/54f351d14862f0849b7a3206cd05191c", "e9": "/_blob/33d6ecab663862b797ffccf742537e60",
     "hop": "/_blob/bef7f263ef04880cd591661ca8dedf8c", "warm": "/_blob/f6633cb512f077a6b00cb0fbdf1a49ed",
     "arch": "/_blob/903824f67b6704771896d82c0fb57770",
     "cluster": "/_blob/c93f5728251ce5c26c873f9fc0da2440", "guard": "/_blob/51874d3a3f4d12ee3c96b0a08ca10aeb",
@@ -265,16 +265,18 @@ def slides() -> list[tuple[str, str, str]]:
         two_columns([
             proof("64%", "of the prompt of an agent step was in the prefix cache"),
             proof("60%", "of the calls had fewer than 2,048 new tokens"),
-            measured("We replay recorded app turns. 100% load is 0.9 turns each second: the rate where a soak "
-                     "test, which adds load each minute, refused its first call.", "How we load the cluster"),
+            measured("We replay recorded app turns at random times. A turn is one question with all its LLM "
+                     "calls. 100% load is 54 turns each minute, on average. At this rate, a soak test that adds "
+                     "load each minute refused its first call.", "How we load the cluster"),
         ], [
             measured("The tokens of 1,606 real app calls, from the Envoy logs of four capture runs."),
-            table(["Step", "Calls", "Prompt p50", "Cached share", "New p50"],
+            table(["Step", "Calls", "Prompt tokens (median)", "Share in the prefix cache", "New tokens (median)"],
                   [["quick", "978", "5,121", "0.19", "4,515"], ["verify", "321", "1,427", "0.65", "133"],
                    ["agent", "303", "2,121", "0.64", "459"]], [22, 16, 22, 22, 18]),
             p("The quick steps come from the quick agent. The agent steps come from the second agent, which picks "
               "the claims and writes the final answer. The verify steps come from its helper, which checks one "
-              "claim. Cached share: the part of the prompt that was in the prefix cache.", 24),
+              "claim. New tokens are the prompt tokens that were not in the prefix cache, so the engine computed "
+              "them.", 24),
             callout("What this means", "The quick steps carry the bookmark chunks that the search found, so most "
                     "of their tokens are new: the Track A shape. The agent steps share a long prefix: the Track B "
                     "shape."),
@@ -282,8 +284,8 @@ def slides() -> list[tuple[str, str, str]]:
     ]), "This is what the app sends to the cluster. The second agent has two parts. The agent steps pick the "
         "claims and write the final answer. The verify steps check one claim each, on the web. An agent step "
         "found 64% of its prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens. In the load "
-        "tests, we replay recorded app turns. A turn is one question with all its LLM calls. 100% load is 0.9 "
-        "turns each second: the rate where the soak test refused its first call."))
+        "tests, we replay recorded app turns. A turn is one question with all its LLM calls. 100% load is 54 "
+        "turns each minute, on average: the rate where the soak test refused its first call."))
 
     s.append(("guard", "".join([
         strip(["guard", "stay or leave"]),
