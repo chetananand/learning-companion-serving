@@ -418,7 +418,7 @@ def slides() -> list[tuple[str, str, str]]:
             measured("In all load tests, from 50% to 150% load: the preemptions in the vLLM engine."),
             proof("0 preemptions", "Before the KV was full, flow control refused the extra work."),
             measured("Tenant test: one noisy tenant over its token budget, at 100% load."),
-            p("55 calls of the noisy tenant got 429 tenant_tokens. The other tenants kept their service.", 28, INK,
+            p("55 calls of the noisy tenant got 429 tenant_tokens. No other tenant got a 429.", 28, INK,
               600),
         ], [
             image("tenant", "Grafana panel: tenant rate-limit rejects, tenant_tokens",
@@ -436,8 +436,9 @@ def slides() -> list[tuple[str, str, str]]:
         "slide shows it. The queue has two priority bands with a time limit: 10 seconds for an interactive call, "
         "and 120 seconds for a batch call. The pods are full at 5 queued requests or 90% KV use. Then the flow "
         "control holds the calls in the queue. In all load tests the engine preempted nothing, because the flow "
-        "control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and the "
-        "others kept their service."))
+        "control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and no "
+        "other tenant got one. But the TTFT p95 of the others stayed near 10 seconds, because at 100% load the "
+        "P/D layout is above the limit of the engine."))
 
     s.append(("place", "".join([
         strip(["place"]),
@@ -823,6 +824,64 @@ def slides() -> list[tuple[str, str, str]]:
             title(f"The handout questions: our answers and the evidence ({part})"),
             table(["Question", "Our answer", "File or scrape"], rows, [24, 46, 30], size=21),
         ]), notes_q[sid]))
+
+    bad = [["A benchmark at batch 8 is the production SLO.",
+            "Our SLO comes from the app: interactive TTFT p95 at most 1.5 s up to 8K tokens, on a warm pod, "
+            "with recorded app traffic."],
+           ["The cache is full, so add a replica of the same size.",
+            "First make the KV smaller (FP8 KV: twice the tokens) and keep the prefixes in LMCache. Then scale the "
+            "pool that the planner names."],
+           ["NCCL or NIXL in this repo moves the KV.",
+            "The LMCache connector in vLLM moves the KV. Our code records the hop and holds the prefill answer "
+            "until the store ends."],
+           ["A replica is ready when the weights are on the GPU.",
+            "A pod is warm only after the warmup and a probe. The warmup cut the first-minute TTFT p95 from 10.9 s "
+            "to 7.3 s."],
+           ["The overflow is another API, with no model and no limiter.",
+            "qwen3.8-27b on the Superlinked API, only for an interactive 503 or 529. A Redis limiter caps the "
+            "requests, tokens, and cost."],
+           ["I wrote my own vLLM scheduler in the gateway.",
+            "No. vLLM schedules inside each pod, and we only set its flags. The gateway decides what enters, the "
+            "wait order, and the pod."],
+           ["A 429 that left the cluster.",
+            "The leave gate keeps each 429. At 150% load, it let only 124 interactive 503 calls go."],
+           ["The gateway fixed OOM.",
+            "No. vLLM manages the GPU memory. The gateway keeps the load below preemption, and a prompt that is too "
+            "long gets a 413."],
+           ["RAG is a third phase.",
+            "No. The search runs outside the LLM, with SIE and Qdrant. Its chunks are prompt tokens: the engine "
+            "sees only prefill and decode."],
+           ["Wall seconds across models, with no token counts.",
+            "We compare models for each token: KV bytes and the time between tokens. Each load test replays the "
+            "same traffic in each arm."],
+           ["The TTFT of a cold pod as the SLO.",
+            "Our SLO runs use warm pods. The first minute of a new pod is a separate measure: 10.9 s cold, 7.3 s "
+            "warm."]]
+    s.append(("a-bad", "".join([
+        p("Appendix", 24, ORANGE_TEXT, 600),
+        title("Traps that the handout names, and what our design does"),
+        table(["The trap", "What our design does, and the proof"], bad, [34, 66], size=20),
+    ]), "For questions only. The handout names traps: bad answers that it marks down. This slide shows what our "
+        "design does in place of each trap, and the proof. The benchmark: a fixed batch in a benchmark is not our"
+        " SLO. Our SLO comes from the app. The interactive TTFT p95 must be at most 1.5 seconds for prompts up to"
+        " 8K tokens, on a warm pod. The load tests replay the recorded calls of our app. A full cache: a new "
+        "replica of the same size starts with an empty cache, and it splits the prefixes between more pods. We "
+        "first make the KV smaller: FP8 KV gave each pod twice the tokens. The LMCache server keeps the prefixes "
+        "in CPU RAM. Then we scale the pool that the planner names. The KV move: our code does not move KV bytes."
+        " The LMCache connector in vLLM moves them. Our code records the hop and holds the prefill answer until "
+        "the store ends. Ready: a pod with its weights on the GPU is not warm. The warmup cut the first-minute "
+        "TTFT p95 from 10.9 to 7.3 seconds. The overflow: we name the model and the limiter. Only an interactive "
+        "503 or 529 may leave, and a Redis limiter caps the requests, the tokens, and the cost. The overflow was "
+        "off in all runs. The scheduler: vLLM schedules inside each pod, and we only set its flags. Our gateway "
+        "decides what enters, the order of the waiting calls, and the pod. A 429: the leave gate keeps each 429 "
+        "on our cluster. In the 150% test, it let only 124 interactive 503 calls go. OOM: the gateway does not "
+        "fix the memory of the engine. vLLM manages the GPU memory. Our gateway keeps the load below the point of"
+        " preemption, and no run preempted. A prompt that is too long for the model gets a 413 at edge. RAG: the "
+        "search is not a phase of the engine. It runs outside the LLM, with SIE and Qdrant. Its chunks become "
+        "prompt tokens, so the engine sees only prefill and decode. Wall seconds: we compare models for each "
+        "token, with the KV bytes and the time between tokens. Each load test replays the same recorded traffic "
+        "in each arm. A cold pod: our SLO runs use warm pods. The first minute of a new pod is a separate "
+        "measure."))
 
     scrape = [
         "# the vllm-decode pod",

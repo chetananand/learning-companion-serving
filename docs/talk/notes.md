@@ -68,7 +68,9 @@ Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway cou
 
 Redis is not a queue. It has four jobs: the tenant counts, the guard verdicts, the overflow limits, and the web search results of the app. The queue is in the flow control of llm-d, in its own memory. Flow control is the admit part of llm-d: it decides if and when a call goes to a pod. Then the scheduler of llm-d decides which pod, and the place slide shows it.
 
-The queue has two priority bands with a time limit: 10 seconds for an interactive call, and 120 seconds for a batch call. The pods are full at 5 queued requests or 90% KV use. Then the flow control holds the calls in the queue. In all load tests the engine preempted nothing, because the flow control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and the others kept their service.
+The queue has two priority bands with a time limit: 10 seconds for an interactive call, and 120 seconds for a batch call. The pods are full at 5 queued requests or 90% KV use. Then the flow control holds the calls in the queue. In all load tests the engine preempted nothing, because the flow control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and no other tenant got one.
+
+But the TTFT p95 of the others stayed near 10 seconds, because at 100% load the P/D layout is above the limit of the engine.
 
 ### 11. Place: prefix match first, then load
 
@@ -176,19 +178,35 @@ In the scale test, KEDA made a new decode pod 15 seconds after the request. At 1
 
 A longer queue, because calls then wait longer and still miss the TTFT goal. A lower split threshold, because each split pays the prefill, the hold, and the load from LMCache.
 
-### A5. A raw /metrics scrape of a live engine
+### A5. Traps that the handout names, and what our design does
+
+For questions only. The handout names traps: bad answers that it marks down. This slide shows what our design does in place of each trap, and the proof. The benchmark: a fixed batch in a benchmark is not our SLO. Our SLO comes from the app.
+
+The interactive TTFT p95 must be at most 1.5 seconds for prompts up to 8K tokens, on a warm pod. The load tests replay the recorded calls of our app. A full cache: a new replica of the same size starts with an empty cache, and it splits the prefixes between more pods. We first make the KV smaller: FP8 KV gave each pod twice the tokens. The LMCache server keeps the prefixes in CPU RAM.
+
+Then we scale the pool that the planner names. The KV move: our code does not move KV bytes. The LMCache connector in vLLM moves them. Our code records the hop and holds the prefill answer until the store ends. Ready: a pod with its weights on the GPU is not warm.
+
+The warmup cut the first-minute TTFT p95 from 10.9 to 7.3 seconds. The overflow: we name the model and the limiter. Only an interactive 503 or 529 may leave, and a Redis limiter caps the requests, the tokens, and the cost. The overflow was off in all runs. The scheduler: vLLM schedules inside each pod, and we only set its flags.
+
+Our gateway decides what enters, the order of the waiting calls, and the pod. A 429: the leave gate keeps each 429 on our cluster. In the 150% test, it let only 124 interactive 503 calls go. OOM: the gateway does not fix the memory of the engine. vLLM manages the GPU memory.
+
+Our gateway keeps the load below the point of preemption, and no run preempted. A prompt that is too long for the model gets a 413 at edge. RAG: the search is not a phase of the engine. It runs outside the LLM, with SIE and Qdrant. Its chunks become prompt tokens, so the engine sees only prefill and decode.
+
+Wall seconds: we compare models for each token, with the KV bytes and the time between tokens. Each load test replays the same recorded traffic in each arm. A cold pod: our SLO runs use warm pods. The first minute of a new pod is a separate measure.
+
+### A6. A raw /metrics scrape of a live engine
 
 For questions only. These lines come from the live engine, the edge, and the store barrier.
 
-### A6. Faults that we found and fixed
+### A7. Faults that we found and fixed
 
 For questions only. The session logs list each fault with its fix and its test.
 
-### A7. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
+### A8. The demo questions: 8 of 12 on the H100, 6 of 12 on the A100
 
 For questions only. Twelve fixed demo questions test the whole app.
 
-### A8. The queue questions: our answers and the proof
+### A9. The queue questions: our answers and the proof
 
 For questions only. Our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue, and the handout does not ask for one. It puts admit, place, and the queue in the gateway. We set the rules of the queue in the policy file.
 
@@ -224,7 +242,7 @@ But vLLM v0.30 does not count these aborts in its success counter, so we have no
 
 But the ramp is a score, not a cap. In the first 10 seconds, the empty pod got 75% of the calls, because the queue scorer likes an empty queue. So the ramp needs a cap.
 
-### A9. The hop record, and a cold pod against a warm pod
+### A10. The hop record, and a cold pod against a warm pod
 
 For questions only. This slide answers the hop and warmth questions. Same pod: when llm-d picks only the decode pod, the KV is already there. The decode pod computes the prompt or finds it in its cache, so there is no hop and no record. Two pods: when llm-d splits a call, the prefill pod computes the KV and stores a copy in the LMCache server.
 
@@ -238,18 +256,18 @@ Our warmup routine sends our system prompts and the shapes of our app. A new dec
 
 In the scale test, each new pod got the warm label 225 to 235 seconds after the request.
 
-### A10. The cost of each GPU block
+### A11. The cost of each GPU block
 
 For questions only. Each block is in docs/budget-ledger.md. A spend guard stopped each GPU at the limits.
 
-### A11. The hop: the LMCache server against NIXL
+### A12. The hop: the LMCache server against NIXL
 
 For questions only. NIXL between two pods used TCP, because the nodes have no RDMA.
 
-### A12. The scale test: the planner against KEDA, in each pool
+### A13. The scale test: the planner against KEDA, in each pool
 
 For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool scaled only after we set its capacity value for the A100.
 
-### A13. The hop at production scale: what we keep, what we change
+### A14. The hop at production scale: what we keep, what we change
 
 For questions only. The one-token request is production quality, and the barrier is not. Under load, it hit its half-second cap on most split calls, so a production hop needs a store signal for each request.

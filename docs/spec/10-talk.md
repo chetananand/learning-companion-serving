@@ -66,7 +66,7 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 
 Total: 14 minutes 54 seconds of notes and 61 seconds of clips, so 15 minutes 55 seconds.
 
-The appendix has 13 slides. The first one holds the cluster design: each choice, its reason, and the proof. The second one shows how llm-d places a call: the policy and the scorers. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
+The appendix has 14 slides. The first one holds the cluster design: each choice, its reason, and the proof. The second one shows how llm-d places a call: the policy and the scorers. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
 
 On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. The `scale` slide shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
 
@@ -102,40 +102,44 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 | A2 | `a-place` | How llm-d places a call: the policy and the scorers | `control/router/policy.yaml:15` and `:36`; `control/router/render.py:50`; `DESIGN.md`, Part 4 |
 | A3 | `a-questions-1` | The handout questions: our answers and the evidence (1 of 2) | `DESIGN.md`, Part 8 |
 | A4 | `a-questions-2` | The handout questions: our answers and the evidence (2 of 2) | `DESIGN.md`, Part 8 |
-| A5 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
-| A6 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
-| A7 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
-| A8 | `a-part5` | The queue questions: our answers and the proof | `notebook/part5_queue.ipynb` |
-| A9 | `a-warm` | The hop record, and a cold pod against a warm pod | `metrics/e3-c-150/hops.jsonl`; `notebook/part5_queue.ipynb`, the restart test; `DESIGN.md`, Part 6 |
-| A10 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
-| A11 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
-| A12 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
-| A13 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
+| A5 | `a-bad` | Traps that the handout names, and what our design does | section 5 of this file |
+| A6 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
+| A7 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
+| A8 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
+| A9 | `a-part5` | The queue questions: our answers and the proof | `notebook/part5_queue.ipynb` |
+| A10 | `a-warm` | The hop record, and a cold pod against a warm pod | `metrics/e3-c-150/hops.jsonl`; `notebook/part5_queue.ipynb`, the restart test; `DESIGN.md`, Part 6 |
+| A11 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
+| A12 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
+| A13 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
+| A14 | `a-production` | The hop at production scale: what we keep, what we change | `DESIGN.md`, Part 6 |
 
 Slide A1 holds the defense of the cluster design. Each row has the choice, the reason, and the proof. The rows are the GPU, the model, the topology, the slices, the concurrency, the hop backend, the overflow, the two boxes, and the scale. Its notes give the answer to the question that each row can get, for example "why not a cheaper GPU?" or "why not Mooncake?".
 
 Slide A2 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
 
-Slide A8 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
+Slide A9 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
 
-Slides A3 and A4 answer the 13 questions of Part 8. Each row has a full answer and a file or a scrape. The notes give the details of each answer, in the same style as slide A8.
+Slides A3 and A4 answer the 13 questions of Part 8. Each row has a full answer and a file or a scrape. The notes give the details of each answer, in the same style as slide A9.
 
-Slide A9 answers the hop and warmth questions. It shows one hop record from the Envoy log. It also shows the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s. Its notes say what "warm the box and re-quote the TTFT" means.
+Slide A10 answers the hop and warmth questions. It shows one hop record from the Envoy log. It also shows the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s. Its notes say what "warm the box and re-quote the TTFT" means.
 
 ## 5. The bad answers of the handout, and our answers
 
-The speaker notes use these answers (handout L799 to L832).
+Appendix slide A5 shows this table: "Traps that the handout names, and what our design does". Its notes explain each row (handout L799 to L832).
 
-| The bad answer | Our answer |
+| The trap | What our design does, and the proof |
 |---|---|
-| NCCL or NIXL in this repo moves the KV. | The LMCache connector in vLLM moves the bytes to and from the LMCache server. Our code records the hop and holds the prefill answer until the store ends. |
-| A replica is ready when the weights are on the GPU. | The warm controller probes the pod, labels it, and then ramps it. |
-| The overflow is another API, with no model and no limiter. | The model is `qwen3.8-27b` on the Superlinked hosted API. The limiter in Redis permits 20 requests and 60,000 tokens each minute, 4 in flight, and 15 USD each day. |
-| A 429 that left the cluster. | No 429 left (E10, E13). |
-| We wrote our own vLLM scheduler. | No. We set the vLLM flags. |
-| The gateway fixed OOM. | No. The router stops the dispatch at a KV use of 90%, and `slice_oom` stays local. |
-| Wall seconds with no token counts. | Each plot shows the token counts. |
-| The TTFT of a cold pod as the SLO. | The runs use warm pods. The first minute of a new pod is a separate measure (E8). |
+| A benchmark at batch 8 is the production SLO. | Our SLO comes from the app: interactive TTFT p95 at most 1.5 s up to 8K tokens, on a warm pod, with recorded app traffic. |
+| The cache is full, so add a replica of the same size. | First make the KV smaller (FP8 KV: twice the tokens) and keep the prefixes in LMCache. Then scale the pool that the planner names. |
+| NCCL or NIXL in this repo moves the KV. | The LMCache connector in vLLM moves the KV. Our code records the hop and holds the prefill answer until the store ends. |
+| A replica is ready when the weights are on the GPU. | A pod is warm only after the warmup and a probe. The warmup cut the first-minute TTFT p95 from 10.9 s to 7.3 s. |
+| The overflow is another API, with no model and no limiter. | `qwen3.8-27b` on the Superlinked API, only for an interactive 503 or 529. A Redis limiter caps the requests, the tokens, and the cost. |
+| I wrote my own vLLM scheduler in the gateway. | No. vLLM schedules inside each pod, and we only set its flags. The gateway decides what enters, the wait order, and the pod. |
+| A 429 that left the cluster. | The leave gate keeps each 429. At 150% load, it let only 124 interactive 503 calls go. |
+| The gateway fixed OOM. | No. vLLM manages the GPU memory. The gateway keeps the load below preemption, and a prompt that is too long gets a 413. |
+| RAG is a third phase. | No. The search runs outside the LLM, with SIE and Qdrant. Its chunks are prompt tokens: the engine sees only prefill and decode. |
+| Wall seconds across models, with no token counts. | We compare models for each token: KV bytes and the time between tokens. Each load test replays the same traffic in each arm. |
+| The TTFT of a cold pod as the SLO. | Our SLO runs use warm pods. The first minute of a new pod is a separate measure: 10.9 s cold, 7.3 s warm. |
 
 ## 6. The clips
 
