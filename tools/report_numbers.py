@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import statistics
 import sys
 from pathlib import Path
 from typing import Any
@@ -152,6 +153,77 @@ def e11() -> str:
 
 def exists(run_id: str) -> bool:
     return (ROOT / "metrics" / run_id / "summary.json").exists()
+
+
+def latency() -> str:
+    """E3 on the H100: the TTFT that the app saw, and the ITL of the decode pod, against SLO-1 and SLO-2."""
+    rows = []
+    for load in (50, 100, 150):
+        for arm, name in (("c", "P/D"), ("a", "two colocated replicas")):
+            run_id = f"e3-{arm}-{load}"
+            r = proof.load_run(run_id)
+            i = (r.summary.get("by_class") or {}).get("interactive", {})
+            itl = [v for s in r.prom("vllm_itl_p95") if "decode" in s.labels.get("pod", "") for v in s.v]
+            rows.append([f"{name}, {load}%", f"`{run_id}`", i.get("ttft_p50_s"), i.get("ttft_p95_s"),
+                         round(statistics.median(itl) * 1000) if itl else None,
+                         round(max(itl) * 1000) if itl else None])
+    return ("TTFT: the time to the first token that the app saw, for all interactive calls. ITL: the p95 of each "
+            "minute on the pod `vllm-decode` (`vllm:inter_token_latency_seconds`), with the median and the maximum "
+            "of these values over the run. SLO-1: TTFT p95 at most 1.5 s for prompts up to 8K tokens. SLO-2: ITL "
+            "p95 at most 50 ms. One call at a time (Gate G1): TTFT 0.90 s (median), ITL p95 20.5 ms.\n\n"
+            + table(["Layout and load", "Run", "TTFT p50 (s)", "TTFT p95 (s)", "ITL p95, median (ms)",
+                     "ITL p95, max (ms)"], rows))
+
+
+def stream_ttfts(run_id: str) -> tuple[list[float], list[float]]:
+    """The TTFT of each streaming interactive call at the client, and the TTFT of the same call at edge.
+
+    The client measures only the calls that stream, to the first answer token. edge measures each call to its
+    first byte, so a call that does not stream counts its full answer there. We match each streaming call to its
+    edge record by tenant, step, and start time (the same clock: both run in the cluster)."""
+    run = proof.METRICS / run_id
+    edge: dict[tuple[str, str], list[tuple[float, float]]] = {}
+    for line in (run / "edge-access.jsonl").open():
+        if line.startswith("{"):
+            r = json.loads(line)
+            if r.get("status") == 200 and r.get("ttft_ms") is not None:
+                edge.setdefault((r["tenant"], r["step"]), []).append((r["ts"], r["ttft_ms"] / 1000))
+    client, gateway = [], []
+    for line in (run / "client.jsonl").open():
+        c = json.loads(line)
+        if not (c["request_class"] == "interactive" and c["stream"] and c["status"] == 200 and c["ttft_s"]):
+            continue
+        cands = edge.get((c["tenant"], c["step"]), [])
+        best = min(cands, key=lambda x: abs(x[0] - c["t_start"]), default=None)
+        if best is not None and abs(best[0] - c["t_start"]) <= 1.0:
+            client.append(c["ttft_s"])
+            gateway.append(best[1])
+    return client, gateway
+
+
+def ttft_points() -> str:
+    """E3 on the H100: the TTFT at the client, at the gateway (edge), and in the engine (vLLM, decode pod)."""
+    from app.loadgen.replay import percentile
+
+    rows = []
+    for load in (50, 100, 150):
+        for arm, name in (("c", "P/D"), ("a", "two colocated replicas")):
+            run_id = f"e3-{arm}-{load}"
+            r = proof.load_run(run_id)
+            client, gateway = stream_ttfts(run_id)
+            engine = [v for s in r.prom("vllm_ttft_p95") if "decode" in s.labels.get("pod", "") for v in s.v]
+            wait = [v for s in r.prom("flow_queue_wait_p95")
+                    if s.labels.get("priority") == "10" and s.labels.get("outcome") == "Dispatched" for v in s.v]
+            rows.append([f"{name}, {load}%", f"`{run_id}`", len(client), percentile(client, 0.95),
+                         percentile(gateway, 0.95), round(statistics.median(engine), 2) if engine else None,
+                         round(statistics.median(wait), 2) if wait else None])
+    return ("The same streaming interactive calls at the client (the first answer token) and at edge (the first "
+            "byte). The engine column is the TTFT p95 of each minute on the pod `vllm-decode`. The llm-d queue column "
+            "is the wait p95 of each minute in the interactive band, before the dispatch. Both are the median over "
+            "the run. On the dashboards, the edge TTFT panel counts all calls. A call that does not stream counts its "
+            "full answer there, so that panel reads higher.\n\n"
+            + table(["Layout and load", "Run", "Streaming calls", "Client TTFT p95 (s)", "Gateway TTFT p95 (s)",
+                     "Engine TTFT p95 (s)", "llm-d queue wait p95 (s)"], rows))
 
 
 def e3_a100() -> str:
@@ -332,6 +404,8 @@ def build() -> str:
         ("E3 Topology: layout C (P/D) against layout A (two colocated replicas), M4", table(REPLAY_HEAD, [
             replay_row(f"e3-{arm}-{load}", f"{'C' if arm == 'c' else 'A'}, {load}%")
             for load in (50, 100, 150) for arm in ("c", "a")])),
+        ("E3 Latency: TTFT and ITL against SLO-1 and SLO-2 (H100)", latency()),
+        ("E3 TTFT at three points: the client, the gateway, and the engine (H100)", ttft_points()),
         ("E4 The hop: LMCache server against NIXL", e4()),
         ("E5 The split decision", e5()),
         ("E6 Prefix cache and KV format (M2, 100%)", e6()),

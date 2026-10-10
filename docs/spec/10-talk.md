@@ -63,11 +63,13 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 16 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
 | 17 | `topology` | For our traffic, two colocated replicas beat a P/D split | the layout test chart | 0:44 |
-| 18 | `questions-1` | The handout questions: our answers and the evidence (1 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
-| 19 | `questions-2` | The handout questions: our answers and the evidence (2 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
-| 20 | `changed` | What the data changed in our design | - | 0:41 |
+| 18 | `latency` | TTFT and ITL: P/D missed both SLOs at each load | a table of TTFT and ITL p95 against the SLOs, and Dashboard 6: ITL p95 for P/D and colocated at 100% load | 1:55 |
+| 19 | `ttft-points` | TTFT at three points: under load, calls wait before the engine | a table of the TTFT at the client, the gateway, the engine, and the llm-d queue | 1:44 |
+| 20 | `questions-1` | The handout questions: our answers and the evidence (1 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
+| 21 | `questions-2` | The handout questions: our answers and the evidence (2 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
+| 22 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 27 minutes 20 seconds of notes and 61 seconds of clips, so 28 minutes 21 seconds.
+Total: 31 minutes 0 seconds of notes and 61 seconds of clips, so 32 minutes 1 seconds.
 
 The appendix has 11 slides, in the order of the handout parts. First come place, queue, hop and warmth, the two hop slides, the scale test chart, and the traps of the handout. Then the evidence: a raw scrape, the faults, the demo check, and the cost.
 
@@ -92,6 +94,8 @@ All slides and notes now say "llm-d", not "the router". Where the job matters, t
 The deck, the report, the README, the results, the notebook, and the E3 chart now say "two colocated replicas". This is the term of the handout, in place of "two whole pods". A colocated replica is one vLLM pod that does the prefill and the decode of its calls. The session logs in `metrics/` keep the old words.
 
 On the night of 2026-10-09, the deck got a new order: 20 main slides in four sections, and the appendix. The sections are the app and the system, capacity and the cluster design, one request end to end, and the results with the handout questions. Three slides moved from the appendix into the main deck. They are the cluster design (`design`, slide 8) and the two handout question slides (`questions-1` and `questions-2`, slides 18 and 19). The scale slide now comes before the results. `tools/make_deck.py` holds the order in two lists, `MAIN` and `APPENDIX`, and the cross-references take the slide numbers from them.
+
+Slides 18 and 19 show the latency. Slide 18 gives the TTFT p95 and the ITL p95 of the load tests against the SLOs, with the ITL panels of dashboard 6. Slide 19 gives the TTFT at the client, at the gateway, and in the engine, and the wait in the llm-d queue. `tools/report_numbers.py` writes both tables into `docs/results.md`.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 

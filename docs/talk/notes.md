@@ -134,7 +134,27 @@ This test sends the same recorded app traffic to two layouts, at three loads. A 
 
 But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint.
 
-### 18. The handout questions: our answers and the evidence (1 of 2)
+### 18. TTFT and ITL: P/D missed both SLOs at each load
+
+These are the latency numbers that a user feels. TTFT is the time to the first token. ITL is the time between two tokens of an answer. Our goal for the TTFT is a p95 of at most 1.5 seconds, for prompts up to 8K tokens. Our goal for the ITL is a p95 of at most 50 milliseconds.
+
+One call at a time, the gate test gave a TTFT of 0.90 seconds and an ITL p95 of 20.5 milliseconds. So the engine can meet both. Under load, P/D missed both SLOs at each load. At 50% load, its TTFT p95 was 2.04 seconds, and its ITL p95 was 84 milliseconds. The two colocated replicas met both SLOs at 50% load: 1.05 seconds and 36 milliseconds.
+
+At 100% load, they were a little above the TTFT limit, at 1.57 seconds, and at the ITL limit, 50 milliseconds. At 150% load, both layouts missed both SLOs. Why is the ITL of P/D high? Most calls do not split, so the decode pod also computes their prompts. Each step of the decode pod then carries prefill chunks next to the decode streams, and each stream waits longer for its next token.
+
+The split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for an 8K prompt. The TTFT that the app saw also includes the wait in our queue. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod.
+
+### 19. TTFT at three points: under load, calls wait before the engine
+
+This slide shows where the TTFT comes from. We measured it at three points. The client is the load generator, in the place of our app. It times each streaming call to its first answer token. The gateway is edge, and it times the same calls to their first byte.
+
+The engine is vLLM on the decode pod. The client and the gateway differ by only 0.1 to 0.3 seconds at p95: the relay, and the first answer token after the first byte. The big gap is between the gateway and the engine. It holds the guard, the wait in the llm-d queue, and the hop. With P/D at 100% load, the gateway saw 15.67 seconds at p95, and the engine only 4.38.
+
+The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. On the dashboards, dashboard 6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls.
+
+A call that does not stream counts its full answer there, so that panel reads higher. The client TTFT is in the load test logs and in the results file.
+
+### 20. The handout questions: our answers and the evidence (1 of 2)
 
 These are the questions of the handout. Each answer points at a file or a scrape in the repo. The app is a learning companion over the bookmarks of its owner, with RAG and agent steps on Gemma 4 31B. The shared tokens are the system prompt, the tool schemas, and the history of a session. The unique tokens are the question, the retrieved chunks, the fetched pages, and the OCR text.
 
@@ -148,7 +168,7 @@ One tenant: the Envoy AI Gateway counts the tokens and the requests of each tena
 
 The decode pod loads the KV from the LMCache server. It computes again only the tokens after the last full chunk of 256 tokens.
 
-### 19. The handout questions: our answers and the evidence (2 of 2)
+### 21. The handout questions: our answers and the evidence (2 of 2)
 
 Evict and ghosts: vLLM evicts blocks of its GPU prefix cache when it needs space. The LMCache server evicts its oldest chunks at 90% of its 250 GiB cap. llm-d learns of each eviction from the KV events of vLLM. A ghost is a prefix that llm-d still places on a pod after the pod cleared it. We cleared the prefix cache of one pod during a run.
 
@@ -162,7 +182,7 @@ At 10 times the traffic: more decode capacity first, 32 sequences on each decode
 
 A lower split threshold, because each split pays the prefill, the hold, and the load from LMCache.
 
-### 20. What the data changed in our design
+### 22. What the data changed in our design
 
 Five things changed in the design because of the data. Two colocated replicas for our traffic. A store barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU.
 

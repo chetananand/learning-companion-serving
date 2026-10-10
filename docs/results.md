@@ -47,6 +47,32 @@ The load levels come from E2: 100% load is RATE100, 0.9 scripts each second. TTF
 | C, 150% | `e3-c-150` | 2,639 of 2,917 | 15.78 | 21.45 | 273 503 timeout_queue, 5 400 prompt_injection | 45 of 195 |
 | A, 150% | `e3-a-150` | 3,416 of 3,527 | 11.02 | 21.10 | 107 503 timeout_queue, 4 400 prompt_injection | 254 of 384 |
 
+## E3 Latency: TTFT and ITL against SLO-1 and SLO-2 (H100)
+
+TTFT: the time to the first token that the app saw, for all interactive calls. ITL: the p95 of each minute on the pod `vllm-decode` (`vllm:inter_token_latency_seconds`), with the median and the maximum of these values over the run. SLO-1: TTFT p95 at most 1.5 s for prompts up to 8K tokens. SLO-2: ITL p95 at most 50 ms. One call at a time (Gate G1): TTFT 0.90 s (median), ITL p95 20.5 ms.
+
+| Layout and load | Run | TTFT p50 (s) | TTFT p95 (s) | ITL p95, median (ms) | ITL p95, max (ms) |
+|---|---|---|---|---|---|
+| P/D, 50% | `e3-c-50` | 1.19 | 2.04 | 84 | 174 |
+| two colocated replicas, 50% | `e3-a-50` | 0.65 | 1.05 | 36 | 46 |
+| P/D, 100% | `e3-c-100` | 4.59 | 15.95 | 192 | 224 |
+| two colocated replicas, 100% | `e3-a-100` | 0.84 | 1.57 | 50 | 383 |
+| P/D, 150% | `e3-c-150` | 15.78 | 21.45 | 206 | 241 |
+| two colocated replicas, 150% | `e3-a-150` | 11.02 | 21.10 | 129 | 343 |
+
+## E3 TTFT at three points: the client, the gateway, and the engine (H100)
+
+The same streaming interactive calls at the client (the first answer token) and at edge (the first byte). The engine column is the TTFT p95 of each minute on the pod `vllm-decode`. The llm-d queue column is the wait p95 of each minute in the interactive band, before the dispatch. Both are the median over the run. On the dashboards, the edge TTFT panel counts all calls. A call that does not stream counts its full answer there, so that panel reads higher.
+
+| Layout and load | Run | Streaming calls | Client TTFT p95 (s) | Gateway TTFT p95 (s) | Engine TTFT p95 (s) | llm-d queue wait p95 (s) |
+|---|---|---|---|---|---|---|
+| P/D, 50% | `e3-c-50` | 172 | 2.04 | 1.87 | 0.80 | 0.00 |
+| two colocated replicas, 50% | `e3-a-50` | 181 | 1.05 | 0.94 | 0.72 | 0.00 |
+| P/D, 100% | `e3-c-100` | 333 | 15.95 | 15.67 | 4.38 | 2.25 |
+| two colocated replicas, 100% | `e3-a-100` | 342 | 1.57 | 1.35 | 0.90 | 0.00 |
+| P/D, 150% | `e3-c-150` | 416 | 21.45 | 21.34 | 16.90 | 9.53 |
+| two colocated replicas, 150% | `e3-a-150` | 480 | 21.10 | 20.79 | 9.60 | 8.28 |
+
 ## E4 The hop: LMCache server against NIXL
 
 | Hop | Run | Prefix | Ok | TTFT median (s) | Cached tokens (median) | Prompt tokens (median) |

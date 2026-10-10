@@ -27,6 +27,7 @@ ASSETS = {
     "queues": "/_blob/8bf5df6c9b3ea7d826771b4f749137af", "pd": "/_blob/64db200fb2311fad8d21915521ec3dc8",
     "overflow": "/_blob/88f1f4655c6ae3a220f8d19ddec374ae", "tokens": "/_blob/7dec7da661854b29c57e90efb61cfe72",
     "replicas": "/_blob/555b51655b33e9258f9abf12f0f93b21",
+    "itl_pd": "/_blob/b83b952f9637f6cb551a1f4313858ac6", "itl_co": "/_blob/561ac7a8d501112c738c5a67773cb4e2",
 }
 # The repo file of each asset (the same bytes, checked by sha256 on 2026-10-09). tools/deck_pdf.py uses them.
 LOCAL = {
@@ -39,6 +40,7 @@ LOCAL = {
     "overflow": "plots/slides/panels/success-overflow-gate.png",
     "tokens": "plots/slides/panels/vllm-tokens-per-second.png",
     "replicas": "plots/slides/panels/scaling-desired-replicas.png",
+    "itl_pd": "plots/slides/panels/vllm-itl-pd-100.png", "itl_co": "plots/slides/panels/vllm-itl-colocated-100.png",
 }
 # Pixel sizes of the images (to keep the aspect ratio).
 SIZES = {"e3": (1760, 980), "e9": (1739, 1035), "hop": (1421, 826), "warm": (1816, 862), "arch": (3400, 1552),
@@ -190,7 +192,8 @@ def play(text: str) -> str:
 
 # The deck order. slides() builds the slides in any order, and then sorts them by these lists.
 MAIN = ["cover", "intro", "arch", "models", "search", "capacity", "deploy", "design", "app", "guard", "admit",
-        "place", "hop", "warm", "scale", "hypothesis", "topology", "questions-1", "questions-2", "changed"]
+        "place", "hop", "warm", "scale", "hypothesis", "topology", "latency", "ttft-points", "questions-1",
+        "questions-2", "changed"]
 APPENDIX = ["a-place", "a-part5", "a-warm", "a-hop", "a-production", "a-scale", "a-bad", "a-scrape", "a-faults",
             "a-demo", "a-cost"]
 
@@ -618,6 +621,77 @@ def slides() -> list[tuple[str, str, str]]:
         "KEDA made the new pod 15 seconds after the request, in both pools. The pod was warm about 4 minutes "
         "later, so on a spike that is the real reaction time. The capacity value must match the GPU. Now clip 2, "
         "at 8 times speed."))
+
+    s.append(("latency", "".join([
+        title("TTFT and ITL: P/D missed both SLOs at each load"),
+        two_columns([
+            measured("The same recorded app traffic on the two layouts: P/D, and two colocated replicas. TTFT: what "
+                     "the app saw, for all interactive calls. ITL: the p95 of each minute on the decode pod, the "
+                     "median over the run."),
+            table(["Load", "TTFT p95, P/D", "TTFT p95, colocated", "ITL p95, P/D", "ITL p95, colocated"], [
+                ["50%", "2.04 s", "1.05 s", "84 ms", "36 ms"],
+                ["100%", "15.95 s", "1.57 s", "192 ms", "50 ms"],
+                ["150%", "21.45 s", "21.10 s", "206 ms", "129 ms"],
+                ["SLO", "1.5 s", "1.5 s", "50 ms", "50 ms"],
+            ], [16, 21, 21, 21, 21], size=22),
+            p("One call at a time, in the gate test: TTFT 0.90 s, and ITL p95 20.5 ms.", 22),
+            callout("Why the ITL of P/D is high", "Most calls do not split, so the decode pod also computes their "
+                    "prompts. These prefill chunks share each step with the decode streams."),
+        ], [
+            image("itl_pd", "Grafana panel: ITL p95 for each pod, P/D at 100% load",
+                  "Dashboard 6 · vLLM: ITL p95, P/D at 100% load. About 200 ms most of the time.", 760),
+            image("itl_co", "Grafana panel: ITL p95 for each pod, two colocated replicas at 100% load",
+                  "Dashboard 6 · vLLM: ITL p95, two colocated replicas at 100% load. Near 50 ms most of the "
+                  "time, with bursts.", 760),
+        ], left_w=820),
+    ]), "These are the latency numbers that a user feels. TTFT is the time to the first token. ITL is the time "
+        "between two tokens of an answer. Our goal for the TTFT is a p95 of at most 1.5 seconds, for prompts up "
+        "to 8K tokens. Our goal for the ITL is a p95 of at most 50 milliseconds. One call at a time, the gate "
+        "test gave a TTFT of 0.90 seconds and an ITL p95 of 20.5 milliseconds. So the engine can meet both. Under"
+        " load, P/D missed both SLOs at each load. At 50% load, its TTFT p95 was 2.04 seconds, and its ITL p95 "
+        "was 84 milliseconds. The two colocated replicas met both SLOs at 50% load: 1.05 seconds and 36 "
+        "milliseconds. At 100% load, they were a little above the TTFT limit, at 1.57 seconds, and at the ITL "
+        "limit, 50 milliseconds. At 150% load, both layouts missed both SLOs. Why is the ITL of P/D high? Most "
+        "calls do not split, so the decode pod also computes their prompts. Each step of the decode pod then "
+        "carries prefill chunks next to the decode streams, and each stream waits longer for its next token. The "
+        "split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for"
+        " an 8K prompt. The TTFT that the app saw also includes the wait in our queue. Dashboard 6 has these "
+        "panels: TTFT p95 and ITL p95 for each pod."))
+
+    s.append(("ttft-points", "".join([
+        title("TTFT at three points: under load, calls wait before the engine"),
+        two_columns([
+            table(["Layout and load", "Client", "Gateway", "Engine", "llm-d queue"], [
+                ["P/D, 50%", "2.04 s", "1.87 s", "0.80 s", "0.00 s"],
+                ["Colocated, 50%", "1.05 s", "0.94 s", "0.72 s", "0.00 s"],
+                ["P/D, 100%", "15.95 s", "15.67 s", "4.38 s", "2.25 s"],
+                ["Colocated, 100%", "1.57 s", "1.35 s", "0.90 s", "0.00 s"],
+                ["P/D, 150%", "21.45 s", "21.34 s", "16.90 s", "9.53 s"],
+                ["Colocated, 150%", "21.10 s", "20.79 s", "9.60 s", "8.28 s"],
+            ], [28, 18, 18, 18, 18], size=22),
+            p("All values are p95. Client and gateway: the same streaming calls. Engine and queue: the p95 of each "
+              "minute, the median over the run.", 22),
+        ], [
+            measured("Client: the load generator, to the first answer token. Gateway: edge, to the first byte. "
+                     "Engine: vLLM on the decode pod. Queue: the interactive band in llm-d."),
+            callout("What the gaps mean", "Client to gateway: 0.1 to 0.3 s, the relay. Gateway to engine: the "
+                    "guard, the llm-d queue, and the hop. With P/D at 100% load, this gap was 11 s."),
+            callout("On the dashboards", "Dashboard 6: the engine TTFT for each pod. Dashboard 3: the edge TTFT, "
+                    "but of all calls, so a call that does not stream counts its full answer. The client TTFT is in "
+                    "the load test logs."),
+        ], left_w=860),
+    ]), "This slide shows where the TTFT comes from. We measured it at three points. The client is the load "
+        "generator, in the place of our app. It times each streaming call to its first answer token. The gateway "
+        "is edge, and it times the same calls to their first byte. The engine is vLLM on the decode pod. The "
+        "client and the gateway differ by only 0.1 to 0.3 seconds at p95: the relay, and the first answer token "
+        "after the first byte. The big gap is between the gateway and the engine. It holds the guard, the wait in"
+        " the llm-d queue, and the hop. With P/D at 100% load, the gateway saw 15.67 seconds at p95, and the "
+        "engine only 4.38. The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two "
+        "colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when "
+        "the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. On the dashboards,"
+        " dashboard 6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls. A "
+        "call that does not stream counts its full answer there, so that panel reads higher. The client TTFT is "
+        "in the load test logs and in the results file."))
 
     cards = [("Colocated replicas", "for our traffic. Split only long uncached prompts."),
              ("A store barrier", "for the hop: completion is not visibility."),
