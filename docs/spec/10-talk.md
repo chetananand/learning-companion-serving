@@ -105,7 +105,7 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 | A5 | `a-scrape` | A raw /metrics scrape of a live engine | `metrics/one-20261002T050552Z/scrape-*.txt` |
 | A6 | `a-faults` | Faults that we found and fixed | `DESIGN.md`, faults |
 | A7 | `a-demo` | The demo questions: 8 of 12 on the H100, 6 of 12 on the A100 | `docs/results.md`, the demo check |
-| A8 | `a-part5` | The queue questions, with the notebook answers | `notebook/part5_queue.ipynb` |
+| A8 | `a-part5` | The queue questions: our answers and the proof | `notebook/part5_queue.ipynb` |
 | A9 | `a-cost` | The cost of each GPU block | `docs/budget-ledger.md` |
 | A10 | `a-hop` | The hop: the LMCache server against NIXL | `plots/slides/hop.png` |
 | A11 | `a-scale` | The scale test: the planner against KEDA, in each pool | `plots/slides/e9.png` |
@@ -114,6 +114,8 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 Slide A1 holds the defense of the cluster design. Each row has the choice, the reason, and the proof. The rows are the GPU, the model, the topology, the slices, the concurrency, the hop backend, the overflow, the two boxes, and the scale. Its notes give the answer to the question that each row can get, for example "why not a cheaper GPU?" or "why not Mooncake?".
 
 Slide A2 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
+
+Slide A8 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
 
 ## 5. The bad answers of the handout, and our answers
 

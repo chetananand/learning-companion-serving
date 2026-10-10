@@ -787,19 +787,85 @@ def slides() -> list[tuple[str, str, str]]:
 
     s.append(("a-part5", "".join([
         p("Appendix", 24, ORANGE_TEXT, 600),
-        title("The queue questions, with the notebook answers"),
-        table(["Question", "Answer"], [
-            ["Our queue or the vLLM queue?", "ours before the pick (up to 48 and 24), vLLM after (up to 50)"],
-            ["Waiting, running, preempted?", "decode: 24 running and 50 waiting, and 0 preemptions"],
-            ["Queue depth for each pod?", "6 or fewer for most traffic, and up to 36 for the mixed traffic"],
-            ["A 32K retrieve and an agent step?", "the agent step goes first, in all rounds"],
-            ["PagedAttention or prefix cache?", "the prefix cache saved prefill work, and fp8 KV saved memory"],
-            ["Engine flags?", "decode: 24 sequences, chunks of 2,560. Prefill: 8, chunks of 16,384."],
-            ["KV full after admit?", "we refuse at the door, and no pod preempted"],
-            ["Client gone?", "vLLM abort_requests frees the KV"],
-            ["A worker returns?", "a ramp while the p99 holds"],
-        ], [38, 62]),
-    ]), "For questions only. The answers, with plots, are in notebook/part5_queue.ipynb."))
+        title("The queue questions: our answers and the proof"),
+        table(["Question", "Our answer", "What we measured"], [
+            ["Who waits in our queue, and who in the vLLM queue?",
+             "Ours is in the llm-d flow control: a call waits there before the pick, while the pods are full. "
+             "In vLLM, a call waits inside the pod for a batch slot.",
+             "At 150% load: up to 48 interactive and 24 batch calls in ours, and up to 50 in the decode pod."],
+            ["Waiting, running, preempted?",
+             "vLLM has no swap: it preempts by computing the KV again. The decode pod runs at most 24 calls.",
+             "Decode: up to 24 running and 50 waiting. 0 preemptions in all runs."],
+            ["Queue depth of each pod, by mix?",
+             "We read the queue of each pod from llm-d and from vLLM, for each traffic mix (dashboard 5).",
+             "6 or fewer for most mixes. Up to 36 on the decode pod with the mixed app traffic."],
+            ["A 32K retrieve and a short agent step are both ready. Who goes first?",
+             "The short step. The split sends the long prompt to the prefill pod. Without the split, vLLM computes "
+             "it in chunks.",
+             "The short step was first in all rounds: 0.25 s with the split, 1.0 to 1.26 s without."],
+            ["PagedAttention or the prefix cache: which saved memory?",
+             "Neither changed the KV use at our load. The prefix cache saved compute. FP8 KV saved memory.",
+             "KV use 13% with and without the prefix cache, 5.5% with FP8. 44% of prompt tokens were hits."],
+            ["Engine flags for chunked prefill and batching?",
+             "Decode: 24 sequences, chunks of 2,560 tokens, so a short prefill fits one chunk. Prefill: 8 "
+             "sequences, chunks of 16,384.",
+             "With 32 decode sequences, the TTFT p50 fell from 4.59 s to 2.10 s."],
+            ["KV full after admit: the door or preemption?",
+             "The door. The llm-d flow control holds calls while the pods are full, so vLLM did not preempt.",
+             "Soak test: the KV use stayed at 90% or less, with 0 preemptions."],
+            ["The client is gone: who frees the KV?",
+             "vLLM. Envoy closes the stream, and vLLM stops the call and frees its KV blocks.",
+             "Envoy closed all 46 aborted streams at the client time."],
+            ["A pod returns: 100% at once, or a ramp?",
+             "A ramp: 10%, 25%, 50%, then 100% of the score, while the TTFT p99 of the pod holds.",
+             "First-minute TTFT p95: 14.6 s with the ramp, 57.3 s with a jump."],
+        ], [24, 43, 33], size=21),
+    ]), "For questions only. Our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did"
+        " not write a second queue, and the handout does not ask for one. It puts admit, place, and the queue in "
+        "the gateway. We set the rules of the queue in the policy file. A call waits in our queue before llm-d "
+        "picks a pod, and only while the pods are full. For this, llm-d gives each pod a fullness: its queued "
+        "requests divided by 5, or its KV use divided by 90%, whichever is larger. The pods are full when the "
+        "average fullness reaches 1. Batch calls already wait at 0.7. In our queue, interactive calls go before "
+        "batch calls, and tenants take turns. A call that waits longer than its time limit gets a 503: 10 seconds"
+        " for interactive, 120 seconds for batch. The handout draws the queue after the pick. But llm-d puts it "
+        "before the pick, so the pick uses the state of the pods at the moment that a pod has room. The vLLM "
+        "waiting queue is inside each pod, after the pick. The engine moves a call from it into the running batch"
+        " when a batch slot and KV blocks are free. At 150% load, our queue held up to 48 interactive and 24 "
+        "batch calls. The vLLM queue of the decode pod held up to 50. Waiting, running, preempted: vLLM V1 has no"
+        " swap. When the KV is short, it preempts a running call and computes its KV again later. The decode pod "
+        "ran at most 24 calls, its limit, and up to 50 waited. No pod preempted a call in any run. Queue depth "
+        "for each pod: dashboard 5 shows the queue of each pod, as llm-d sees it and as vLLM reports it. At 100% "
+        "load, the unique, shared-prefix, and stale-metrics mixes kept 6 or fewer. The mixed app traffic put up "
+        "to 36 on the decode pod. The long retrieve and the short steps: we sent one retrieve of about 27,400 "
+        "tokens and five short agent steps at the same time. Each arm had five rounds. In all rounds, a short "
+        "step got the first token first. With the split, the long prompt went to the prefill pod, and the short "
+        "steps started in 0.25 seconds. Without the split, the long prompt shared the decode pod. The engine "
+        "computes a long prompt in chunks, so the short steps still went first. But they needed 1.0 to 1.26 "
+        "seconds. The class of the retrieve, interactive or batch, did not change the order. At this low load, "
+        "the pods were not full, so our queue did not hold the calls. PagedAttention and the prefix cache: "
+        "PagedAttention packs the KV in blocks in all arms, and we cannot turn it off. On the shared-prefix mix "
+        "at 100% load, the KV use was 13% with and without the prefix cache. So the prefix cache did not save "
+        "memory at this load. It saved compute: 44% of the prompt tokens were cache hits, and the TTFT p50 fell "
+        "from 0.60 to 0.43 seconds. FP8 KV saved memory: the KV use fell to 5.5%, and each pod held twice the "
+        "tokens. Engine flags: vLLM adds calls to the running batch at each step, up to max-num-seqs. This is "
+        "continuous batching. Chunked prefill cuts a long prompt into chunks of at most max-num-batched-tokens "
+        "for each step. The decode pod has 24 sequences, because its KV holds about 20 sequences at 24K tokens "
+        "and 32 at 8K. Its chunk of 2,560 tokens lets a prefill below the split threshold of 2,048 tokens run in "
+        "one chunk. The engine does not accept less than 2,496 tokens, the largest image item of Gemma 4. The "
+        "prefill pod has 8 sequences, because its calls leave after the hop. Its chunks of 16,384 tokens give "
+        "throughput. With 32 decode sequences, the TTFT p50 fell from 4.59 to 2.10 seconds. A prefill chunk of "
+        "8,192 tokens made it worse. KV full after admit: we refuse at the door. The flow control holds calls "
+        "before the KV of the pods is full. In the soak test, the load grew each minute. The first refusal came "
+        "in minute 18, at 100% load. 3,645 calls were ok, and the flow control refused 43. The KV use stayed at "
+        "90% or less, and no pod preempted. Client gone: Envoy closes the stream at the moment of the client "
+        "close. The vLLM API server sees the closed stream and aborts the call. Then the engine frees its KV "
+        "blocks. We closed 20% of the streams in the middle: 46 calls. But vLLM v0.30 does not count these aborts"
+        " in its success counter, so that counter stays at 0. A pod returns: we ramp. The warm controller gives "
+        "the pod a ramp label of 10%, then 25%, 50%, and 100%, while the TTFT p99 of the pod holds. The ramp "
+        "scorer of llm-d reads the label. In the restart test, the first-minute TTFT p95 of the returned pod was "
+        "14.6 seconds with the ramp, and 57.3 seconds with a jump. But the ramp is a score, not a cap. In the "
+        "first 10 seconds, the empty pod got 75% of the calls, because the queue scorer likes an empty queue. So "
+        "the ramp needs a cap."))
 
     s.append(("a-cost", "".join([
         p("Appendix", 24, ORANGE_TEXT, 600),
@@ -918,6 +984,8 @@ def check(deck: list[tuple[str, str, str]], root: Path) -> int:
     sources = "\n".join(f.read_text() for f in [ROOT / "DESIGN.md", ROOT / "docs" / "results.md",
                                                 ROOT / "docs" / "budget-ledger.md", ROOT / "README.md",
                                                 *sorted((ROOT / "docs" / "spec").glob("*.md")),
+                                                # the queue slide names the notebook
+                                                ROOT / "notebook" / "part5_queue.ipynb",
                                                 # the raw scrapes and the hop record that the slides quote
                                                 *sorted((ROOT / "metrics" / "one-20261002T050552Z").glob("scrape-*")),
                                                 ROOT / "metrics" / "e3-c-150" / "hops.jsonl"])
