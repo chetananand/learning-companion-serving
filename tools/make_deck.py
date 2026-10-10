@@ -685,6 +685,31 @@ def slides() -> list[tuple[str, str, str]]:
               "The pods that the planner asks for, and the pods that KEDA runs. One pool at a time.", 1000),
     ]), "For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool "
         "scaled only after we set its capacity value for the A100."))
+    needs = ["A store signal for each request, in place of the global store counters.",
+             "RDMA between nodes, with NIXL or a distributed KV store. Our LMCache path works only inside one node, "
+             "and NIXL over TCP took about 4 s.",
+             "Two or more pods in each pool, and a fallback: if the prefill request fails, the decode pod does the "
+             "prefill itself.",
+             "mTLS between pods. Our sidecar ran with plain HTTP.",
+             "P/D only where long uncached prompts are common. For our traffic, two whole pods were faster."]
+    needs_html = (f'<div style="background:{BOX_BG};border:2px solid {LINE};border-radius:12px;padding:16px 20px;'
+                  f'display:flex;flex-direction:column;gap:10px">{p("A production hop needs", 28, INK, 600)}'
+                  + "".join(p(f"{i}. {t}", 24, INK) for i, t in enumerate(needs, 1)) + "</div>")
+    s.append(("a-production", "".join([
+        p("Appendix", 24, ORANGE_TEXT, 600),
+        title("The hop at production scale: what we keep, what we change"),
+        two_columns([
+            callout("Keep", "The router decides, and the sidecar runs the two steps. The one-token prefill request: "
+                    "the smallest vLLM request that runs a full prefill."),
+            measured("The store barrier on the A100 node, under load. It waits for every store that LMCache had at "
+                     "that time, with a cap of 0.5 s."),
+            table(["When", "Holds", "Hit the 0.5 s cap"],
+                  [["P/D load tests", "237", "170 (72%)"], ["End of session, prefill pod 1", "171", "163 (95%)"],
+                   ["End of session, prefill pod 2", "68", "67 (99%)"],
+                   ["Start of session, one request at a time", "3", "0 (0.19 s on average)"]], [48, 18, 34]),
+        ], [needs_html], left_w=820),
+    ]), "For questions only. The one-token request is production quality, and the barrier is not. Under load, it "
+        "hit its half-second cap on most split calls, so a production hop needs a store signal for each request."))
     return s
 
 

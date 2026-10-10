@@ -135,3 +135,7 @@ For questions only. NIXL between two pods used TCP, because the nodes have no RD
 ### A9. The scale test: the planner against KEDA, in each pool
 
 For questions only. The decode pool scaled 15 seconds after the planner asked. The prefill pool scaled only after we set its capacity value for the A100.
+
+### A10. The hop at production scale: what we keep, what we change
+
+For questions only. The one-token request is production quality, and the barrier is not. Under load, it hit its half-second cap on most split calls, so a production hop needs a store signal for each request.

@@ -63,7 +63,7 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 16 | `changed` | What the data changed in our design | - | 0:42 |
 
-Total: 10 minutes 13 seconds of notes and 61 seconds of clips, so 11 minutes 14 seconds. The appendix has 9 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart.
+Total: 10 minutes 13 seconds of notes and 61 seconds of clips, so 11 minutes 14 seconds. The appendix has 10 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
 
 On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. Slide 12 shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
 
