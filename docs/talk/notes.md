@@ -54,15 +54,19 @@ In the load tests, we replay recorded app turns. A turn is one question with all
 
 ### 9. Guard and stay or leave happen before any GPU work
 
-Stop one is the guard. `inspect()` runs fixed rules on the CPU, then Prompt Guard 2 and NeMo Guardrails. We sent 200 chat turns, 22 of them attacks. The guard blocked all 22 attacks and no normal turn. Stop two is stay or leave.
+Stop one is the guard. `inspect()` runs fixed rules on the CPU, then Prompt Guard 2 and NeMo Guardrails. We sent 200 chat turns, 22 of them attacks. The guard blocked all 22 attacks and no normal turn. Edge keeps each verdict in Redis for 1 hour.
 
-`should_leave()` keeps 429, 500, and slice_oom on our cluster. Only an interactive capacity refusal may leave. At 150% load the gate let only the 124 interactive 503 calls go, and no 429.
+The key is a hash of the last user message. So the next LLM calls of the same turn do not call the guard models again. Edge never stores an outage. If Redis fails, edge calls the guard models. Stop two is stay or leave.
+
+`should_leave()` keeps 429, 500, and slice_oom on our cluster. Only an interactive capacity refusal may leave. At 150% load the gate let only the 124 interactive 503 calls go, and no 429. Redis also holds the limits of the overflow API. The overflow was off in all runs, so these calls got a 503.
 
 ### 10. Admit: we refuse work at the door, not in the engine
 
-Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway counts the tokens of each tenant. The router keeps two priority bands with a time limit, and it stops the dispatch at 90% KV use. In all load tests the engine preempted nothing, because the router refused the extra work first.
+Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway counts the tokens and the requests of each tenant in each minute. Its rate-limit service keeps these counts in Redis. When a tenant is over its budget, it gets a 429 at once, with no wait.
 
-In the tenant test the noisy tenant got 55 429 replies, and the others kept their service.
+Redis is not a queue. It has four jobs: the tenant counts, the guard verdicts, the overflow limits, and the web search results of the app. The queue is in llm-d, in its own memory. It has two priority bands with a time limit: 10 seconds for an interactive call, and 120 seconds for a batch call. At 5 queued requests or 90% KV use on a pod, llm-d stops the dispatch to that pod.
+
+In all load tests the engine preempted nothing, because llm-d refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and the others kept their service.
 
 ### 11. Place: prefix match first, then load
 
