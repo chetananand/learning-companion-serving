@@ -16,7 +16,7 @@ The app is a learning companion over the Notion Bookmarks database of its owner.
 
 ## Architecture
 
-The path of one LLM call. This is slide 2 of the talk, and `tools/arch_diagram.py` draws it. Each box says what it decides or does, and each arrow names what moves. Solid arrows occur for each call. The orange dashed arrows occur only when the router also picks a prefill pod.
+The path of one LLM call. This is slide 3 of the talk, and `tools/arch_diagram.py` draws it. Each box says what it decides or does, and each arrow names what moves. Solid arrows occur for each call. The orange dashed arrows occur only when the router also picks a prefill pod.
 
 ![The path of one LLM call: the app, admission control and routing, and the engine, in steps 1 to 6](plots/slides/arch.png)
 

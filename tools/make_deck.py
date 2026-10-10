@@ -303,6 +303,34 @@ def slides() -> list[tuple[str, str, str]]:
         "a vector. Qdrant finds 30 chunks by vector and by keyword, and SIE reranks them. The agent gets the top "
         "8. SIE serves only the small models, so the search makes no LLM call."))
 
+    s.append(("capacity", "".join([
+        title("KV on paper: bytes for each token, and how many sequences fit"),
+        two_columns([
+            p("Gemma 4 31B, BF16 KV. Full-attention layers: 40,960 bytes for each token. Sliding-window layers: "
+              "819,200 bytes for each token, but only for the last 1,024 tokens, so 800 MiB for each sequence.", 28,
+              INK),
+            (f'<div style="background:{CODE_BG};border-radius:12px;padding:12px 20px">'
+             f'<p style="font-family:{MONO};font-size:24px;line-height:1.35;color:{INK}">max seqs = (HBM - weights - '
+             f'activations) / KV of one sequence</p></div>'),
+            table(["Length", "KV of one sequence", "Max seqs, BF16 KV", "Max seqs, FP8 KV"],
+                  [["5,121 tokens: what the app sends (median)", "0.98 GiB", "36", "72"],
+                   ["8K tokens: the length that we planned", "1.09 GiB", "32", "64"],
+                   ["32K tokens: max_len", "2.03 GiB", "17", "34"]], [40, 22, 19, 19]),
+            p("One H100, the KV budget after the weights: 35.3 GiB.", 24),
+        ], [
+            measured("The KV cache that vLLM gave the decode pod (one H100)."),
+            proof("173,657 tokens", "with BF16 KV, and 345,235 tokens with FP8 KV"),
+            callout("Model switch", "We kept Gemma 4 31B, because it passed all 7 gate tests. With Muse Glimmer 30B, "
+                    "the KV of an 8K sequence is 83% smaller, and 189 sequences fit at 8K, not 32. We changed the KV "
+                    "to FP8 instead: it halves the bytes for each token."),
+            p("Later in the talk: which limiter came first, and if our guess was right.", 24, MUTED),
+        ], left_w=860),
+    ]), "Before the cluster, we did the KV math. Gemma 4 31B has two kinds of KV. The full-attention layers need "
+        "40,960 bytes for each token. The sliding-window layers add 800 MiB for each sequence, after 1,024 "
+        "tokens. At the length that our app sends, about 5,000 tokens, one H100 fits 36 sequences, and 17 at the "
+        "32K max_len. FP8 KV doubles both. We kept the model, because it passed all gate tests. With Muse "
+        "Glimmer, the KV of an 8K sequence is 83% smaller."))
+
     s.append(("deploy", "".join([
         title("The deployment: two nodes, and an A100 fallback"),
         two_columns([
@@ -477,34 +505,6 @@ def slides() -> list[tuple[str, str, str]]:
         "probe is fast enough. Then it gets 10% of the traffic weight, and more while the TTFT holds. In the "
         "restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. The ramp cut it from 57.3 to "
         "14.6 seconds."))
-
-    s.append(("capacity", "".join([
-        title("KV on paper: bytes for each token, and how many sequences fit"),
-        two_columns([
-            p("Gemma 4 31B, BF16 KV. Full-attention layers: 40,960 bytes for each token. Sliding-window layers: "
-              "819,200 bytes for each token, but only for the last 1,024 tokens, so 800 MiB for each sequence.", 28,
-              INK),
-            (f'<div style="background:{CODE_BG};border-radius:12px;padding:12px 20px">'
-             f'<p style="font-family:{MONO};font-size:24px;line-height:1.35;color:{INK}">max seqs = (HBM - weights - '
-             f'activations) / KV of one sequence</p></div>'),
-            table(["Length", "KV of one sequence", "Max seqs, BF16 KV", "Max seqs, FP8 KV"],
-                  [["5,121 tokens: what the app sends (median)", "0.98 GiB", "36", "72"],
-                   ["8K tokens: the length that we planned", "1.09 GiB", "32", "64"],
-                   ["32K tokens: max_len", "2.03 GiB", "17", "34"]], [40, 22, 19, 19]),
-            p("One H100, the KV budget after the weights: 35.3 GiB.", 24),
-        ], [
-            measured("The KV cache that vLLM gave the decode pod (one H100)."),
-            proof("173,657 tokens", "with BF16 KV, and 345,235 tokens with FP8 KV"),
-            callout("Model switch", "We kept Gemma 4 31B, because it passed all 7 gate tests. With Muse Glimmer 30B, "
-                    "the KV of an 8K sequence is 83% smaller, and 189 sequences fit at 8K, not 32. We changed the KV "
-                    "to FP8 instead: it halves the bytes for each token."),
-            p("The next slide: which limiter came first, and if our guess was right.", 24, MUTED),
-        ], left_w=860),
-    ]), "Before the cluster, we did the KV math. Gemma 4 31B has two kinds of KV. The full-attention layers need "
-        "40,960 bytes for each token. The sliding-window layers add 800 MiB for each sequence, after 1,024 "
-        "tokens. At the length that our app sends, about 5,000 tokens, one H100 fits 36 sequences, and 17 at the "
-        "32K max_len. FP8 KV doubles both. We kept the model, because it passed all gate tests. With Muse "
-        "Glimmer, the KV of an 8K sequence is 83% smaller."))
 
     s.append(("hypothesis", "".join([
         title("The decode pod was the limit, not prefill compute"),
@@ -764,7 +764,7 @@ def write(root: Path) -> list[tuple[str, str, str]]:
     index = {"v": 4, "createdOnFiles": {"v": 1, "at": dt.datetime.now(dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")},
              "lists": "css", "title": "A learning companion on a scarce GPU", "cover": "cover",
              "order": [sid for sid, _, _ in deck],
-             "sections": {"s1": {"description": "The app, the architecture, and the deployment",
+             "sections": {"s1": {"description": "The app, the architecture, the KV math, and the deployment",
                                  "start": "cover"},
                           "s2": {"description": "One request, end to end: the code, the proof, and the dashboards",
                                  "start": "guard"},

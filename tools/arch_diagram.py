@@ -1,4 +1,4 @@
-"""The architecture slide: the path of one LLM call (docs/spec/10-talk.md, slide 2).
+"""The architecture slide: the path of one LLM call (docs/spec/10-talk.md, slide 3).
 
 A hand-placed flow in the Mermaid style. Each box says who decides or does the work. Each arrow names what moves,
 with its step number. Solid arrows occur for each call. Dashed orange arrows occur only when the router also picks

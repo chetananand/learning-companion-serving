@@ -34,35 +34,41 @@ In our test with 50 injected pages, it caught only half of them, even at a more 
 
 In each turn, SIE turns the question into a vector. Qdrant finds 30 chunks by vector and by keyword, and SIE reranks them. The agent gets the top 8. SIE serves only the small models, so the search makes no LLM call.
 
-### 6. The deployment: two nodes, and an A100 fallback
+### 6. KV on paper: bytes for each token, and how many sequences fit
+
+Before the cluster, we did the KV math. Gemma 4 31B has two kinds of KV. The full-attention layers need 40,960 bytes for each token. The sliding-window layers add 800 MiB for each sequence, after 1,024 tokens. At the length that our app sends, about 5,000 tokens, one H100 fits 36 sequences, and 17 at the 32K max_len.
+
+FP8 KV doubles both. We kept the model, because it passed all gate tests. With Muse Glimmer, the KV of an 8K sequence is 83% smaller.
+
+### 7. The deployment: two nodes, and an A100 fallback
 
 The deployment has two nodes on Lambda. Node 1 has two H100 GPUs for the engine: one prefill pod and one decode pod, each on a full GPU. The LMCache server may use up to 250 GiB of the 450 GiB of CPU RAM on node 1. In the A100 tests, it held up to 214 GiB. Node 2 runs everything else, and HAMi slices one GPU for the small models.
 
 On 2026-10-01 no H100 had stock, so one node with eight A100 GPUs ran all pods.
 
-### 7. What the app sends: short agent steps with a cached prefix
+### 8. What the app sends: short agent steps with a cached prefix
 
 This is what the app sends to the cluster. The second agent has two parts. The agent steps pick the claims and write the final answer. The verify steps check one claim each, on the web. An agent step found 64% of its prompt in the cache, and 60% of the calls had fewer than 2,048 new tokens.
 
 In the load tests, we replay recorded app turns. A turn is one question with all its LLM calls. 100% load is 54 turns each minute, on average: the rate where the soak test refused its first call.
 
-### 8. Guard and stay or leave happen before any GPU work
+### 9. Guard and stay or leave happen before any GPU work
 
 Stop one is the guard. `inspect()` runs fixed rules on the CPU, then Prompt Guard 2 and NeMo Guardrails. We sent 200 chat turns, 22 of them attacks. The guard blocked all 22 attacks and no normal turn. Stop two is stay or leave.
 
 `should_leave()` keeps 429, 500, and slice_oom on our cluster. Only an interactive capacity refusal may leave. At 150% load the gate let only the 124 interactive 503 calls go, and no 429.
 
-### 9. Admit: we refuse work at the door, not in the engine
+### 10. Admit: we refuse work at the door, not in the engine
 
 Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway counts the tokens of each tenant. The router keeps two priority bands with a time limit, and it stops the dispatch at 90% KV use. In all load tests the engine preempted nothing, because the router refused the extra work first.
 
 In the tenant test the noisy tenant got 55 429 replies, and the others kept their service.
 
-### 10. Place: prefix match first, then load
+### 11. Place: prefix match first, then load
 
 Stop four is place. The router scores each pod: the prefix match counts most, then the session, the queue depth, the KV use, and the ramp. A pod with metrics older than 2 seconds counts as full. In the stale-metrics test, a frozen copy of the metrics of an empty pod pulled 80% of the work to that pod. And after a cache clear, the router still sent the warm sessions to the cleared pod.
 
-### 11. The hop: the KV moves through the LMCache server
+### 12. The hop: the KV moves through the LMCache server
 
 Stop five is the hop. The router splits a request only when 2,048 or more of its tokens are not in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. There is no vLLM request for a prefill only, and one token is the smallest request. The pass that computes the KV of the prompt also gives this token, so it costs almost nothing.
 
@@ -70,17 +76,11 @@ The decode pod does not use this token: it writes the whole answer itself. The L
 
 If someone asks if this is production quality: the one-token request is, and the barrier is not. Under load on the A100 node, the barrier hit its half-second cap on 72% to 99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, and two or more pods in each pool.
 
-### 12. A pod with its weights on the GPU is not warm yet
+### 13. A pod with its weights on the GPU is not warm yet
 
 Stop six is declare warm. A pod with its weights on the GPU is not warm yet. The warm controller sends our system prompts, the shapes of our app, and a 4,000-token probe. The pod gets the warm label only if the probe is fast enough. Then it gets 10% of the traffic weight, and more while the TTFT holds.
 
 In the restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. The ramp cut it from 57.3 to 14.6 seconds.
-
-### 13. KV on paper: bytes for each token, and how many sequences fit
-
-Before the cluster, we did the KV math. Gemma 4 31B has two kinds of KV. The full-attention layers need 40,960 bytes for each token. The sliding-window layers add 800 MiB for each sequence, after 1,024 tokens. At the length that our app sends, about 5,000 tokens, one H100 fits 36 sequences, and 17 at the 32K max_len.
-
-FP8 KV doubles both. We kept the model, because it passed all gate tests. With Muse Glimmer, the KV of an 8K sequence is 83% smaller.
 
 ### 14. The decode pod was the limit, not prefill compute
 
