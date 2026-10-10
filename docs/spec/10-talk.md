@@ -63,13 +63,13 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 16 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
 | 17 | `topology` | For our traffic, two colocated replicas beat a P/D split | the layout test chart | 0:44 |
-| 18 | `latency` | TTFT and ITL: P/D missed both SLOs at each load | a table of TTFT and ITL p95 against the SLOs, and Dashboard 6: ITL p95 for P/D and colocated at 100% load | 3:25 |
-| 19 | `ttft-points` | TTFT at three points: under load, calls wait before the engine | a table of the TTFT at the client, the gateway, the engine, and the llm-d queue, and the TPOT at the client | 2:11 |
+| 18 | `latency` | TTFT, ITL, and TPOT: P/D missed both SLOs at each load | a table of the TTFT p95, the ITL p95, and the TPOT p50 against the SLOs, and Dashboard 6: ITL p95 for P/D and colocated at 100% load | 4:10 |
+| 19 | `ttft-points` | TTFT at three points: under load, calls wait before the engine | a table of the TTFT at the client, the gateway, the engine, and the llm-d queue, and the TPOT at the client | 2:10 |
 | 20 | `questions-1` | The handout questions: our answers and the evidence (1 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
 | 21 | `questions-2` | The handout questions: our answers and the evidence (2 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
 | 22 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 32 minutes 56 seconds of notes and 61 seconds of clips, so 33 minutes 57 seconds.
+Total: 33 minutes 40 seconds of notes and 61 seconds of clips, so 34 minutes 41 seconds.
 
 The appendix has 11 slides, in the order of the handout parts. First come place, queue, hop and warmth, the two hop slides, the scale test chart, and the traps of the handout. Then the evidence: a raw scrape, the faults, the demo check, and the cost.
 
@@ -93,9 +93,11 @@ All slides and notes now say "llm-d", not "the router". Where the job matters, t
 
 The deck, the report, the README, the results, the notebook, and the E3 chart now say "two colocated replicas". This is the term of the handout, in place of "two whole pods". A colocated replica is one vLLM pod that does the prefill and the decode of its calls. The session logs in `metrics/` keep the old words.
 
-On the night of 2026-10-09, the deck got a new order: 20 main slides in four sections, and the appendix. The sections are the app and the system, capacity and the cluster design, one request end to end, and the results with the handout questions. Three slides moved from the appendix into the main deck. They are the cluster design (`design`, slide 8) and the two handout question slides (`questions-1` and `questions-2`, slides 18 and 19). The scale slide now comes before the results. `tools/make_deck.py` holds the order in two lists, `MAIN` and `APPENDIX`, and the cross-references take the slide numbers from them.
+On the night of 2026-10-09, the deck got a new order: 20 main slides in four sections, and the appendix. The sections are the app and the system, capacity and the cluster design, one request end to end, and the results with the handout questions. Three slides moved from the appendix into the main deck. They are the cluster design (`design`, slide 8) and the two handout question slides (`questions-1` and `questions-2`, now slides 20 and 21). The scale slide now comes before the results. `tools/make_deck.py` holds the order in two lists, `MAIN` and `APPENDIX`, and the cross-references take the slide numbers from them.
 
-Slides 18 and 19 show the latency. Slide 18 gives the TTFT p95 and the ITL p95 of the load tests against the SLOs, with the ITL panels of dashboard 6. Slide 19 gives the TTFT at the client, at the gateway, and in the engine, and the wait in the llm-d queue. `tools/report_numbers.py` writes both tables into `docs/results.md`.
+On 2026-10-10, the two latency slides came in as slides 18 and 19, so the main deck has 22 slides.
+
+Slides 18 and 19 show the latency. Slide 18 gives the TTFT p95, the ITL p95, and the TPOT p50 of the load tests against the SLOs. It also shows the ITL panels of dashboard 6, and the TPOT has no SLO. Slide 19 gives the TTFT at the client, at the gateway, and in the engine. It also gives the wait in the llm-d queue, and the TPOT at the client. `tools/report_numbers.py` writes both tables into `docs/results.md`.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 
@@ -121,7 +123,7 @@ For a slot of about 7 minutes, make three cuts. Remove clip 2. Put slides 4 and 
 
 The main slide 8 (`design`) holds the defense of the cluster design. Each row has the choice, the reason, and the proof. The rows are the GPU, the model, the topology, the slices, the concurrency, the hop backend, the overflow, the two boxes, and the scale. Its notes give the answer to the question that each row can get, for example "why not a cheaper GPU?" or "why not Mooncake?".
 
-The main slides 18 and 19 (`questions-1` and `questions-2`) answer the 13 questions of Part 8. Each row has a full answer and a file or a scrape. The notes give the details of each answer.
+The main slides 20 and 21 (`questions-1` and `questions-2`) answer the 13 questions of Part 8. Each row has a full answer and a file or a scrape. The notes give the details of each answer.
 
 Slide A1 answers the place questions. All runs used the policy `prefix_then_load`. The decode profile and the prefill profile have different scorers. Queue depth is a scorer in both profiles, and the flow control also uses it as an admit input. The llm-d scheduler has no p2c picker.
 

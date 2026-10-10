@@ -150,6 +150,7 @@ Output: `plots/soak.png`.
 1. Run M4 at 50%, 100%, and 150% of RATE100 (E2) for 10 minutes each. E1 gives the concurrency, and the soak gives the arrival rate of M4 at that concurrency.
 2. Arm A: two pods with the role `prefill-decode` and the `single-profile-handler`. Arm C: our layout (`disagg-profile-handler` with the decider).
 3. Measure goodput (requests inside SLO-1 and SLO-2 each second), TTFT p95 and p99, ITL p95, and tokens each second.
+4. At the client, measure the TPOT of each streaming call. The TPOT has no SLO.
 
 Output: `plots/layout-goodput.png`. The numbers go into ADR-005.
 

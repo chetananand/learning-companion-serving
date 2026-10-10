@@ -134,23 +134,25 @@ This test sends the same recorded app traffic to two layouts, at three loads. A 
 
 But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint.
 
-### 18. TTFT and ITL: P/D missed both SLOs at each load
+### 18. TTFT, ITL, and TPOT: P/D missed both SLOs at each load
 
-These are the latency numbers that a user feels. TTFT is the time to the first token. ITL is the time between two tokens of an answer. Our goal for the TTFT is a p95 of at most 1.5 seconds, for prompts up to 8K tokens. Our goal for the ITL is a p95 of at most 50 milliseconds.
+These are the latency numbers that a user feels. TTFT is the time to the first token. ITL is the time between two tokens of an answer. TPOT is the time per output token of one call. Our goal for the TTFT is a p95 of at most 1.5 seconds, for prompts up to 8K tokens.
 
-One call at a time, the gate test gave a TTFT of 0.90 seconds and an ITL p95 of 20.5 milliseconds. So the engine can meet both. Under load, P/D missed both SLOs at each load. At 50% load, its TTFT p95 was 2.04 seconds, and its ITL p95 was 84 milliseconds. The two colocated replicas met both SLOs at 50% load: 1.05 seconds and 36 milliseconds.
+Our goal for the ITL is a p95 of at most 50 milliseconds. The TPOT has no goal. The gate test ran with no other traffic. One 8K prompt had a TTFT of 0.90 seconds, as the median. With 8 calls at the same time, the ITL p95 was 20.5 milliseconds.
 
-At 100% load, they were a little above the TTFT limit, at 1.57 seconds, and at the ITL limit, 50 milliseconds. At 150% load, both layouts missed both SLOs. Why is the ITL of P/D high? Most calls do not split, so the decode pod also computes their prompts. Each step of the decode pod then carries prefill chunks next to the decode streams, and each stream waits longer for its next token.
+So the engine can meet both goals. Under load, P/D missed both SLOs at each load. At 50% load, its TTFT p95 was 2.04 seconds, and its ITL p95 was 84 milliseconds. The two colocated replicas met both SLOs at 50% load: 1.05 seconds and 36 milliseconds. At 100% load, they were a little above the TTFT limit, at 1.57 seconds, and at the ITL limit, 50 milliseconds.
 
-The split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for an 8K prompt. The TTFT that the app saw also includes the wait in our queue. We measure the ITL at the engine. A check at the client agrees. The TPOT is the time per output token of one streaming call.
+At 150% load, both layouts missed both SLOs. Why is the ITL of P/D high? Most calls do not split, so the decode pod also computes their prompts. Each step of the decode pod then carries prefill chunks next to the decode streams, and each stream waits longer for its next token. The split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for an 8K prompt.
 
-It is the time from the first token to the last token, divided by the output tokens minus 1. ITL is each gap between two tokens. TPOT is the mean gap of one call. The engine mean is the running sequences of the decode pod, divided by its generated tokens each second. The TPOT p50 of the calls, against the engine mean.
+The TTFT that the app saw also includes the wait in the llm-d queue. The last two rows give the TPOT at the client, as the p50 of the streaming calls. The TPOT of a call is the time from the first token to the last token, divided by the output tokens minus 1. ITL is each gap between two tokens. TPOT is the mean gap of one call.
 
-P/D at 50% load: 32 milliseconds at the client, and 31 in the engine. Colocated at 50%: 25 and 28. P/D at 100%: 48 and 52. Colocated at 100%: 38 and 38. P/D at 150%: 51 and 54.
+With P/D, the TPOT p50 was 32, 48, and 51 milliseconds at 50%, 100%, and 150% load. With the colocated replicas, it was 25, 38, and 41. The TPOT is lower than the ITL p95, because a mean is lower than a p95. The p95 catches the slow steps. So P/D has a mean near 50 milliseconds, but a p95 near 200.
 
-Colocated at 150%: 41 and 51. At this load, the engine value also counts the calls that are still in prefill. So edge and Envoy add no time between tokens. A mean is always lower than the p95, because the p95 catches the slow steps. So P/D has a mean near 50 milliseconds, but a p95 near 200.
+Over the calls, the TPOT p95 was 33 to 63 milliseconds. Our goal is on the ITL p95, not on the TPOT. So a TPOT p50 below 50 milliseconds is not a pass. We measure the ITL at the engine. A check at the client agrees.
 
-Over the calls, the TPOT p95 was 33 to 63 milliseconds. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod.
+The engine mean is the running sequences of the decode pod, divided by its generated tokens each second. For P/D, the engine mean was 31, 52, and 54 milliseconds. For the colocated replicas, it was 28, 38, and 51. At 150% load, the colocated engine value also counts the calls that are still in prefill. So edge and Envoy add no time between tokens.
+
+The engine also has a TPOT histogram for each call, but our load tests did not save its series. The client TPOT comes from the load test logs, and the results file has its table. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod.
 
 ### 19. TTFT at three points: under load, calls wait before the engine
 
@@ -158,7 +160,7 @@ This slide shows where the TTFT comes from. We measured it at three points. The 
 
 The engine is vLLM on the decode pod. The client and the gateway differ by only 0.1 to 0.3 seconds at p95: the relay, and the first answer token after the first byte. The big gap is between the gateway and the engine. It holds the guard, the wait in the llm-d queue, and the hop. With P/D at 100% load, the gateway saw 15.67 seconds at p95, and the engine only 4.38.
 
-The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. The last column is the TPOT at the client, the time per output token, as the p50 of the calls. It is the same as the mean time for each token in the engine.
+The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when the pods are full, most of the wait comes before the engine, and not in vLLM. The last column is the TPOT at the client, the time per output token, as the p50 of the calls. It is the same as the mean time for each token in the engine.
 
 So after the first token, the proxies add no time. The whole difference between the client and the engine comes before the first token. On the dashboards, dashboard 6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls. A call that does not stream counts its full answer there, so that panel reads higher.
 

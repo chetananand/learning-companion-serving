@@ -73,6 +73,7 @@ flowchart TB
 ## The main results
 
 - For our app traffic, two colocated replicas beat one prefill pod and one decode pod at each load (E3). The decode pod was the bottleneck, because few calls split.
+- Latency (E3, H100): P/D missed both goals at each load. The goals are a TTFT p95 of at most 1.5 s, and an ITL p95 of at most 50 ms. Two colocated replicas met both at 50% load. At the client, the TPOT p50 was 32 to 51 ms with P/D, and 25 to 41 ms with colocated replicas.
 - The split still protects the ITL of the other streams (E5), and short agent steps behind a long retrieve (E14).
 - The LMCache hop with the store barrier took 0.5 to 0.8 s. NIXL between two pods used TCP and took about 4 s (E4).
 - The llm-d flow control sheds at the door. No run preempted a request.

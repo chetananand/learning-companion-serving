@@ -623,22 +623,25 @@ def slides() -> list[tuple[str, str, str]]:
         "at 8 times speed."))
 
     s.append(("latency", "".join([
-        title("TTFT and ITL: P/D missed both SLOs at each load"),
+        title("TTFT, ITL, and TPOT: P/D missed both SLOs at each load"),
         two_columns([
             measured("The same recorded app traffic on the two layouts: P/D, and two colocated replicas. TTFT: what "
                      "the app saw, for the streaming calls (the answers). ITL: the p95 of each minute on the decode "
-                     "pod, the median over the run."),
-            table(["Load", "TTFT p95, P/D", "TTFT p95, colocated", "ITL p95, P/D", "ITL p95, colocated"], [
-                ["50%", "2.04 s", "1.05 s", "84 ms", "36 ms"],
-                ["100%", "15.95 s", "1.57 s", "192 ms", "50 ms"],
-                ["150%", "21.45 s", "21.10 s", "206 ms", "129 ms"],
-                ["SLO", "1.5 s", "1.5 s", "50 ms", "50 ms"],
-            ], [16, 21, 21, 21, 21], size=22),
-            p("One call at a time, in the gate test: TTFT 0.90 s, and ITL p95 20.5 ms.", 22),
-            p("TPOT at the client, the p50 of the calls: P/D 32 to 51 ms, colocated 25 to 41 ms. The "
-              "engine has the same means.", 22),
+                     "pod, the median over the run. TPOT: the time per output token of each streaming call, the p50 "
+                     "of the calls."),
+            table(["", "50% load", "100% load", "150% load", "SLO"], [
+                ["TTFT p95, P/D", "2.04 s", "15.95 s", "21.45 s", "1.5 s"],
+                ["TTFT p95, colocated", "1.05 s", "1.57 s", "21.10 s", "1.5 s"],
+                ["ITL p95, P/D", "84 ms", "192 ms", "206 ms", "50 ms"],
+                ["ITL p95, colocated", "36 ms", "50 ms", "129 ms", "50 ms"],
+                ["TPOT p50, P/D", "32 ms", "48 ms", "51 ms", "none"],
+                ["TPOT p50, colocated", "25 ms", "38 ms", "41 ms", "none"],
+            ], [32, 17, 17, 17, 17], size=22),
+            p("The gate test, with no other traffic: one 8K prompt had a TTFT of 0.90 s (median). With 8 calls at "
+              "the same time, the ITL p95 was 20.5 ms.", 22),
             callout("Why the ITL of P/D is high", "Most calls do not split, so the decode pod also computes their "
-                    "prompts. These prefill chunks share each step with the decode streams."),
+                    "prompts. These prefill chunks share each step with the decode streams. The TPOT is the mean "
+                    "gap of one call, so it does not show these slow steps."),
         ], [
             image("itl_pd", "Grafana panel: ITL p95 for each pod, P/D at 100% load",
                   "Dashboard 6 · vLLM: ITL p95, P/D at 100% load. About 200 ms most of the time.", 760),
@@ -647,32 +650,37 @@ def slides() -> list[tuple[str, str, str]]:
                   "time, with bursts.", 760),
         ], left_w=820),
     ]), "These are the latency numbers that a user feels. TTFT is the time to the first token. ITL is the time "
-        "between two tokens of an answer. Our goal for the TTFT is a p95 of at most 1.5 seconds, for prompts up "
-        "to 8K tokens. Our goal for the ITL is a p95 of at most 50 milliseconds. One call at a time, the gate "
-        "test gave a TTFT of 0.90 seconds and an ITL p95 of 20.5 milliseconds. So the engine can meet both. Under"
-        " load, P/D missed both SLOs at each load. At 50% load, its TTFT p95 was 2.04 seconds, and its ITL p95 "
-        "was 84 milliseconds. The two colocated replicas met both SLOs at 50% load: 1.05 seconds and 36 "
-        "milliseconds. At 100% load, they were a little above the TTFT limit, at 1.57 seconds, and at the ITL "
-        "limit, 50 milliseconds. At 150% load, both layouts missed both SLOs. Why is the ITL of P/D high? Most "
-        "calls do not split, so the decode pod also computes their prompts. Each step of the decode pod then "
-        "carries prefill chunks next to the decode streams, and each stream waits longer for its next token. The "
-        "split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for"
-        " an 8K prompt. The TTFT that the app saw also includes the wait in our queue. We measure the ITL at the "
-        "engine. A check at the client agrees. The TPOT is the time per output token of one streaming call. It is"
-        " the time from the first token to the last token, divided by the output tokens minus 1. ITL is each gap "
-        "between two tokens. TPOT is the mean gap of one call. The engine mean is the running sequences of the "
-        "decode pod, divided by its generated tokens each second. The TPOT p50 of the calls, against the engine "
-        "mean. P/D at 50% load: 32 milliseconds at the client, and 31 in the engine. Colocated at 50%: 25 and 28."
-        " P/D at 100%: 48 and 52. Colocated at 100%: 38 and 38. P/D at 150%: 51 and 54. Colocated at 150%: 41 and"
-        " 51. At this load, the engine value also counts the calls that are still in prefill. So edge and Envoy "
-        "add no time between tokens. A mean is always lower than the p95, because the p95 catches the slow steps."
-        " So P/D has a mean near 50 milliseconds, but a p95 near 200. Over the calls, the TPOT p95 was 33 to 63 "
-        "milliseconds. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod."))
+        "between two tokens of an answer. TPOT is the time per output token of one call. Our goal for the TTFT is"
+        " a p95 of at most 1.5 seconds, for prompts up to 8K tokens. Our goal for the ITL is a p95 of at most 50 "
+        "milliseconds. The TPOT has no goal. The gate test ran with no other traffic. One 8K prompt had a TTFT of"
+        " 0.90 seconds, as the median. With 8 calls at the same time, the ITL p95 was 20.5 milliseconds. So the "
+        "engine can meet both goals. Under load, P/D missed both SLOs at each load. At 50% load, its TTFT p95 was"
+        " 2.04 seconds, and its ITL p95 was 84 milliseconds. The two colocated replicas met both SLOs at 50% "
+        "load: 1.05 seconds and 36 milliseconds. At 100% load, they were a little above the TTFT limit, at 1.57 "
+        "seconds, and at the ITL limit, 50 milliseconds. At 150% load, both layouts missed both SLOs. Why is the "
+        "ITL of P/D high? Most calls do not split, so the decode pod also computes their prompts. Each step of "
+        "the decode pod then carries prefill chunks next to the decode streams, and each stream waits longer for "
+        "its next token. The split test showed the other side: a split cut the ITL of the other streams from 0.24"
+        " to 0.07 seconds for an 8K prompt. The TTFT that the app saw also includes the wait in the llm-d queue. "
+        "The last two rows give the TPOT at the client, as the p50 of the streaming calls. The TPOT of a call is "
+        "the time from the first token to the last token, divided by the output tokens minus 1. ITL is each gap "
+        "between two tokens. TPOT is the mean gap of one call. With P/D, the TPOT p50 was 32, 48, and 51 "
+        "milliseconds at 50%, 100%, and 150% load. With the colocated replicas, it was 25, 38, and 41. The TPOT "
+        "is lower than the ITL p95, because a mean is lower than a p95. The p95 catches the slow steps. So P/D "
+        "has a mean near 50 milliseconds, but a p95 near 200. Over the calls, the TPOT p95 was 33 to 63 "
+        "milliseconds. Our goal is on the ITL p95, not on the TPOT. So a TPOT p50 below 50 milliseconds is not a "
+        "pass. We measure the ITL at the engine. A check at the client agrees. The engine mean is the running "
+        "sequences of the decode pod, divided by its generated tokens each second. For P/D, the engine mean was "
+        "31, 52, and 54 milliseconds. For the colocated replicas, it was 28, 38, and 51. At 150% load, the "
+        "colocated engine value also counts the calls that are still in prefill. So edge and Envoy add no time "
+        "between tokens. The engine also has a TPOT histogram for each call, but our load tests did not save its "
+        "series. The client TPOT comes from the load test logs, and the results file has its table. Dashboard 6 "
+        "has these panels: TTFT p95 and ITL p95 for each pod."))
 
     s.append(("ttft-points", "".join([
         title("TTFT at three points: under load, calls wait before the engine"),
         two_columns([
-            table(["Layout and load", "Client", "Gateway", "Engine", "llm-d queue", "TPOT, client"], [
+            table(["Layout and load", "Client", "Gateway", "Engine", "llm-d queue", "TPOT p50, client"], [
                 ["P/D, 50%", "2.04 s", "1.87 s", "0.80 s", "0.00 s", "32 ms"],
                 ["Colocated, 50%", "1.05 s", "0.94 s", "0.72 s", "0.00 s", "25 ms"],
                 ["P/D, 100%", "15.95 s", "15.67 s", "4.38 s", "2.25 s", "48 ms"],
@@ -700,13 +708,13 @@ def slides() -> list[tuple[str, str, str]]:
         " the llm-d queue, and the hop. With P/D at 100% load, the gateway saw 15.67 seconds at p95, and the "
         "engine only 4.38. The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two "
         "colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when "
-        "the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. The last column is"
-        " the TPOT at the client, the time per output token, as the p50 of the calls. It is the same as the mean "
-        "time for each token in the engine. So after the first token, the proxies add no time. The whole "
-        "difference between the client and the engine comes before the first token. On the dashboards, dashboard "
-        "6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls. A call that "
-        "does not stream counts its full answer there, so that panel reads higher. The client TTFT is in the load"
-        " test logs and in the results file."))
+        "the pods are full, most of the wait comes before the engine, and not in vLLM. The last column is the "
+        "TPOT at the client, the time per output token, as the p50 of the calls. It is the same as the mean time "
+        "for each token in the engine. So after the first token, the proxies add no time. The whole difference "
+        "between the client and the engine comes before the first token. On the dashboards, dashboard 6 shows the"
+        " engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls. A call that does not "
+        "stream counts its full answer there, so that panel reads higher. The client TTFT is in the load test "
+        "logs and in the results file."))
 
     cards = [("Colocated replicas", "for our traffic. Split only long uncached prompts."),
              ("A store barrier", "for the hop: completion is not visibility."),
