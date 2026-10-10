@@ -17,12 +17,12 @@ Status: draft of 2026-10-02. It has all runs: 2026-09-29 and 2026-09-30 on H100,
 3. Topology: two whole pods (layout A) beat one prefill pod and one decode pod (layout C) at each load of our app traffic. At 100% load, the interactive TTFT p50 was 0.84 s against 4.59 s (E3). On the A100 node, with 32 decode sequences in both layouts, layout A had about half of the TTFT p50 of layout C, or less.
 4. The split still helps in two cases. It cuts the ITL of the other streams (E5, 8K tokens: p95 0.07 s against 0.24 s). Short agent steps also start sooner behind a long retrieve (E14: 0.25 s against 1.26 s). Even with the split, 16 decode streams had an ITL p95 above SLO-2 (50 ms).
 5. The hop goes through the LMCache server (a copy of the KV in CPU RAM), with a store barrier. Its TTFT was 0.52 s (shared prefix) and 0.78 s (unshared). NIXL over TCP took 4.1 to 4.3 s (E4).
-6. We shed at the door. No run preempted a request. The router stops the dispatch at a KV use of 90% (E2, E3).
+6. We shed at the door. No run preempted a request. The llm-d flow control stops the dispatch at a KV use of 90% (E2, E3).
 7. The warmup routine cut the first-minute TTFT p95 of a returned decode pod from 10.9 s to 7.3 s. A ramp kept the TTFT p95 of a returned pod at 14.6 s, against 57.3 s for a jump (E8).
 8. Layout C with one decode pod is a single point of failure. While that pod restarted, 182 to 184 calls got 503 `no_endpoints`. In layout A, 3 to 4 calls did (E8).
 9. The guard blocked 22 of 22 attack turns and 0 of 178 benign turns. The page check missed about half of the injected pages (E17).
 10. Scale (E9): the planner asked for a second pod of the right pool, and KEDA made it 15 s later. The new pod got the warm label about 4 minutes after the request. The prefill rule needs the capacity of the GPU in use. With the H100 value, the A100 prefill pool did not grow.
-11. Ghosts (E7, no LMCache): after a clear of the prefix cache, vLLM sent one `AllBlocksCleared` event. The router did not act on it. The next call of each warm session went to the cleared pod and missed once.
+11. Ghosts (E7, no LMCache): after a clear of the prefix cache, vLLM sent one `AllBlocksCleared` event. The llm-d scheduler did not act on it. The next call of each warm session went to the cleared pod and missed once.
 12. The demo check passed 8 of 12 questions on the H100 and 6 of 12 on the A100. The open failures are in the fact check: claim checks that time out or find no evidence.
 13. Cost: 237.43 USD of the 400 USD Lambda credit (to 2026-10-01).
 
@@ -75,7 +75,7 @@ E1 sends fixed prompts straight to the gateway (`docs/results.md`, E1):
 | Resource | Measured peak | Run |
 |---|---|---|
 | Decode slots | 24 running of 24 (`--max-num-seqs`) on the decode pod | `e3-c-150` |
-| KV blocks | KV use 0.944 on the decode pod. The router holds the dispatch at 0.90. | `e13-gate` |
+| KV blocks | KV use 0.944 on the decode pod. The llm-d flow control holds the dispatch at 0.90. | `e13-gate` |
 | Hop bandwidth | up to 9,938 tokens each second from the LMCache server. A split request: 0.78 s (unshared, median). | `e6-fp8kv`, `e4-hop` |
 | Warmup time | 290 s with no decode pod (pod start and warmup routine), 275 s with no warmup routine | `e8-c-warmup`, `e8-c-immediate` |
 
@@ -86,12 +86,12 @@ Warmup is a budget (R-05). The warmup routine added about 15 s to the outage. In
 | Hypothesis (capacity plan, section 8) | Result |
 |---|---|
 | RAG mix: prefill compute on the prefill pod | Correct for long prompts. At 24K tokens, the TTFT grew with the prefill queue: 24 prompts of 24K tokens need about 55 s at 10,500 tokens each second (E1). |
-| Agent mix: KV blocks on the decode pod | Partly correct. The KV use of the decode pod went to 90%, but no pod preempted. The router held the load at 90% (E2, E3). |
+| Agent mix: KV blocks on the decode pod | Partly correct. The KV use of the decode pod went to 90%, but no pod preempted. The llm-d flow control held the load at 90% (E2, E3). |
 | Not the weights | Correct. The weights use 30.4 GiB of 71.7 GiB. |
 | Not the interconnect | Correct for the LMCache hop (0.52 to 0.78 s). Wrong for NIXL between two pods: UCX used TCP (4.1 to 4.3 s, E4). |
 | Not the scheduler: the vLLM waiting queue stays short | Wrong on the decode pod. Its waiting queue held up to 50 requests at 150% load (`e3-c-150`). |
 
-What limited concurrency on this GPU for this app (H-104): the decode pod. Most agent calls have fewer than 2,048 new tokens, so the router does not split them. The decode pod then computes their prompts too, and it held 24 running sequences (`--max-num-seqs`). At 100% load, it computed up to 16,200 prompt tokens each second. The prefill pod computed up to 4,550 (Grafana, vLLM dashboard of `e3-c-100`). With 32 decode sequences, the TTFT p50 fell from 4.59 s to 2.10 s (E15).
+What limited concurrency on this GPU for this app (H-104): the decode pod. Most agent calls have fewer than 2,048 new tokens, so the llm-d scheduler does not split them. The decode pod then computes their prompts too, and it held 24 running sequences (`--max-num-seqs`). At 100% load, it computed up to 16,200 prompt tokens each second. The prefill pod computed up to 4,550 (Grafana, vLLM dashboard of `e3-c-100`). With 32 decode sequences, the TTFT p50 fell from 4.59 s to 2.10 s (E15).
 
 ## Part 2. Cluster design
 
@@ -102,7 +102,7 @@ What limited concurrency on this GPU for this app (H-104): the decode pod. Most 
 - Hop backend (H-47): the LMCache server, with our name `lmcache` (ADR-002, revisions 2 and 3). The prefill pod stores a copy of the KV in the LMCache server (CPU RAM), and the decode pod loads it. The store barrier (`control/barrier/proxy.py`) holds the prefill answer until the store ends.
 - Overflow (H-48): the Superlinked hosted API, model `qwen3.8-27b` (or `Qwen/Qwen3.5-4B`). The limiter (Redis): 20 requests and 60,000 tokens each minute, 4 in flight, and 15 USD each day (ADR-008).
 - Two workers (H-49): the pods `vllm-prefill` and `vllm-decode` (`metrics/t2-20260930T022105Z/pods.txt`).
-- The gateway and the engine (H-50 to H-52): our gateway is admission control + routing. It is `edge`, the Envoy AI Gateway (Agent Router), and the llm-d router. The gateway admits, and the router decides where. The engine is vLLM, with its waiting queue, block table, preemption, and kernels.
+- The gateway and the engine (H-50 to H-52): our gateway is admission control + routing. It is `edge`, the Envoy AI Gateway (Agent Router), and llm-d. The handout puts admit, place, and the queue in the gateway. `edge` and the Envoy AI Gateway admit. The llm-d flow control is the last admit check, and it holds the queue. The llm-d scheduler decides where. The engine is vLLM, with its waiting queue, block table, preemption, and kernels.
 - Scale (H-53, H-106): the planner rules in `cluster/manifests/base/monitoring/rules.yaml` give the replicas of each pool. Prefill: `ceil(uncached prefill tokens each second / (0.7 x 10,500))`. Decode: `ceil(running sequences / (0.6 x 24))`. KEDA reads them.
 - E9 (2026-10-01, one node, at most 2 pods for each pool): under a decode-heavy load, the planner asked for a second decode pod. KEDA made it 15 s later. Under a prefill-heavy load, the planner asked for a second prefill pod only after one change. We set its prefill capacity to the A100 value: 1,800 tokens each second. Each new pod got the warm label 225 to 235 s after the request (`docs/results.md`, E9, and `plots/e9-scale.png`).
 - Live engine metrics (H-54): Prometheus scrapes each 5 s. The dashboards come from `tools/dashboards.py`.
@@ -119,17 +119,17 @@ What limited concurrency on this GPU for this app (H-104): the decode pod. Most 
   - rules 4 and 5 (`no_signal`, `kv_free`): the saturation detector, `control/router/policy.yaml:55` to `:58` (queue depth 5, KV use 0.90, metrics older than 2 s).
   - rule 6 (`timeout_queue`): the band TTLs, `control/router/policy.yaml:45` to `:48`. For each request, `edge` sets a TTL of half of the time left.
   - rule 7 (`p99_spread`): `priority-holdback-policy`, `control/router/policy.yaml:51`.
-  - the router reasons to our codes: `control/edge/admit.py:48` and `:52`. A 429 without a router reason is a tenant limit, and it never leaves.
+  - the llm-d reasons to our codes: `control/edge/admit.py:48` and `:52`. A 429 without an llm-d reason is a tenant limit, and it never leaves.
 - The test `control/router/tests/test_decision_table.py` checks each row of the table against the rendered config and `edge`.
 - Stay or leave: `control/edge/overflow.py:19`. E13 (M4 at 150%): the gate marked exactly the 124 interactive `timeout_queue` sheds as "may leave", and it kept all batch calls. The demo runs with the overflow off.
 
 ## Part 4. Place
 
 - `pick(req, workers, *, policy) -> Worker | Shed` (H-58): the llm-d scheduling profiles from `control/router/render.py`. The decode profile and the prefill profile have different scorers (`control/router/policy.yaml:36` and `:37`).
-- Policies (H-59): `prefix_then_load` (the default), `least_loaded`, and `random` (`control/router/policy.yaml:15`). The router has no p2c picker. All runs used `prefix_then_load`.
+- Policies (H-59): `prefix_then_load` (the default), `least_loaded`, and `random` (`control/router/policy.yaml:15`). The llm-d scheduler has no p2c picker. All runs used `prefix_then_load`.
 - Queue depth is a scorer in both profiles (`queue-scorer`, H-61). The warm gate is a filter.
-- No bounce (H-62): the router picks once, and the Agent Router route has no retries. If all pods shed, `edge` returns 503.
-- E11 (stale metrics, M3, layout A): pod B serves real metrics, a frozen snapshot of an empty pod, or no answer. With real metrics, pod B did 51% of the work. With the frozen snapshot, the router believed that pod B was empty, and pod B did 80% of the work. With no answer, the router treated the metrics of pod B as stale, and pod B did 8%.
+- No bounce (H-62): the llm-d scheduler picks once, and the Agent Router route has no retries. If all pods shed, `edge` returns 503.
+- E11 (stale metrics, M3, layout A): pod B serves real metrics, a frozen snapshot of an empty pod, or no answer. With real metrics, pod B did 51% of the work. With the frozen snapshot, the llm-d scheduler believed that pod B was empty, and pod B did 80% of the work. With no answer, llm-d treated the metrics of pod B as stale, and pod B did 8%.
 - The TTFT p95 was 1.20 s, 1.37 s, and 1.74 s. Each mode had only 257 calls, and one pod can carry that load. At a higher load, a frozen snapshot overloads one pod.
 
 ## Part 5. Queue
@@ -140,11 +140,11 @@ The answers to H-63 to H-73 are in `notebook/part5_queue.ipynb`, with plots from
 |---|---|
 | Who sits in our queue, and who in the vLLM queue? (H-65) | Our queue holds a request before the pick, by band and tenant. The vLLM queue holds it after the pick. At 150% load: up to 48 interactive and 24 batch in our queue, up to 50 in the vLLM queue of the decode pod (`e3-c-150`). |
 | Waiting, running, preempted (H-66) | Decode: up to 24 running and 50 waiting. Prefill: up to 4 running. 0 preemptions in all runs. |
-| Queue depth for each pod and mix (H-67) | M1, M2, M3: 6 or fewer. M4: up to 36 in the router queue of the decode pod. |
+| Queue depth for each pod and mix (H-67) | M1, M2, M3: 6 or fewer. M4: up to 36 in the queue of the decode pod, as llm-d sees it. |
 | A 32K retrieve and a short agent step are ready. Who goes first? (H-68) | The agent step, in all rounds (E14). The split decides the cost: 0.25 s with the split, 1.0 to 1.26 s with no split. |
 | PagedAttention or prefix cache: which saved memory? (H-69) | PagedAttention packs the KV in all arms. The prefix cache saved prefill work (TTFT p50 0.43 s against 0.60 s), not memory. fp8 KV saved memory (E6). |
 | Engine flags and reasons (H-70) | Decode: 24 sequences and chunks of 2,560 tokens. Prefill: 8 sequences and chunks of 16,384 tokens. E15: 32 decode sequences are better. |
-| KV full after admit: door or preempt? (H-71) | The door. The router sheds at a KV use of 90%, and no pod preempted (E2). |
+| KV full after admit: door or preempt? (H-71) | The door. The llm-d flow control sheds at a KV use of 90%, and no pod preempted (E2). |
 | Client gone: who frees the KV? (H-72) | vLLM `abort_requests` stops the request, and the engine frees the blocks. Envoy closed all 46 aborted streams at the client time (E12). |
 | After a worker returns: 100% at once or a ramp? (H-73) | A ramp (r10, r25, r50, r100) while the p99 holds. A jump gave a TTFT p95 of 57.3 s on the returned pod, and the ramp gave 14.6 s (E8). |
 
@@ -162,8 +162,8 @@ The answers to H-63 to H-73 are in `notebook/part5_queue.ipynb`, with plots from
   4. mTLS between pods. The sidecar ran with `--secure-proxy=false`.
   5. P/D only where the measured traffic has many long uncached prompts. For our traffic, two whole pods were faster (E3).
 - Is the new replica warm? (H-78, H-79): yes, after the warmup routine. On a returned decode pod, the first-minute TTFT p95 was 7.3 s with the warmup and 10.9 s with none (`plots/warmup-ttft.png`, E8). The routine added about 15 s to the outage (290 s against 275 s).
-- Evict and ghosts (H-102): vLLM evicts the GPU prefix cache, and the LMCache server evicts its oldest KV chunks (LRU, at 90% of 250 GiB). The 250 GiB is a cap of the 450 GiB of RAM on node 1. On the A100 node, LMCache held 40 GiB at the start of the session. In the E3 runs, it held up to 214 GiB (86% of the cap). At the end it held 196 GiB (raw scrapes in `metrics/e3-c32-r030/scrape-mid/` and `metrics/one-*/`). The router learns of each eviction from the vLLM KV events (`prefix_index: precise`). E7 cleared the GPU cache of the decode pod during a run. The token hit ratio did not fall (0.76 before, 0.79 after). The LMCache server still held the prefixes, so the decode pod loaded them again.
-- E7 again, with no LMCache (2026-10-01, layout A): after the clear, pod B sent one `AllBlocksCleared` event and no `BlockRemoved` event (`metrics/e7b-*/kv-events.json`). The router still sent the next call of each warm session to pod B. This was true for 15 of 15 sessions with the precise index, and for 10 of 10 with the approximate index. Each of these calls missed the cache once (ghost ratio 0.10 and 0.09). Thus the precise index did not act on the clear. A ghost costs one prefill of the session history.
+- Evict and ghosts (H-102): vLLM evicts the GPU prefix cache, and the LMCache server evicts its oldest KV chunks (LRU, at 90% of 250 GiB). The 250 GiB is a cap of the 450 GiB of RAM on node 1. On the A100 node, LMCache held 40 GiB at the start of the session. In the E3 runs, it held up to 214 GiB (86% of the cap). At the end it held 196 GiB (raw scrapes in `metrics/e3-c32-r030/scrape-mid/` and `metrics/one-*/`). The llm-d scheduler learns of each eviction from the vLLM KV events (`prefix_index: precise`). E7 cleared the GPU cache of the decode pod during a run. The token hit ratio did not fall (0.76 before, 0.79 after). The LMCache server still held the prefixes, so the decode pod loaded them again.
+- E7 again, with no LMCache (2026-10-01, layout A): after the clear, pod B sent one `AllBlocksCleared` event and no `BlockRemoved` event (`metrics/e7b-*/kv-events.json`). The llm-d scheduler still sent the next call of each warm session to pod B. This was true for 15 of 15 sessions with the precise index, and for 10 of 10 with the approximate index. Each of these calls missed the cache once (ghost ratio 0.10 and 0.09). Thus the precise index did not act on the clear. A ghost costs one prefill of the session history.
 
 ## Part 7. Wire the app to the cluster
 
@@ -179,9 +179,9 @@ The answers to H-63 to H-73 are in `notebook/part5_queue.ipynb`, with plots from
 |---|---|---|
 | What is the app? Shared and unique tokens? (H-95) | Part 0 | the capture runs, Envoy logs |
 | What dies at the guard, admit, place, and queue? (H-96) | Guard: 400 `prompt_injection` (22 of 22 attacks). Admit: 429 `tenant_tokens` (55 calls of the noisy tenant in E10). Queue: 503 `timeout_queue` (273 interactive at 150%). Place: 503 `no_endpoints` when no pod is ready (E8). | `docs/results.md`, E3, E8, E10, E17 |
-| Where do we stop work that will time out? (H-97) | The band TTLs of the router flow control: 10 s for interactive and 120 s for batch. `edge` sets a TTL of half of the time left. | `control/router/policy.yaml:45` to `:48` |
+| Where do we stop work that will time out? (H-97) | The band TTLs of the llm-d flow control: 10 s for interactive and 120 s for batch. `edge` sets a TTL of half of the time left. | `control/router/policy.yaml:45` to `:48` |
 | Where do we protect KV? (H-98) | The saturation detector stops the dispatch at a KV use of 90%. Then vLLM preemption is the last line (0 preemptions in all runs). | `control/router/policy.yaml:57`, E2, E3 |
-| Where do we give priority to interactive traffic? (H-99) | The priority bands and `priority-holdback-policy`: batch waits above 70% saturation, interactive only at 100%. vLLM also uses `--scheduling-policy=priority`. At 100% load, the router shed 89 batch and 11 interactive calls. | `control/router/policy.yaml:47` to `:53`, `e3-c-100` |
+| Where do we give priority to interactive traffic? (H-99) | The priority bands and `priority-holdback-policy`: batch waits above 70% saturation, interactive only at 100%. vLLM also uses `--scheduling-policy=priority`. At 100% load, the llm-d flow control shed 89 batch and 11 interactive calls. | `control/router/policy.yaml:47` to `:53`, `e3-c-100` |
 | Where do we stop one tenant from taking all of the GPU? (H-100) | The Agent Router token windows. The noisy tenant got 429 `tenant_tokens` (55 and 53 calls in E10), and no 429 left to the overflow. The other tenants still had a TTFT p95 of 10 s or more, because 100% load in layout C is above the limit of the engine. | `control/router/policy.yaml:61` to `:68`, E10 |
 | Where do we hop, and what is not copied? (H-101) | Part 6 | E4, `hops.jsonl` |
 | Where do we evict, and what becomes a ghost? (H-102) | Part 6 | E7 |
@@ -202,12 +202,12 @@ What we change:
 The three wrong knobs:
 
 1. More prefill pods. The prefill pod had little work: at most 4,550 prompt tokens each second, against 16,200 on the decode pod.
-2. A larger router queue or longer band TTLs. The requests then wait longer, and they still miss SLO-1.
+2. A larger llm-d queue or longer band TTLs. The requests then wait longer, and they still miss SLO-1.
 3. A lower split threshold to send more work to the prefill pod. Each split pays the prefill, the hold, and the load from LMCache (E5: the TTFT of the split was higher for each prompt size, `docs/results.md`).
 
 ## Engine boundary (H-25, H-74, H-103, H-113)
 
-We do not write our own scheduler. vLLM does continuous batching, chunked prefill, the waiting queue, preemption, and the KV blocks. We set its flags: `--max-num-seqs`, `--max-num-batched-tokens`, `--scheduling-policy=priority`, `--enable-prefix-caching`, and `--block-size` (`cluster/manifests/base/engine/vllm-*.yaml`). Our code decides what enters, where it goes, and when it waits: `edge`, the router config, the warm controller, and the store barrier.
+We do not write our own scheduler. vLLM does continuous batching, chunked prefill, the waiting queue, preemption, and the KV blocks. We set its flags: `--max-num-seqs`, `--max-num-batched-tokens`, `--scheduling-policy=priority`, `--enable-prefix-caching`, and `--block-size` (`cluster/manifests/base/engine/vllm-*.yaml`). Our code decides what enters, where it goes, and when it waits: `edge`, the llm-d config, the warm controller, and the store barrier.
 
 ## What the data changed in our design
 
@@ -217,7 +217,7 @@ We do not write our own scheduler. vLLM does continuous batching, chunked prefil
 4. The hop needs a store barrier (ADR-002, revision 3).
 5. vLLM v0.30.0 does not count client aborts in `vllm:request_success_total{finished_reason="abort"}`. We use the Envoy log as the evidence.
 6. Some values depend on the GPU. The prefill capacity of the planner is 10,500 tokens each second on the H100 and about 1,800 on the A100. The warm baseline (the TTFT of a 4K prompt) was 0.35 s on the H100. On the A100, the probe took about 1.17 s, and we set the baseline to 1.0 s. With the H100 values on the A100, no engine pod got the warm label, and the prefill pool did not grow (E9). These values must come from the GPU of the node.
-7. A clear of the prefix cache is an event that the router must apply. vLLM sends `AllBlocksCleared`, and the router did not act on it (E7). Until the router applies it, each warm session pays one ghost.
+7. A clear of the prefix cache is an event that llm-d must apply. vLLM sends `AllBlocksCleared`, and llm-d did not act on it (E7). Until llm-d applies it, each warm session pays one ghost.
 
 ## Faults that we found and fixed
 
@@ -246,5 +246,5 @@ The Lambda spend to 2026-10-01 was 237.43 USD of the 400 USD credit. The owner s
 1. Fault 35: a second prefill pod in layout C, and probes with a longer timeout. We have no GPU run for this change.
 2. The fact check: claim checks that time out or find no evidence (D-03, D-07, D-09).
 3. The values that depend on the GPU come from a manual change in the session. The bring-up must set them from the GPU type.
-4. The router does not act on `AllBlocksCleared` (E7).
+4. The llm-d scheduler does not act on `AllBlocksCleared` (E7).
 5. The slides, the public repo, the review of the checklist with the owner, and the submission before 2026-10-10.

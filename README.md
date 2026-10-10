@@ -74,9 +74,9 @@ flowchart TB
 - For our app traffic, two whole pods beat one prefill pod and one decode pod at each load (E3). The decode pod was the bottleneck, because few calls split.
 - The split still protects the ITL of the other streams (E5), and short agent steps behind a long retrieve (E14).
 - The LMCache hop with the store barrier took 0.5 to 0.8 s. NIXL between two pods used TCP and took about 4 s (E4).
-- The router sheds at the door. No run preempted a request.
+- The llm-d flow control sheds at the door. No run preempted a request.
 - The A100 runs of 2026-10-01 gave the same topology result (E3). The planner asked for the right pool, and KEDA added a pod 15 s later (E9).
-- After a clear of the prefix cache, the router still sent warm sessions to the cleared pod, with the precise index too (E7).
+- After a clear of the prefix cache, llm-d still sent warm sessions to the cleared pod, with the precise index too (E7).
 
 `DESIGN.md` has the full list, the faults that we found, and what the data changed in the design.
 
