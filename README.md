@@ -36,14 +36,15 @@ flowchart TB
   subgraph acr[Admission control + routing]
     direction LR
     edge[edge, our code<br/>admit: block, refuse,<br/>or pass the call] -->|the request| envoy[Envoy AI Gateway<br/>admit: is the tenant within<br/>its token budget?]
-    edge <-->|the prompt, safe or not| guard[guard models<br/>NeMo Guardrails,<br/>Prompt Guard 2]
-    envoy <-->|the prompt, the pod addresses| epp[llm-d<br/>admit: flow control holds the call<br/>while the pods are full<br/>where: which decode pod,<br/>and a prefill pod for<br/>a long new prompt]
+    edge <-->|the prompt, safe or not safe| guard[guard models<br/>Prompt Guard 2,<br/>Nemotron Safety<br/>is the prompt safe?]
+    envoy <-->|the prompt, the addresses of the picked pods| epp["llm-d<br/>admit (flow control):<br/>hold the call while<br/>the pods are full<br/>where (scheduler):<br/>which decode pod? And a<br/>prefill pod, if 2,048 or<br/>more prompt tokens are<br/>not in a cache"]
     wc[warm-controller<br/>warm label, ramp label]
   end
-  subgraph eng["Engine (node 1): vLLM pods and LMCache"]
+  subgraph eng["Engine (node 1): Gemma 4 31B FP8 on vLLM"]
     direction LR
     dec[vllm-decode pod<br/>routing sidecar + vLLM] -.->|if llm-d picked a prefill pod:<br/>the prompt, to compute its KV| pre[vllm-prefill pod<br/>store barrier + vLLM]
-    pre -.->|a copy of the KV| lmc[(LMCache server<br/>CPU RAM)]
+    pre -.->|the reply, after the KV is stored| dec
+    pre -.->|a copy of the KV| lmc[(LMCache server<br/>a copy of the KV in CPU RAM)]
     lmc -->|the stored KV, if any| dec
   end
   subgraph ops[Operations]
@@ -63,7 +64,7 @@ flowchart TB
 
 - Engine: vLLM v0.30.0 with `RedHatAI/gemma-4-31B-it-FP8-dynamic` on H100 SXM 80 GB. One prefill pod and one decode pod. The llm-d P/D decider splits a request with 2,048 or more uncached tokens.
 - KV: the KV cache of each vLLM pod is in its GPU memory. The LMCache server keeps a copy of the KV in CPU RAM, with a cap of 250 GiB on the engine node. The hop goes through it. A store barrier in the prefill pod holds the reply until the store ends.
-- Admission control + routing: `edge` does guard stage 1, admit, and stay or leave. The Envoy AI Gateway holds the tenant token windows. The llm-d router decides where: the scorers, the P/D decider, the warm gate, and the ramp. Its flow control holds a call when all pods are full.
+- Admission control + routing: `edge` does guard stage 1, admit, and stay or leave. The Envoy AI Gateway holds the tenant token windows. Then llm-d does two jobs. Its flow control is the last admit check: it holds a call while the pods are full. Its scheduler decides where: the scorers, the P/D decider, the warm gate, and the ramp.
 - Overflow: `edge` can send a refused call to a hosted API (ADR-008), but the overflow was off in all runs. So a call that may leave gets a 503.
 - Guard: Llama Prompt Guard 2 and NeMo Guardrails with Nemotron Content Safety, on node 2. A rejected request never reaches a serving GPU.
 - App: LangChain and LangGraph Deep Agents, Qdrant, Superlinked SIE (embed, rerank, OCR), and a live web search for the fact check.

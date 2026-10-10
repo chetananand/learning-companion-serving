@@ -103,6 +103,9 @@ What limited concurrency on this GPU for this app (H-104): the decode pod. Most 
 - Overflow (H-48): the Superlinked hosted API, model `qwen3.8-27b` (or `Qwen/Qwen3.5-4B`). The limiter (Redis): 20 requests and 60,000 tokens each minute, 4 in flight, and 15 USD each day (ADR-008).
 - Two workers (H-49): the pods `vllm-prefill` and `vllm-decode` (`metrics/t2-20260930T022105Z/pods.txt`).
 - The gateway and the engine (H-50 to H-52): our gateway is admission control + routing. It is `edge`, the Envoy AI Gateway (Agent Router), and llm-d. The handout puts admit, place, and the queue in the gateway. `edge` and the Envoy AI Gateway admit. The llm-d flow control is the last admit check, and it holds the queue. The llm-d scheduler decides where. The engine is vLLM, with its waiting queue, block table, preemption, and kernels.
+
+  ![The path of one LLM call: the gateway box (admission control + routing) and the engine box](plots/slides/arch.png)
+
 - Scale (H-53, H-106): the planner rules in `cluster/manifests/base/monitoring/rules.yaml` give the replicas of each pool. Prefill: `ceil(uncached prefill tokens each second / (0.7 x 10,500))`. Decode: `ceil(running sequences / (0.6 x 24))`. KEDA reads them.
 - E9 (2026-10-01, one node, at most 2 pods for each pool): under a decode-heavy load, the planner asked for a second decode pod. KEDA made it 15 s later. Under a prefill-heavy load, the planner asked for a second prefill pod only after one change. We set its prefill capacity to the A100 value: 1,800 tokens each second. Each new pod got the warm label 225 to 235 s after the request (`docs/results.md`, E9, and `plots/e9-scale.png`).
 - Live engine metrics (H-54): Prometheus scrapes each 5 s. The dashboards come from `tools/dashboards.py`.

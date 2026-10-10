@@ -12,7 +12,7 @@ Read the files in this order. The spec is the source of truth. If the code and t
 | `06-experiments.md` | Gates G0 to G2 and experiments E1 to E17. |
 | `07-plan-and-budget.md` | Day plan, budget, actions for the owner, risks. |
 | `08-question-bank.md` | The demo questions (acceptance test), the load prompts, and the questions for the talk. |
-| `09-architecture.md` | The architecture in Mermaid diagrams: context, planes, deployment, the KV path, and the sequence flows. |
+| `09-architecture.md` | The architecture: the slide diagram of one LLM call, and Mermaid diagrams of the context, planes, deployment, the KV path, and the sequence flows. All use the names of the slide diagram. |
 | `10-talk.md` | The talk of 2026-10-10: the slides, the time of each slide, the evidence, and the steps. |
 | `../decisions/DEBATE-LOG.md` | The debate on the first spec, point by point, with each result. |
 | `../decisions/` | ADR-001 to ADR-012. |

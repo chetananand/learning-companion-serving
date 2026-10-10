@@ -2,7 +2,13 @@
 
 This file shows the system in diagrams: the context, the planes, the deployment, the KV path, and the main sequence flows. The text and the reasons are in `04-system-design.md` and in the ADRs (`docs/decisions/`). The diagrams show the system as it ran in the sessions of 2026-09-29 and 2026-10-01.
 
-Each diagram is Mermaid, so GitHub renders it. The names in the diagrams are the names of the Kubernetes objects and of the code.
+Each diagram is Mermaid, so GitHub renders it. The diagrams use the names of the slide diagram below, which is also in the README and on slide 3 of the talk. The deployment diagrams also give the names of the Kubernetes objects.
+
+## 0. The path of one LLM call
+
+`tools/arch_diagram.py` draws this diagram. Each box says what it decides or does, and each arrow names what moves. The orange dashed arrows occur only when llm-d also picks a prefill pod. The llm-d box shows its two jobs: its flow control is the last admit check, and its scheduler decides where.
+
+![The path of one LLM call: the app, admission control and routing, and the engine, in steps 1 to 6](../../plots/slides/arch.png)
 
 ## 1. Context
 
@@ -13,8 +19,8 @@ flowchart LR
   owner([Owner<br/>browser on the laptop])
   subgraph lambda[Lambda Cloud: our k3s cluster]
     app[Learning Companion<br/>UI, API, agents]
-    acr[Admission control + routing<br/>edge, Envoy AI Gateway, llm-d router]
-    eng[Engine<br/>vLLM pods and LMCache,<br/>Gemma 4 31B FP8]
+    acr[Admission control + routing<br/>edge, Envoy AI Gateway, llm-d]
+    eng["Engine (node 1)<br/>Gemma 4 31B FP8 on vLLM,<br/>and the LMCache server"]
     obs[Prometheus and Grafana]
   end
   notion[(Notion API<br/>the bookmarks)]
@@ -47,19 +53,20 @@ flowchart TB
   subgraph dataPlane[Data plane: bytes]
     direction TB
     qdrant[(Qdrant<br/>bookmark chunks)] ~~~ sie[SIE<br/>embed, rerank, OCR]
-    browser[browser<br/>headless Chromium] ~~~ redis[(Redis<br/>token windows,<br/>overflow limiter)]
+    browser[browser<br/>headless Chromium] ~~~ redis[(Redis<br/>tenant counts, guard verdicts,<br/>overflow limits, search results)]
   end
   subgraph acr[Admission control + routing: decisions]
     direction LR
-    edge[edge<br/>guard stage 1, admit,<br/>stay or leave] --> envoy[Envoy AI Gateway<br/>tenant token windows]
-    edge --> guard[guard models<br/>NeMo Guardrails,<br/>Prompt Guard 2]
-    envoy <-->|ext_proc| epp[llm-d router EPP<br/>flow control, scorers,<br/>P/D decider, warm gate, ramp]
+    edge[edge, our code<br/>admit: block, refuse,<br/>or pass the call] -->|the request| envoy[Envoy AI Gateway<br/>admit: is the tenant within<br/>its token budget?]
+    edge <-->|the prompt, safe or not safe| guard[guard models<br/>Prompt Guard 2,<br/>Nemotron Safety<br/>is the prompt safe?]
+    envoy <-->|the prompt, the addresses of the picked pods| epp["llm-d<br/>admit (flow control):<br/>hold the call while<br/>the pods are full<br/>where (scheduler):<br/>which decode pod? And a<br/>prefill pod, if 2,048 or<br/>more prompt tokens are<br/>not in a cache"]
     warm[warm-controller<br/>warm label, ramp label]
   end
-  subgraph engine["Engine (node 1): vLLM pods and LMCache"]
+  subgraph engine["Engine (node 1): Gemma 4 31B FP8 on vLLM"]
     direction LR
-    dec[vllm-decode pod<br/>routing sidecar + vLLM] -.->|if the router picked a prefill pod:<br/>the prompt, to compute its KV| pre[vllm-prefill pod<br/>store barrier + vLLM]
-    pre -.->|a copy of the KV| lmc[(lmcache-server<br/>CPU RAM, 250 GiB)]
+    dec[vllm-decode pod<br/>routing sidecar + vLLM] -.->|if llm-d picked a prefill pod:<br/>the prompt, to compute its KV| pre[vllm-prefill pod<br/>store barrier + vLLM]
+    pre -.->|the reply, after the KV is stored| dec
+    pre -.->|a copy of the KV| lmc[(LMCache server<br/>a copy of the KV in CPU RAM,<br/>cap 250 GiB)]
     lmc -->|the stored KV, if any| dec
   end
   subgraph ops[Operations]
@@ -69,7 +76,7 @@ flowchart TB
   end
   appPlane -->|search, embed, OCR, fetch| dataPlane
   appPlane -->|each LLM call| acr
-  acr -.->|token windows, limiter| dataPlane
+  acr -.->|tenant counts, guard verdicts, overflow limits| dataPlane
   acr -->|requests, labels| engine
   engine <-.->|metrics, replicas| ops
 ```
@@ -90,15 +97,15 @@ flowchart TB
     end
     subgraph n2cpu[CPU and RAM]
       direction TB
-      edge2[edge x 2<br/>guard: NeMo server] ~~~ api2[companion-api<br/>companion-ui] ~~~ data2[Qdrant, Redis, browser]
-      epp2[router EPP and tokenizer<br/>Envoy Gateway pods] ~~~ wc2[warm-controller] ~~~ mon2[Prometheus, Grafana, KEDA]
+      edge2[edge x 2<br/>NeMo Guardrails server x 2] ~~~ api2[companion-api<br/>companion-ui] ~~~ data2[Qdrant, Redis, browser]
+      epp2[llm-d pod and tokenizer<br/>Envoy AI Gateway pods] ~~~ wc2[warm-controller] ~~~ mon2[Prometheus, Grafana, KEDA]
     end
   end
   subgraph n1[Node 1: engine, 2 x H100 SXM 80 GB, NVIDIA device plugin]
     direction TB
     p1[vllm-prefill<br/>GPU 0, one full GPU]
     d1[vllm-decode<br/>GPU 1, one full GPU]
-    l1[(lmcache-server<br/>host network, 250 GiB RAM)]
+    l1[(LMCache server<br/>host network, cap 250 GiB RAM)]
   end
   laptop --> n2
   n2 <-->|private network, WireGuard flannel| n1
@@ -117,15 +124,15 @@ flowchart TB
       g0[GPU A<br/>sie-embed, sie-ocr,<br/>guard-safety, guard-injection<br/>binpack] ~~~ g1[GPU B<br/>vllm-prefill<br/>exclusive] ~~~ g2[GPU C<br/>vllm-decode<br/>exclusive]
       g3[GPU D<br/>second decode pod<br/>E9 scale-out] ~~~ g4[GPU E<br/>second prefill pod<br/>E9 scale-out] ~~~ g5[GPUs F to H<br/>free]
     end
-    cpu[CPU and RAM: edge, guard, API, UI, router, Envoy,<br/>Qdrant, Redis, monitoring, lmcache-server]
+    cpu[CPU and RAM: edge, NeMo Guardrails, API, UI, llm-d, Envoy,<br/>Qdrant, Redis, monitoring, LMCache server]
     note[CUDA_DISABLE_CONTROL=true in the engine pods:<br/>vLLM sees the full GPU, with no HAMi memory hook]
     gpus ~~~ cpu ~~~ note
   end
 ```
 
-## 5. The KV path: prefix cache, hop, LMCache server, and the router index
+## 5. The KV path: prefix cache, hop, LMCache server, and the llm-d prefix index
 
-Each vLLM pod keeps its KV cache and its prefix cache in GPU memory. Both pods use the LMCache server on the node to store and load a copy of the KV in CPU RAM. The vLLM pods publish KV events, and the router builds its prefix index from them.
+Each vLLM pod keeps its KV cache and its prefix cache in GPU memory. Both pods use the LMCache server on the node to store and load a copy of the KV in CPU RAM. The vLLM pods publish KV events, and llm-d builds its prefix index from them.
 
 ```mermaid
 flowchart LR
@@ -137,9 +144,9 @@ flowchart LR
     sc[routing sidecar :8000]
     vd[vLLM :8200<br/>GPU prefix cache]
   end
-  lmc[(lmcache-server<br/>a copy of the KV in CPU RAM,<br/>LRU, evict at 90%,<br/>about 865 KB for each token)]
-  idx[router prefix index<br/>precise: KV events]
-  sc -->|if the router picked a prefill pod: the prompt,<br/>max_tokens 1, so vLLM only computes its KV| bar --> vp
+  lmc[(LMCache server<br/>a copy of the KV in CPU RAM,<br/>LRU, evict at 90%,<br/>about 865 KB for each token)]
+  idx[llm-d prefix index<br/>precise: KV events]
+  sc -->|if llm-d picked a prefill pod:<br/>the prompt, to compute its KV, max_tokens 1| bar --> vp
   sc -->|the request| vd
   vp -->|a copy of the KV,<br/>in chunks of 256 tokens| lmc
   bar -.->|store counters, read until<br/>finished = submitted| lmc
@@ -162,7 +169,7 @@ sequenceDiagram
   participant E as edge
   participant G as guard models
   participant V as Envoy AI Gateway
-  participant R as llm-d router EPP
+  participant R as llm-d
   participant D as vllm-decode
   U->>UI: question (quick mode)
   UI->>API: POST /v1/turns (SSE stream)
@@ -220,12 +227,12 @@ The P/D decider splits a request with 2,048 or more uncached tokens. The routing
 ```mermaid
 sequenceDiagram
   autonumber
-  participant V as Envoy
-  participant R as llm-d router EPP
+  participant V as Envoy AI Gateway
+  participant R as llm-d
   participant SC as decode routing sidecar
   participant BAR as store barrier (prefill pod)
   participant VP as vLLM prefill
-  participant L as lmcache-server
+  participant L as LMCache server
   participant VD as vLLM decode
   V->>R: pick endpoints
   R-->>V: decode pod, plus the prefill host header (2,048+ uncached tokens)
@@ -253,9 +260,9 @@ sequenceDiagram
   autonumber
   participant A as app or load generator
   participant E as edge
-  participant G as guard
+  participant G as guard models
   participant V as Envoy AI Gateway
-  participant R as llm-d router EPP
+  participant R as llm-d
   participant O as overflow (Superlinked, off in all runs)
   A->>E: request
   alt guard stage 1 or 2 rejects
@@ -266,10 +273,12 @@ sequenceDiagram
     E->>V: forward
     V-->>E: 429 tenant_tokens
     E-->>A: 429 (never leaves)
-  else the band TTL ends in the queue, or the pool is saturated
+  else the band time limit ends in the queue, the pods are full, or no pod is ready
     E->>V: forward
     V->>R: pick
-    R-->>V: 503 timeout_queue, or 503 no_endpoints
+    R-->>V: 429 with the drop reason
+    V-->>E: 429 with the drop reason
+    E->>E: map it to 503 timeout_queue, kv_free, or no_endpoints
     alt interactive, overflow permitted, no image
       E->>O: the same request (limiter in Redis)
       O-->>A: answer, with x-companion-via overflow
@@ -281,7 +290,7 @@ sequenceDiagram
 
 ## 10. Sequence: a pod comes back, then warmup and ramp
 
-The router sends traffic only to a pod with the warm label. The warm controller gives the label after its warmup routine, and then it raises the ramp label step by step while the TTFT p99 holds.
+The llm-d scheduler sends traffic only to a pod with the warm label. The warm controller gives the label after its warmup routine, and then it raises the ramp label step by step while the TTFT p99 holds.
 
 ```mermaid
 sequenceDiagram
@@ -289,7 +298,7 @@ sequenceDiagram
   participant K as Kubernetes
   participant P as new vLLM pod
   participant WC as warm-controller
-  participant R as llm-d router EPP
+  participant R as llm-d
   participant PR as Prometheus
   K->>P: start (model load, CUDA graphs)
   WC->>P: readiness probe until the engine answers

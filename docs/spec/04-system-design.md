@@ -25,18 +25,18 @@ flowchart LR
   API -->|search, fetch| WEB[Live web]
   API -->|every LLM call| EDGE
   subgraph GW[Admission control + routing]
-    EDGE[edge<br/>guard stage 1, stay or leave] -->|the prompt| GUARD[guard<br/>NeMo Guardrails]
-    EDGE --> AR[Agent Router<br/>Envoy, tenant token limits]
-    AR <-->|the prompt, the pod addresses| EPP[llm-d router<br/>flow control, place, P/D split]
+    EDGE[edge, our code<br/>admit: block, refuse,<br/>or pass the call] <-->|the prompt, safe or not safe| GUARD[guard models<br/>Prompt Guard 2,<br/>Nemotron Safety<br/>node 2 GPU slices]
+    EDGE -->|the request| AR[Envoy AI Gateway<br/>admit: is the tenant within<br/>its token budget?]
+    AR <-->|the prompt, the addresses of the picked pods| EPP["llm-d<br/>admit (flow control):<br/>hold the call while<br/>the pods are full<br/>where (scheduler):<br/>which decode pod? And a<br/>prefill pod, if 2,048 or<br/>more prompt tokens are<br/>not in a cache"]
   end
-  GUARD --> GM[guard models<br/>node 2 GPU slices]
   AR -->|the request, and the prefill<br/>pod address if any| D0
-  subgraph ENG["Engine (node 1): vLLM pods and LMCache"]
+  subgraph ENG["Engine (node 1): Gemma 4 31B FP8 on vLLM"]
     P0[store barrier +<br/>vllm-prefill-0<br/>GPU 0]
     D0[routing sidecar +<br/>vllm-decode-0<br/>GPU 1]
     LMC[(LMCache server<br/>CPU RAM, 250 GiB)]
   end
-  D0 -.->|if the router picked a prefill pod:<br/>the prompt, to compute its KV| P0
+  D0 -.->|if llm-d picked a prefill pod:<br/>the prompt, to compute its KV| P0
+  P0 -.->|the reply, after the KV is stored| D0
   P0 -.->|a copy of the KV| LMC
   LMC -->|the stored KV, if any| D0
   EDGE -.->|a refused call that may leave| OVF[Superlinked overflow<br/>off in all runs]
@@ -160,8 +160,8 @@ sequenceDiagram
   participant A as App
   participant E as edge
   participant G as guard
-  participant R as Agent Router
-  participant X as llm-d router
+  participant R as Envoy AI Gateway
+  participant X as llm-d
   participant D as decode pod (sidecar + vLLM)
   participant P as prefill pod
   participant O as Overflow
@@ -176,16 +176,16 @@ sequenceDiagram
   X-->>R: decode pod (+ prefill host if split)
   R->>D: request
   alt split
-    D->>P: P leg (max_tokens 1)
+    D->>P: the prompt, to compute its KV (max_tokens 1)
     P-->>D: kv_transfer_params
-    P->>D: KV through the LMCache tier (store, then load)
+    P->>D: the KV through the LMCache server (store, then load)
   else same pod
     D->>D: prefill on the decode pod
   end
   D-->>R: tokens (stream)
   R-->>E: tokens (stream)
   E-->>A: tokens (stream), x-companion-via: local
-  opt router capacity reject and leave is permitted
+  opt llm-d capacity reject and leave is permitted
     E->>O: request (stream)
     O-->>A: tokens, x-companion-via: overflow
   end
