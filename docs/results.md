@@ -167,7 +167,7 @@ The E15 runs had fewer calls than the base run. The first 1.4 s of each run had 
 |---|---|---|---|---|---|
 | 200 | 22 of 22 | 0 of 178 | 0.19 | 0.28 | 0.80 |
 
-Page check (Prompt Guard 2 on 50 pages, half of them with an injected window):
+Page check (Prompt Guard 2 on 50 real pages, and on the same pages with an injected window):
 
 | Threshold | False positive rate | Miss rate |
 |---|---|---|

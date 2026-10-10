@@ -320,7 +320,8 @@ def e17() -> str:
                   [[lat["turns"], f"{lat['attacks_blocked']} of {lat['attacks']}",
                     f"{lat['benign_blocked']} of {lat['benign']}", lat["cold"]["p50_s"], lat["cold"]["p95_s"],
                     round(lat["warm"]["p50_s"] * 1000, 1)]])
-            + f"\n\nPage check (Prompt Guard 2 on {pages['pages']} pages, half of them with an injected window):\n\n"
+            + f"\n\nPage check (Prompt Guard 2 on {pages['pages']} real pages, and on the same pages with an "
+              "injected window):\n\n"
             + table(["Threshold", "False positive rate", "Miss rate"], rows))
 
 
