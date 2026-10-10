@@ -110,7 +110,7 @@ What limited concurrency on this GPU for this app (H-104): the decode pod. Most 
 
 - `inspect(payload) -> Guard` (H-56): `control/edge/guard.py:105` is stage 1 (the rules on the CPU). `GuardClient` (`control/edge/guard.py:178`) is stage 2: Llama Prompt Guard 2 (`guard-injection`) and the NeMo Guardrails server with Nemotron Content Safety (`guard`), in parallel (ADR-011). The guard models run on node 2, never on a serving GPU (U-19).
 - E17: the guard blocked 22 of 22 attack turns and 0 of 178 benign turns. A check takes 0.19 s (p50) when it is cold, and a cached verdict takes 0.8 ms.
-- E17 also found a limit. The page check (Prompt Guard 2 on page windows) missed 50% of the injected pages at the threshold 0.3, with no false positive. The NeMo safety rail and the F2 rule stay as the next lines of defense.
+- E17 also found a limit. The page check (Prompt Guard 2 on page windows) missed 50% of the injected pages at the threshold 0.3, with no false positive. The NeMo safety rail is not a second layer for pages. The edge sends it only the new user message, not the page text in tool results. In the fact check, rule F2 limits the harm. Code, not the LLM, decides when a live page wins, by the source tier and the dates.
 - `should_shed(req, snap) -> (shed, code, reason, retry_after_seconds)` (H-57): the rule table in `docs/spec/04-system-design.md`, section 6.2. Production components enforce it, and we own the values:
   - rules 1 and 2 (`tenant_tokens`, `tenant_requests`, 429): the Agent Router windows, `control/router/policy.yaml:61` to `:68`.
   - rule 3 (`slice_oom`, 413, stays): `control/edge/admit.py:23`.
