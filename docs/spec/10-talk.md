@@ -118,7 +118,7 @@ Slide A2 answers the place questions. All runs used the policy `prefix_then_load
 
 Slide A8 answers the queue questions with a full sentence and a measurement for each. Its notes say that our queue is the queue in the flow control of llm-d, the admit part of llm-d. We did not write a second queue. The notes also give the fullness rule of llm-d, and why llm-d puts the queue before the pick.
 
-Slide A9 answers the hop and warmth questions. It shows one hop record from the Envoy log, and the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s. Its notes say what "warm the box and re-quote the TTFT" means.
+Slide A9 answers the hop and warmth questions. It shows one hop record from the Envoy log. It also shows the restart test with and without the warmup: a first-minute TTFT p95 of 10.9 s against 7.3 s. Its notes say what "warm the box and re-quote the TTFT" means.
 
 ## 5. The bad answers of the handout, and our answers
 
