@@ -165,6 +165,17 @@ def flow(steps: list[tuple[str, str, bool]]) -> str:
     return f'<div style="display:flex;flex-direction:column;gap:6px">{"".join(parts)}</div>'
 
 
+def steps(heading: str, items: list[str]) -> str:
+    """A short flow: a heading, then one box for each step, from top to bottom."""
+    parts = [p(heading, 28, INK, 600)]
+    for i, text in enumerate(items):
+        if i:
+            parts.append(p("↓", 24, MUTED, 600, "padding-left:20px;line-height:1"))
+        parts.append(f'<div style="background:{BOX_BG};border:2px solid {LINE};border-radius:10px;padding:8px 16px">'
+                     f"{p(text, 24, INK)}</div>")
+    return f'<div style="display:flex;flex-direction:column;gap:6px">{"".join(parts)}</div>'
+
+
 def measured(text: str, label: str = "What we measured") -> str:
     return (f'<div style="display:flex;flex-direction:column;gap:2px">'
             f'<p style="font-size:24px;line-height:1.2;font-weight:600;color:{BLUE};text-transform:uppercase;'
@@ -256,6 +267,32 @@ def slides() -> list[tuple[str, str, str]]:
     ]), "These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM. It fits one H100, and "
         "it passed all 7 of our gate tests, with 97.5% correct tool calls. Small models do the rest: two guard "
         "models, and the search and OCR models in SIE."))
+
+    s.append(("search", "".join([
+        title("The bookmark search: ingest once, then search in each turn"),
+        two_columns([
+            steps("Ingest: once, on 2026-09-28, before all tests", [
+                "Read the Notion rows, and fetch each page",
+                "OCR on SIE when a page has little text",
+                "Cut the text into chunks of 500 to 800 tokens",
+                "Page check: remove injected text (Prompt Guard 2)",
+                "SIE embeds each chunk (bge-m3), into Qdrant",
+            ]),
+            p("910 of 1,000 rows gave 4,112 chunks. Each later session restored a snapshot of Qdrant.", 24),
+        ], [
+            steps("Search: in each turn, a tool of the agent", [
+                "SIE embeds the question (bge-m3)",
+                "Qdrant finds 30 chunks: vector search and BM25, fused (RRF)",
+                "SIE reranks the 30 chunks (Qwen3 Reranker 4B)",
+                "The agent gets the top 8, with their bookmark links",
+            ]),
+            callout("SIE and Qdrant", "SIE is the model server for the small models: embed, rerank, and OCR. Qdrant "
+                    "stores the vectors and searches them. The search makes no LLM call."),
+        ], left_w=760),
+    ]), "This is the bookmark search. The ingest ran once, before all tests. It fetched each bookmarked page and "
+        "cut the text into chunks, and SIE turned each chunk into a vector in Qdrant. In each turn, SIE turns the"
+        " question into a vector. Qdrant finds 30 chunks by vector and by keyword, and SIE reranks them. The "
+        "agent gets the top 8. SIE serves only the small models, so the search makes no LLM call."))
 
     s.append(("deploy", "".join([
         title("The deployment: two nodes, and an A100 fallback"),

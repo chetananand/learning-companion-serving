@@ -32,6 +32,7 @@ What it is (H-01, H-33): `docs/spec/03-product-spec.md` and `app/`. The agent ru
 
 - Quick mode: one agent with the tools `search_bookmarks`, `fetch_page`, `screenshot_page` (OCR), and `answer_now` (`app/agent/tools.py`).
 - Verified mode: the quick agent writes a draft. Then a Deep Agent with a `fact-checker` subagent checks up to 3 claims against live pages (`app/factcheck/`). Rule F2 decides when the live result wins (ADR-012).
+- Bookmark search (`app/ingest/job.py`, `app/retrieval.py`, ADR-007): the ingest ran once, in G0 on 2026-09-28 (PDT), before all tests. It read 1,000 Notion rows, fetched each page, and cut the text into chunks of 500 to 800 tokens. The page check ran on each chunk. SIE embedded each chunk with bge-m3, and Qdrant stored the vector and a BM25 index. Result: 910 rows gave 4,112 chunks, and 33 links were dead (`metrics/g0-session/session.md`). Each later session restored the Qdrant snapshot: 4,501 points on 2026-09-29 and 4,502 on 2026-10-01. In each turn, SIE embeds the question, and Qdrant fuses a vector search and a BM25 search (RRF) into 30 chunks. SIE reranks them with Qwen3 Reranker 4B, and the agent gets the top 8. The search makes no LLM call.
 
 We combine Track A (RAG) and Track B (agents). This combination is extra (L569).
 
