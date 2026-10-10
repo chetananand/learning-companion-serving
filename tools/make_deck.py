@@ -672,21 +672,22 @@ def slides() -> list[tuple[str, str, str]]:
     s.append(("ttft-points", "".join([
         title("TTFT at three points: under load, calls wait before the engine"),
         two_columns([
-            table(["Layout and load", "Client", "Gateway", "Engine", "llm-d queue"], [
-                ["P/D, 50%", "2.04 s", "1.87 s", "0.80 s", "0.00 s"],
-                ["Colocated, 50%", "1.05 s", "0.94 s", "0.72 s", "0.00 s"],
-                ["P/D, 100%", "15.95 s", "15.67 s", "4.38 s", "2.25 s"],
-                ["Colocated, 100%", "1.57 s", "1.35 s", "0.90 s", "0.00 s"],
-                ["P/D, 150%", "21.45 s", "21.34 s", "16.90 s", "9.53 s"],
-                ["Colocated, 150%", "21.10 s", "20.79 s", "9.60 s", "8.28 s"],
-            ], [28, 18, 18, 18, 18], size=22),
-            p("All values are p95. Client and gateway: the same streaming calls. Engine and queue: the p95 of each "
-              "minute, the median over the run.", 22),
+            table(["Layout and load", "Client", "Gateway", "Engine", "llm-d queue", "TPOT, client"], [
+                ["P/D, 50%", "2.04 s", "1.87 s", "0.80 s", "0.00 s", "32 ms"],
+                ["Colocated, 50%", "1.05 s", "0.94 s", "0.72 s", "0.00 s", "25 ms"],
+                ["P/D, 100%", "15.95 s", "15.67 s", "4.38 s", "2.25 s", "48 ms"],
+                ["Colocated, 100%", "1.57 s", "1.35 s", "0.90 s", "0.00 s", "38 ms"],
+                ["P/D, 150%", "21.45 s", "21.34 s", "16.90 s", "9.53 s", "51 ms"],
+                ["Colocated, 150%", "21.10 s", "20.79 s", "9.60 s", "8.28 s", "41 ms"],
+            ], [24, 15, 15, 15, 15, 16], size=22),
+            p("The TTFT values are p95. Client and gateway: the same streaming calls. Engine and queue: the p95 of "
+              "each minute, the median over the run. TPOT: the time per output token, the p50 of the calls.", 22),
         ], [
             measured("Client: the load generator, to the first answer token. Gateway: edge, to the first byte. "
                      "Engine: vLLM on the decode pod. Queue: the interactive band in llm-d."),
             callout("What the gaps mean", "Client to gateway: 0.1 to 0.3 s, the relay. Gateway to engine: the "
-                    "guard, the llm-d queue, and the hop. With P/D at 100% load, this gap was 11 s."),
+                    "guard, the llm-d queue, and the hop. With P/D at 100% load, this gap was 11 s. After the "
+                    "first token, the client TPOT is the same as the engine mean."),
             callout("On the dashboards", "Dashboard 6: the engine TTFT for each pod. Dashboard 3: the edge TTFT, "
                     "but of all calls, so a call that does not stream counts its full answer. The client TTFT is in "
                     "the load test logs."),
@@ -699,10 +700,13 @@ def slides() -> list[tuple[str, str, str]]:
         " the llm-d queue, and the hop. With P/D at 100% load, the gateway saw 15.67 seconds at p95, and the "
         "engine only 4.38. The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two "
         "colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when "
-        "the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. On the dashboards,"
-        " dashboard 6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls. A "
-        "call that does not stream counts its full answer there, so that panel reads higher. The client TTFT is "
-        "in the load test logs and in the results file."))
+        "the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. The last column is"
+        " the TPOT at the client, the time per output token, as the p50 of the calls. It is the same as the mean "
+        "time for each token in the engine. So after the first token, the proxies add no time. The whole "
+        "difference between the client and the engine comes before the first token. On the dashboards, dashboard "
+        "6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls. A call that "
+        "does not stream counts its full answer there, so that panel reads higher. The client TTFT is in the load"
+        " test logs and in the results file."))
 
     cards = [("Colocated replicas", "for our traffic. Split only long uncached prompts."),
              ("A store barrier", "for the hop: completion is not visibility."),

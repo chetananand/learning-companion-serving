@@ -158,9 +158,11 @@ This slide shows where the TTFT comes from. We measured it at three points. The 
 
 The engine is vLLM on the decode pod. The client and the gateway differ by only 0.1 to 0.3 seconds at p95: the relay, and the first answer token after the first byte. The big gap is between the gateway and the engine. It holds the guard, the wait in the llm-d queue, and the hop. With P/D at 100% load, the gateway saw 15.67 seconds at p95, and the engine only 4.38.
 
-The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. On the dashboards, dashboard 6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls.
+The llm-d queue alone held interactive calls up to 2.25 seconds at p95. With two colocated replicas at the same load, the queue held nothing, and the gateway saw 1.35 seconds. So when the pods are full, calls wait before the engine, in our admit queue, and not in vLLM. The last column is the TPOT at the client, the time per output token, as the p50 of the calls. It is the same as the mean time for each token in the engine.
 
-A call that does not stream counts its full answer there, so that panel reads higher. The client TTFT is in the load test logs and in the results file.
+So after the first token, the proxies add no time. The whole difference between the client and the engine comes before the first token. On the dashboards, dashboard 6 shows the engine TTFT for each pod. Dashboard 3 shows the edge TTFT, but for all calls. A call that does not stream counts its full answer there, so that panel reads higher.
+
+The client TTFT is in the load test logs and in the results file.
 
 ### 20. The handout questions: our answers and the evidence (1 of 2)
 
