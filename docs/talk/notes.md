@@ -64,9 +64,9 @@ Stop four is place. The router scores each pod: the prefix match counts most, th
 
 ### 11. The hop: the KV moves through the LMCache server
 
-Stop five is the hop. The router splits a request only when 2,048 or more of its tokens are not in a cache. The prefill pod computes the KV of the prompt. The LMCache connector in vLLM copies the KV chunks to the LMCache server in CPU RAM, and the decode pod loads them. Our code only records the hop, and the store barrier holds the prefill answer until the store ends.
+Stop five is the hop. The router splits a request only when 2,048 or more of its tokens are not in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. There is no vLLM request for a prefill only, and one token is the smallest request. The pass that computes the KV of the prompt also gives this token, so it costs almost nothing.
 
-In the hop test, the first token came in 0.52 to 0.78 seconds, against about 4 seconds for NIXL over TCP.
+The decode pod does not use this token: it writes the whole answer itself. The LMCache connector in vLLM copies the KV chunks to the LMCache server in CPU RAM, and the decode pod loads them. Our code only records the hop, and the store barrier holds the prefill answer until the store ends. The barrier finds the prefill request by its shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, against about 4 seconds for NIXL over TCP.
 
 ### 12. A pod with its weights on the GPU is not warm yet
 
