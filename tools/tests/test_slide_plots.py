@@ -14,7 +14,7 @@ def test_each_chart_is_written_with_the_numbers_of_the_report(tmp_path):
     slide_plots._style()
     path, e3 = slide_plots.e3(out=tmp_path)
     assert path.exists() and round(e3["2 x H100, 24 decode sequences"]["100%"]["P/D"], 2) == 4.59
-    assert round(e3["2 x H100, 24 decode sequences"]["100%"]["whole"], 2) == 0.84
+    assert round(e3["2 x H100, 24 decode sequences"]["100%"]["colocated"], 2) == 0.84
     path, hop = slide_plots.hop(out=tmp_path)
     assert path.exists() and round(hop["LMCache server shared prefix"], 2) == 0.52
     path, warm = slide_plots.warm(out=tmp_path)

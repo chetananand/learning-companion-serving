@@ -28,7 +28,7 @@ Slide 2 shows the architecture, so the owner does not switch to GitHub in the ta
 | 6 | Place, and the ghost | `policy.yaml` weights, `control/router/render.py:50` | Prefix first, then load. Queue depth is a scorer. Stale metrics count as saturated. | E11: a frozen snapshot pulled 80% of the work to one pod. | Router, and queue depth by pod | E7: after a cache clear, the router still sent each warm session to the cleared pod (15 of 15, and 10 of 10). | 0:50 |
 | 7 | Queue and hop | `policy.yaml` (2,048 uncached tokens), `control/barrier/proxy.py:96`, `tools/hop_records.py` | Split only long uncached prompts. The LMCache server is the hop store: a copy of the KV chunks in CPU RAM. The LMCache connector in vLLM moves the bytes, and our code records the hop. | E4: 0.52 to 0.78 s, against 4.1 to 4.3 s for NIXL over TCP. One hop record: source, destination, tokens, backend. | Hop store (LMCache) | The store barrier. With no barrier, the decode lookup had 0 hits in 10 tries (G1). Completion is not visibility. | 0:55 |
 | 8 | Declare warm | `control/warm/logic.py:32` and `:36` | Weights on the GPU do not make a warm pod. Probe, label, then ramp while the p99 holds. | E8: the first-minute TTFT p95 fell from 10.9 s to 7.3 s. The warmup added 15 s to the outage. | vLLM | The ramp needs a cap. In the first 10 s, the empty pod got 75% of the calls. | 0:50 |
-| 9 | The hypothesis and the topology | - | We expected prefill compute (RAG) and KV blocks (agents) to be the limit. | The decode pod was the limit: 16,200 against 4,550 prompt tokens each second. E3: TTFT p50 0.84 s for two whole pods, against 4.59 s for P/D (100% load). The A100 runs agree. | the E3 charts | Two whole pods for our traffic. Two or more pods in each pool (E8, fault 35). | 0:55 |
+| 9 | The hypothesis and the topology | - | We expected prefill compute (RAG) and KV blocks (agents) to be the limit. | The decode pod was the limit: 16,200 against 4,550 prompt tokens each second. E3: TTFT p50 0.84 s for two colocated replicas, against 4.59 s for P/D (100% load). The A100 runs agree. | the E3 charts | Two colocated replicas for our traffic. Two or more pods in each pool (E8, fault 35). | 0:55 |
 | 10 | Scale: the planner names the pool | `cluster/manifests/base/monitoring/rules.yaml:18` and `:22`, KEDA | Uncached prefill tokens go to the prefill pool. Running sequences go to the decode pool. | E9: KEDA made the pod 15 s after the request. The pod was warm after about 4 minutes. Clip 2: the replica panel in E9, at 8 times speed. | Pods, replicas, and KEDA | Values that depend on the GPU. With the H100 capacity, the A100 prefill pool did not grow. | 0:45 and clip 0:34 |
 | 11 | What the data changed, 10 times the traffic, and the cost | `DESIGN.md` | - | The five changes. At 10 times the traffic: more decode capacity, 32 sequences and fp8 KV, and more CPU RAM for the LMCache server. Three wrong knobs: more prefill pods, longer queues, and a lower split threshold. 237 USD of the 400 USD credit. | - | the summary | 0:50 |
 
@@ -60,11 +60,11 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 12 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 1:42 |
 | 13 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
 | 14 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
-| 15 | `topology` | For our traffic, two whole pods beat a P/D split | the layout test chart | 0:36 |
+| 15 | `topology` | For our traffic, two colocated replicas beat a P/D split | the layout test chart | 0:44 |
 | 16 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 17 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 14 minutes 46 seconds of notes and 61 seconds of clips, so 15 minutes 47 seconds. The appendix has 11 slides. The first one holds the cluster design: each choice, its reason, and the proof. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
+Total: 14 minutes 54 seconds of notes and 61 seconds of clips, so 15 minutes 55 seconds. The appendix has 11 slides. The first one holds the cluster design: each choice, its reason, and the proof. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
 
 On 2026-10-09, each Grafana panel caption got the name of its dashboard, 1 to 8, in the order of the handout. The `scale` slide shows dashboard 8 (desired against actual replicas) in place of the scale test chart, which moved to the appendix. The repo link is on the cover and on the last slide.
 
@@ -83,6 +83,8 @@ The admit slide has a box: "Redis holds the tenant counts. The queue is in the f
 The llm-d box of the architecture diagram shows the two jobs of llm-d. Its flow control is the last admit check: it holds a call while the pods are full. Its scheduler decides where the call goes. The diagram, its notes, and the admit slide say "llm-d", not "the router". The README diagram shows the same two jobs.
 
 All slides and notes now say "llm-d", not "the router". Where the job matters, they say "the llm-d flow control" (admit) or "the llm-d scheduler" (where). Only the file paths in `control/router/` and the handout name "Dashboard 4 · Router" keep the word. Appendix A1 names the Envoy AI Gateway, not the Agent Router.
+
+The deck, the report, the README, the results, the notebook, and the E3 chart now say "two colocated replicas". This is the term of the handout, in place of "two whole pods". A colocated replica is one vLLM pod that does the prefill and the decode of its calls. The session logs in `metrics/` keep the old words.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 

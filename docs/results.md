@@ -36,7 +36,7 @@ The load levels come from E2: 100% load is RATE100, 0.9 scripts each second. TTF
 |---|---|---|---|---|---|---|
 | `e2-soak` | 0.90 | minute 18: 503 timeout_queue | 2,877 of 2,885 | 8 400 prompt_injection | 768 of 811 | 43 503 timeout_queue |
 
-## E3 Topology: layout C (P/D) against layout A (two whole pods), M4
+## E3 Topology: layout C (P/D) against layout A (two colocated replicas), M4
 
 | Arm | Run | Interactive ok | TTFT p50 (s) | TTFT p95 (s) | Interactive sheds | Batch ok |
 |---|---|---|---|---|---|---|

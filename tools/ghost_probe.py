@@ -5,7 +5,7 @@ after the clear, and the LMCache tier gave the cleared prefixes back at once. Th
   - Each session has its own long system prompt (real corpus text and the session id). It sends one turn every
     `interval` seconds for `duration` seconds, and its history grows, so the prefix of a session stays warm on
     the pod that the router picks for it.
-  - The run uses layout A with no KV connector (two whole pods, no CPU tier), so the router has a real choice of
+  - The run uses layout A with no KV connector (two colocated replicas, no CPU tier), so the router has a real choice of
     pod, and a cleared prefix does not come back from a tier.
 The runbook clears the prefix cache of pod B (vllm-decode) at `--clear-at` seconds. tools/ghosts.py then counts the
 ghosts in the Envoy log: requests of warm sessions that the router still sends to pod B, and that miss the cache.

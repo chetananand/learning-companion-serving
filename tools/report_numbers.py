@@ -329,7 +329,7 @@ def build() -> str:
     sections = [
         ("E1 Capacity at fixed prompt lengths", e1()),
         ("E2 Soak: the knee (RATE100)", e2()),
-        ("E3 Topology: layout C (P/D) against layout A (two whole pods), M4", table(REPLAY_HEAD, [
+        ("E3 Topology: layout C (P/D) against layout A (two colocated replicas), M4", table(REPLAY_HEAD, [
             replay_row(f"e3-{arm}-{load}", f"{'C' if arm == 'c' else 'A'}, {load}%")
             for load in (50, 100, 150) for arm in ("c", "a")])),
         ("E4 The hop: LMCache server against NIXL", e4()),

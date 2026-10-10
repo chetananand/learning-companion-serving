@@ -94,9 +94,11 @@ The handout asked which limit we expected first. We expected prefill compute for
 
 The llm-d scheduler does not split them, so the decode pod runs their prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550.
 
-### 15. For our traffic, two whole pods beat a P/D split
+### 15. For our traffic, two colocated replicas beat a P/D split
 
-This test sends the same recorded app traffic to two layouts, at three loads. Two whole pods with prefix routing beat one prefill pod and one decode pod at each load, on the H100 and on the A100. At 100% load the TTFT p50 was 0.84 seconds, against 4.59. The split still helps a long uncached prompt. But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint.
+This test sends the same recorded app traffic to two layouts, at three loads. A colocated replica is one vLLM pod that does the prefill and the decode of its calls. Two colocated replicas with prefix routing beat one prefill pod and one decode pod at each load, on the H100 and on the A100. At 100% load the TTFT p50 was 0.84 seconds, against 4.59. The split still helps a long uncached prompt.
+
+But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint.
 
 ### 16. Scale: the planner names the pool
 
@@ -106,7 +108,7 @@ In the scale test, KEDA made the new pod 15 seconds after the request, in both p
 
 ### 17. What the data changed in our design
 
-Five things changed in the design because of the data. Two whole pods for our traffic. A store barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU.
+Five things changed in the design because of the data. Two colocated replicas for our traffic. A store barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU.
 
 And llm-d must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a lower split threshold. The GPU time cost 237 dollars. Thank you.
 
@@ -116,9 +118,9 @@ And llm-d must apply a cache clear. At 10 times the traffic I add decode capacit
 
 For questions only. Each row gives a choice of the cluster design, the reason, and the proof. GPU: why not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper.
 
-The H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two whole pods were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets its own scale signal.
+The H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two colocated replicas were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets its own scale signal.
 
-The data showed that most agent calls are short, so for our traffic two whole pods win. Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, and at 24K tokens, about 20 fit.
+The data showed that most agent calls are short, so for our traffic two colocated replicas win. Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, and at 24K tokens, about 20 fit.
 
 We chose 24, between them. The data showed that 32 is better, and no pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda nodes had no RDMA. NIXL over TCP took more than 4 seconds.
 

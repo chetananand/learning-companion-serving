@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 ASSETS = {
-    "e3": "/_blob/54f351d14862f0849b7a3206cd05191c", "e9": "/_blob/33d6ecab663862b797ffccf742537e60",
+    "e3": "/_blob/c52a5f28b9379587ae1de638b1032b28", "e9": "/_blob/33d6ecab663862b797ffccf742537e60",
     "hop": "/_blob/bef7f263ef04880cd591661ca8dedf8c", "warm": "/_blob/f6633cb512f077a6b00cb0fbdf1a49ed",
     "arch": "/_blob/ea2cc8cd93f9a3412a5f996150e1a655",
     "cluster": "/_blob/c93f5728251ce5c26c873f9fc0da2440", "guard": "/_blob/51874d3a3f4d12ee3c96b0a08ca10aeb",
@@ -542,25 +542,25 @@ def slides() -> list[tuple[str, str, str]]:
         "prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550."))
 
     s.append(("topology", "".join([
-        title("For our traffic, two whole pods beat a P/D split"),
+        title("For our traffic, two colocated replicas beat a P/D split"),
         two_columns([
             measured("The same recorded app traffic at three loads, on two layouts: one prefill pod and one decode "
-                     "pod (P/D), or two whole pods. The TTFT p50 of the interactive calls."),
-            proof("0.84 s against 4.59 s", "at 100% load on the H100: two whole pods against P/D. The A100 tests "
-                  "agree."),
+                     "pod (P/D), or two colocated replicas. The TTFT p50 of the interactive calls."),
+            proof("0.84 s against 4.59 s", "at 100% load on the H100: two colocated replicas against P/D. The A100 "
+                  "tests agree."),
             p("Why: only 10% to 13% of the calls split, so the decode pod runs the prefill of most prompts.", 28),
             callout("What the data changed",
                     "We keep the split for long uncached prompts. A P/D layout needs two or more pods in each "
                     "pool, or one restart stops all split calls."),
         ], [
-            image("e3", "Chart: TTFT p50 of P/D against two whole pods, on the H100 and on the A100",
+            image("e3", "Chart: TTFT p50 of P/D against two colocated replicas, on the H100 and on the A100",
                   "The TTFT p50 of the interactive calls, by layout and load", 960),
         ], left_w=640),
-    ]), "This test sends the same recorded app traffic to two layouts, at three loads. Two whole pods with "
-        "prefix routing beat one prefill pod and one decode pod at each load, on the H100 and on the A100. At "
-        "100% load the TTFT p50 was 0.84 seconds, against 4.59. The split still helps a long uncached prompt. "
-        "But a P/D layout needs two pods in each pool: when the one prefill engine restarted, 60 split calls got "
-        "no endpoint."))
+    ]), "This test sends the same recorded app traffic to two layouts, at three loads. A colocated replica is one"
+        " vLLM pod that does the prefill and the decode of its calls. Two colocated replicas with prefix routing "
+        "beat one prefill pod and one decode pod at each load, on the H100 and on the A100. At 100% load the TTFT"
+        " p50 was 0.84 seconds, against 4.59. The split still helps a long uncached prompt. But a P/D layout "
+        "needs two pods in each pool: when the one prefill engine restarted, 60 split calls got no endpoint."))
 
     s.append(("scale", "".join([
         strip(["scale"]),
@@ -586,7 +586,7 @@ def slides() -> list[tuple[str, str, str]]:
         "later, so on a spike that is the real reaction time. The capacity value must match the GPU. Now clip 2, "
         "at 8 times speed."))
 
-    cards = [("Whole pods", "for our traffic. Split only long uncached prompts."),
+    cards = [("Colocated replicas", "for our traffic. Split only long uncached prompts."),
              ("A store barrier", "for the hop: completion is not visibility."),
              ("A cap for the ramp", "not only a score."),
              ("GPU values", "from the GPU: the planner capacity and the warm baseline."),
@@ -604,11 +604,11 @@ def slides() -> list[tuple[str, str, str]]:
         '<div style="flex:1"></div>',
         (f'<div style="display:flex;flex-direction:row;justify-content:space-between;align-items:baseline">'
          f'{p("Questions?", 56, DARK_ORANGE, 600)}{p(REPO, 32, DARK_BLUE)}</div>'),
-    ]), "Five things changed in the design because of the data. Two whole pods for our traffic. A store barrier "
-        "for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU. And llm-d must"
-        " apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 KV, "
-        "and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a "
-        "lower split threshold. The GPU time cost 237 dollars. Thank you."))
+    ]), "Five things changed in the design because of the data. Two colocated replicas for our traffic. A store "
+        "barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU. And "
+        "llm-d must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, "
+        "fp8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, "
+        "and a lower split threshold. The GPU time cost 237 dollars. Thank you."))
 
     # ----------------------------------------------------------------------------------------------------------
     # The appendix (for questions only).
@@ -621,7 +621,7 @@ def slides() -> list[tuple[str, str, str]]:
          "It passed all 7 gate tests, with 97.5% correct tool calls.", f"The KV math (slide {num['capacity']})"],
         ["Topology", "1 prefill pod and 1 decode pod. A call splits only at 2,048 or more uncached tokens.",
          "Short or cached calls stay on the decode pod, with no hop. Each pool has its own scale signal.",
-         f"For our traffic, two whole pods were faster (slide {num['topology']})."],
+         f"For our traffic, two colocated replicas were faster (slide {num['topology']})."],
         ["Slices", "None for vLLM. HAMi slices one GPU for SIE and the guard models.",
          "The KV needs all the free HBM. The small models need 52 GB in total.",
          f"The deployment (slide {num['deploy']})"],
@@ -647,22 +647,22 @@ def slides() -> list[tuple[str, str, str]]:
         table(["Item", "Our choice", "Why", "Proof"], design, [11, 29, 35, 25], size=22),
     ]), "For questions only. Each row gives a choice of the cluster design, the reason, and the proof. GPU: why "
         "not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 "
-        "compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper. The "
-        "H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. On "
-        "2026-10-01, no H100 had stock, so one A100 node ran the tests. "
-        "Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two whole "
-        "pods were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets "
-        "its own scale signal. The data showed that most agent calls are short, so for our traffic two whole pods "
-        "win. Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do "
-        "not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, "
-        "and at 24K tokens, about 20 fit. We chose 24, between them. The data showed that 32 is better, and no "
-        "pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda "
-        "nodes had no RDMA. NIXL over TCP took more than 4 seconds. The LMCache server gave a hop TTFT of 0.52 "
-        "to 0.78 seconds. Overflow: only an interactive call that llm-d refused for capacity may leave. A 429 "
-        "never leaves. The overflow was off in all runs, so these calls got a 503. Two boxes: the handout puts "
-        "admit, place, and the queue in the gateway. So llm-d, with its flow control and its scheduler, is in "
-        "the gateway box, and vLLM is the engine box. Scale: we scale the pool that is the limit. Uncached "
-        "prefill tokens grow the prefill pool, and running sequences grow the decode pool."))
+        "compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper. The"
+        " H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node. "
+        "On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it"
+        " passed all 7 gate tests. Topology: why a split, when two colocated replicas were faster? On paper, the "
+        "split keeps long prompts away from the decode steps, and each pool gets its own scale signal. The data "
+        "showed that most agent calls are short, so for our traffic two colocated replicas win. Slices: vLLM gets"
+        " full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and "
+        "decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, and at 24K tokens, about "
+        "20 fit. We chose 24, between them. The data showed that 32 is better, and no pod preempted. Hop: why not"
+        " Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda nodes had no RDMA. NIXL over"
+        " TCP took more than 4 seconds. The LMCache server gave a hop TTFT of 0.52 to 0.78 seconds. Overflow: "
+        "only an interactive call that llm-d refused for capacity may leave. A 429 never leaves. The overflow was"
+        " off in all runs, so these calls got a 503. Two boxes: the handout puts admit, place, and the queue in "
+        "the gateway. So llm-d, with its flow control and its scheduler, is in the gateway box, and vLLM is the "
+        "engine box. Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, "
+        "and running sequences grow the decode pool."))
 
     q1 = [["What is the app? Shared and unique tokens?", "64% of an agent prompt is in the cache", "Envoy logs"],
           ["What dies at guard, admit, place, queue?", "400 prompt_injection, 429 tenant_tokens, 503",
@@ -785,7 +785,8 @@ def slides() -> list[tuple[str, str, str]]:
              "Two or more pods in each pool, and a fallback: if the prefill request fails, the decode pod does the "
              "prefill itself.",
              "mTLS between pods. Our sidecar ran with plain HTTP.",
-             "P/D only where long uncached prompts are common. For our traffic, two whole pods were faster."]
+             "P/D only where long uncached prompts are common. For our traffic, two colocated replicas were "
+             "faster."]
     needs_html = (f'<div style="background:{BOX_BG};border:2px solid {LINE};border-radius:12px;padding:16px 20px;'
                   f'display:flex;flex-direction:column;gap:10px">{p("A production hop needs", 28, INK, 600)}'
                   + "".join(p(f"{i}. {t}", 24, INK) for i, t in enumerate(needs, 1)) + "</div>")

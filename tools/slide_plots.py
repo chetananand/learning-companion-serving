@@ -50,7 +50,7 @@ def _p50(run_id: str, base: Path) -> float | None:
 
 
 def e3(out: Path = OUT, base: Path = proof.METRICS) -> tuple[Path, dict[str, Any]]:
-    """E3 on both GPUs: the interactive TTFT p50 of P/D (layout C) against two whole pods (layout A)."""
+    """E3 on both GPUs: the interactive TTFT p50 of P/D (layout C) against two colocated replicas (layout A)."""
     h100 = [(f"{p}%", f"e3-c-{p}", f"e3-a-{p}") for p in (50, 100, 150)]
     # the A100 loads: 0.15, 0.30, and 0.45 turns each second, shown as turns each minute
     a100 = [("9", "e3-c32-r015", "e3-a32-r015"), ("18", "e3-c32-r030", "e3-a32-r030"),
@@ -64,13 +64,13 @@ def e3(out: Path = OUT, base: Path = proof.METRICS) -> tuple[Path, dict[str, Any
         a = [_p50(ra, base) or 0 for _, _, ra in rows]
         x = list(range(len(rows)))
         _bars(ax, [i - 0.2 for i in x], c, ORANGE, "P/D: 1 prefill + 1 decode pod", fmt="{:.1f} s")
-        _bars(ax, [i + 0.2 for i in x], a, BLUE, "two whole pods", fmt="{:.1f} s")
+        _bars(ax, [i + 0.2 for i in x], a, BLUE, "two colocated replicas", fmt="{:.1f} s")
         ax.set_xticks(x, [r[0] for r in rows])
         ax.set_xlabel(xlabel)
         ax.set_title(title)
         ax.set_ylabel("interactive TTFT p50 (s)")
         ax.grid(axis="y", color=GRID)
-        numbers[title] = {r[0]: {"P/D": cv, "whole": av} for r, cv, av in zip(rows, c, a, strict=True)}
+        numbers[title] = {r[0]: {"P/D": cv, "colocated": av} for r, cv, av in zip(rows, c, a, strict=True)}
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False, bbox_to_anchor=(0.5, 1.08))
     return _save(fig, "e3.png", out), numbers

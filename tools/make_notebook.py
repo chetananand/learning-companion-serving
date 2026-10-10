@@ -147,10 +147,10 @@ EXPERIMENTS = [
     ("E2: the soak and the knee",
      "The soak adds 0.05 scripts each second each minute. The first capacity shed sets RATE100.",
      'print(proof.knee_rate(proof.load_run("e2-soak")))\nshow(proof.soak(proof.load_run("e2-soak")))'),
-    ("E3: layout C (P/D) against layout A (two whole pods)",
+    ("E3: layout C (P/D) against layout A (two colocated replicas)",
      "Layout A was better at each load of the M4 replay. The decode pod of layout C was the bottleneck.",
      'show(proof.ttft_bars([(f"{arm} {p}%", f"e3-{arm.lower()}-{p}") for p in (50, 100, 150) for arm in ("C", "A")],\n'
-     '                     "e3-topology.png", "E3: layout C (P/D) against layout A (two whole pods), M4"))'),
+     '                     "e3-topology.png", "E3: layout C (P/D) against layout A (two colocated replicas), M4"))'),
     ("E3 again on 8 x A100 80 GB (2026-10-01)",
      "No H100 had stock, so E3 ran again on one node with 8 x A100 80 GB. Both layouts had 32 decode sequences. "
      "The levels are scripts each second, lower than on the H100. Layout A had about half of the TTFT p50 of "

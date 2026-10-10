@@ -71,7 +71,7 @@ flowchart TB
 
 ## The main results
 
-- For our app traffic, two whole pods beat one prefill pod and one decode pod at each load (E3). The decode pod was the bottleneck, because few calls split.
+- For our app traffic, two colocated replicas beat one prefill pod and one decode pod at each load (E3). The decode pod was the bottleneck, because few calls split.
 - The split still protects the ITL of the other streams (E5), and short agent steps behind a long retrieve (E14).
 - The LMCache hop with the store barrier took 0.5 to 0.8 s. NIXL between two pods used TCP and took about 4 s (E4).
 - The llm-d flow control sheds at the door. No run preempted a request.
