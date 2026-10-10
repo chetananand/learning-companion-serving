@@ -97,9 +97,22 @@ What limited concurrency on this GPU for this app (H-104): the decode pod. Most 
 
 - GPU (H-43): H100 SXM 80 GB for the engine. A smaller GPU cannot hold the 31B model with room for KV (ADR-004, capacity plan section 7). Node 2 ran on 1 x H100 80 GB, because Lambda had no 2 x A6000 stock. The node 2 GPU pods need 52 GB. On 2026-10-01, no H100 had stock, and one node with 8 x A100 80 GB ran all pods (ADR-005, revision 2, and its A100 addendum). The node 2 GPU pods shared one GPU (HAMi binpack). Each engine pod asked for 100% of one GPU.
 - Model (H-44): `RedHatAI/gemma-4-31B-it-FP8-dynamic` (ADR-003). Gate G1 passed: tool calls 97.5%, TTFT median 0.90 s, ITL p50 18.2 ms and p95 20.5 ms.
+
+| Gate G1 test (2026-09-29) | Pass rule | Gemma 4 31B FP8 |
+|---|---|---|
+| Tool calls: 40 calls from our agent | 95% or more valid calls with correct arguments | 39 of 40 (97.5%) |
+| Warm TTFT, one 8K prompt | 1.0 s or less | 0.90 s (median) |
+| Decode speed, 8 calls at the same time | ITL p95 at most 40 ms | p50 18.2 ms, p95 20.5 ms |
+| Prefix cache, 2,000 calls with shared prefixes | no NaN or empty answers, hit ratio 60% or more | 0 bad answers, hit ratio 84.5% |
+| P/D split, one call | a correct answer | yes: the decode pod loaded 8,448 of 8,500 prompt tokens |
+| CPU tier: a prefix that left the GPU comes back from LMCache | more LMCache hits, lower TTFT than a cold prefill | yes |
+| CPU tier after a pod restart | the first call hits the CPU tier | yes |
+
+The rule of the gate: the challenger (Muse Glimmer 30B) replaces Gemma 4 only if Gemma 4 fails a test that the challenger passes. Gemma 4 failed none. The first judge of the prefix test marked 4 answers as bad for the word NaN, which came from our own notes in the prompt. A fixed rule found 0 bad answers (`metrics/g1-solo-20260929T174911Z/prefix-rejudged.md`).
+
 - Topology (H-45): ADR-005, option C: one prefill pod and one decode pod, each with a full GPU, TP 1, and no HAMi. The llm-d `prefix-based-pd-decider` splits a request when 2,048 or more of its tokens are not cached (`control/router/policy.yaml:19` and `:20`). E3 shows that layout A is better for our traffic (see "What the data changed").
 - Concurrency (H-46): decode `--max-num-seqs=24`, prefill `--max-num-seqs=8`, and `--max-model-len=32768` on both pods (`cluster/manifests/base/engine/`).
-- Hop backend (H-47): the LMCache server, with our name `lmcache` (ADR-002, revisions 2 and 3). The prefill pod stores a copy of the KV in the LMCache server (CPU RAM), and the decode pod loads it. The store barrier (`control/barrier/proxy.py`) holds the prefill answer until the store ends.
+- Hop backend (H-47): the LMCache server, with our name `lmcache` (ADR-002, revisions 2 and 3). Why not Mooncake (DEBATE-LOG, 2026-09-27): it had no Gemma 4 test, and it uses RDMA by default. Our Lambda nodes have no RDMA. Mooncake Store also needs a master service, and we had no time for a test. The prefill pod stores a copy of the KV in the LMCache server (CPU RAM), and the decode pod loads it. The store barrier (`control/barrier/proxy.py`) holds the prefill answer until the store ends.
 - Overflow (H-48): the Superlinked hosted API, model `qwen3.8-27b` (or `Qwen/Qwen3.5-4B`). The limiter (Redis): 20 requests and 60,000 tokens each minute, 4 in flight, and 15 USD each day (ADR-008).
 - Two workers (H-49): the pods `vllm-prefill` and `vllm-decode` (`metrics/t2-20260930T022105Z/pods.txt`).
 - The gateway and the engine (H-50 to H-52): our gateway is admission control + routing. It is `edge`, the Envoy AI Gateway (Agent Router), and llm-d. The handout puts admit, place, and the queue in the gateway. `edge` and the Envoy AI Gateway admit. The llm-d flow control is the last admit check, and it holds the queue. The llm-d scheduler decides where. The engine is vLLM, with its waiting queue, block table, preemption, and kernels.

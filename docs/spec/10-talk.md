@@ -49,16 +49,16 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 1 | `cover` | A learning companion on a scarce GPU | - | 0:13 |
 | 2 | `intro` | The app: a learning companion over my bookmarks | the flow of one user turn, clip 1 | 0:38 and 0:27 |
 | 3 | `arch` | The path of one LLM call | a flow in the Mermaid style: each box says what it decides or does, each arrow what moves (`tools/arch_diagram.py`) | 2:03 |
-| 4 | `models` | The models, and the job of each | a table: the job, the model, and where it runs | 0:24 |
+| 4 | `models` | The models, and the job of each | a table: the job, the model, and where it runs | 1:10 |
 | 5 | `search` | The bookmark search: ingest once, then search in each turn | two flows: the ingest and the search | 1:13 |
 | 6 | `capacity` | KV on paper: bytes for each token, and how many sequences fit | a table: the KV of one sequence and the max sequences at three lengths, and the KV cache that vLLM measured | 0:39 |
 | 7 | `deploy` | The deployment: two nodes, and an A100 fallback | Dashboard 1, Cluster: GPU use | 0:40 |
-| 8 | `design` | The cluster design: each choice, its reason, and the proof | a table: each choice, its reason, and the proof | 2:36 |
+| 8 | `design` | The cluster design: each choice, its reason, and the proof | a table: each choice, its reason, and the proof | 2:53 |
 | 9 | `app` | What the app sends: short agent steps with a cached prefix | the token table, with a key | 0:44 |
 | 10 | `guard` | Guard and stay or leave happen before any GPU work | Dashboard 3: guard rejects. Dashboard 2: the leave gate. | 1:07 |
 | 11 | `admit` | Admit: we refuse work at the door, not in the engine | Dashboard 3: tenant rejects in the tenant test | 1:44 |
 | 12 | `place` | Place: prefix match first, then load | Dashboard 4: P/D decisions. Dashboard 5: queue depth for each pod. | 0:35 |
-| 13 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 2:22 |
+| 13 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 3:43 |
 | 14 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
 | 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 16 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
@@ -67,7 +67,7 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 19 | `questions-2` | The handout questions: our answers and the evidence (2 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
 | 20 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 24 minutes 8 seconds of notes and 61 seconds of clips, so 25 minutes 9 seconds.
+Total: 26 minutes 33 seconds of notes and 61 seconds of clips, so 27 minutes 34 seconds.
 
 The appendix has 11 slides, in the order of the handout parts. First come place, queue, hop and warmth, the two hop slides, the scale test chart, and the traps of the handout. Then the evidence: a raw scrape, the faults, the demo check, and the cost.
 

@@ -26,7 +26,11 @@ In our mode, the KV goes through the LMCache server.
 
 ### 4. The models, and the job of each
 
-These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM. It fits one H100, and it passed all 7 of our gate tests, with 97.5% correct tool calls. Small models do the rest: two guard models, and the search and OCR models in SIE.
+These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM. It fits one H100, and it passed all 7 of our gate tests on 2026-09-29. Tool calls from our agent: 39 of 40 correct, so 97.5%. The TTFT of one 8K prompt: 0.90 seconds.
+
+The time between tokens with 8 calls at the same time: 20.5 milliseconds at p95. The prefix cache with 2,000 calls: no bad answer, and a hit ratio of 84.5%. One P/D split call: the decode pod loaded 8,448 of 8,500 prompt tokens. The CPU tier: a prefix came back from LMCache, also after a pod restart. The rule of the gate: the challenger, Muse Glimmer 30B, replaces Gemma 4 only if Gemma 4 fails a test that the challenger passes.
+
+Gemma 4 failed none. Small models do the rest: two guard models, and the search and OCR models in SIE.
 
 ### 5. The bookmark search: ingest once, then search in each turn
 
@@ -52,15 +56,15 @@ On 2026-10-01 no H100 had stock, so one node with eight A100 GPUs ran all pods.
 
 Each row gives a choice of the cluster design, the reason, and the proof. GPU: why not a cheaper GPU? An A6000 holds the weights, but it leaves only 6.8 GiB for KV, and it has no FP8 compute. An A100 has no FP8 compute either, so the prefill of 8K tokens takes 3.95 seconds on paper. The H100 SXM is the smallest GPU that meets the TTFT goal, and it gives two GPUs with NVLink on one node.
 
-On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it passed all 7 gate tests. Topology: why a split, when two colocated replicas were faster? On paper, the split keeps long prompts away from the decode steps, and each pool gets its own scale signal. The data showed that most agent calls are short, so for our traffic two colocated replicas win.
+On 2026-10-01, no H100 had stock, so one A100 node ran the tests. Model: we kept Gemma 4 31B, because it passed all 7 gate tests. They test tool calls, TTFT, decode speed, the prefix cache, a P/D split, and the CPU tier, also after a restart. The challenger replaces it only if Gemma 4 fails a test that the challenger passes. Topology: why a split, when two colocated replicas were faster?
 
-Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and decode on one sliced GPU. Concurrency: why 24? At 8K tokens, 32 sequences fit, and at 24K tokens, about 20 fit. We chose 24, between them.
+On paper, the split keeps long prompts away from the decode steps, and each pool gets its own scale signal. The data showed that most agent calls are short, so for our traffic two colocated replicas win. Slices: vLLM gets full GPUs, because the KV needs all the free HBM. The course notes also say: do not split prefill and decode on one sliced GPU. Concurrency: why 24?
 
-The data showed that 32 is better, and no pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda nodes had no RDMA. NIXL over TCP took more than 4 seconds. The LMCache server gave a hop TTFT of 0.52 to 0.78 seconds.
+At 8K tokens, 32 sequences fit, and at 24K tokens, about 20 fit. We chose 24, between them. The data showed that 32 is better, and no pod preempted. Hop: why not Mooncake? The handout names it, but it had no Gemma 4 test, and our Lambda nodes had no RDMA.
 
-Overflow: only an interactive call that llm-d refused for capacity may leave. A 429 never leaves. The overflow was off in all runs, so these calls got a 503. Two boxes: the handout puts admit, place, and the queue in the gateway. So llm-d, with its flow control and its scheduler, is in the gateway box, and vLLM is the engine box.
+NIXL over TCP took more than 4 seconds. The LMCache server gave a hop TTFT of 0.52 to 0.78 seconds. Overflow: only an interactive call that llm-d refused for capacity may leave. A 429 never leaves. The overflow was off in all runs, so these calls got a 503.
 
-Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, and running sequences grow the decode pool.
+Two boxes: the handout puts admit, place, and the queue in the gateway. So llm-d, with its flow control and its scheduler, is in the gateway box, and vLLM is the engine box. Scale: we scale the pool that is the limit. Uncached prefill tokens grow the prefill pool, and running sequences grow the decode pool.
 
 ### 9. What the app sends: short agent steps with a cached prefix
 
@@ -96,9 +100,15 @@ Stop five is the hop. The llm-d scheduler splits a request only when 2,048 or mo
 
 The decode pod does not use this token: it writes the whole answer itself. Who does what in the hop: the llm-d scheduler decides if a call hops, with the P/D decider, and it picks the prefill pod. The llm-d routing sidecar in the decode pod runs the steps: first the prompt to the prefill pod, then the request to its own vLLM. The LMCache connector inside each vLLM moves the KV bytes: the prefill vLLM stores a copy of the KV, and the decode vLLM loads it. The LMCache server holds the copy in CPU RAM on the node.
 
-Our store barrier in the prefill pod waits until LMCache has stored the copy. Our hop script records each hop from the Envoy log. The connector moves the bytes through CUDA IPC, so this hop works only inside one node. The barrier finds the prefill request by its shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, against about 4 seconds for NIXL over TCP.
+Our store barrier in the prefill pod waits until LMCache has stored the copy. Our hop script records each hop from the Envoy log. The connector moves the bytes through CUDA IPC, so this hop works only inside one node. Why LMCache and not Mooncake? We decided on 2026-09-27, for four reasons.
 
-If someone asks if this is production quality: the one-token request is, and the barrier is not. Under load on the A100 node, the barrier hit its half-second cap on 72% to 99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, and two or more pods in each pool.
+First, Gemma 4 has full-attention layers and sliding-window layers, so vLLM keeps two kinds of KV. The LMCache connector supports this, and LMCache tested Gemma 4 31B with it. Mooncake had no Gemma 4 test. Second, Mooncake uses RDMA by default, and our Lambda nodes have no RDMA. Over TCP, a KV load can be slower than a new prefill: NIXL over TCP took about 4 seconds.
+
+Third, Mooncake Store needs a master service and its own config. LMCache is one server on each GPU node, and all pods on the node share it. Fourth, we had no time for a Mooncake test. LMCache had a cost: it keeps the sliding-window layers in full. That is about 865 KB for each token, against about 237 KB in the GPU cache, so we raised its cap to 250 GiB.
+
+In production, with RDMA between nodes, Mooncake or NIXL is the right medium for a hop across nodes. LMCache can also use Mooncake Store as a backend. The barrier finds the prefill request by its shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, against about 4 seconds for NIXL over TCP. If someone asks if this is production quality: the one-token request is, and the barrier is not.
+
+Under load on the A100 node, the barrier hit its half-second cap on 72% to 99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, and two or more pods in each pool.
 
 ### 14. A pod with its weights on the GPU is not warm yet
 
