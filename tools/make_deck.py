@@ -498,14 +498,18 @@ def slides() -> list[tuple[str, str, str]]:
         " in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. "
         "There is no vLLM request for a prefill only, and one token is the smallest request. The pass that "
         "computes the KV of the prompt also gives this token, so it costs almost nothing. The decode pod does not"
-        " use this token: it writes the whole answer itself. The LMCache connector in vLLM copies the KV chunks "
-        "to the LMCache server in CPU RAM, and the decode pod loads them. Our code only records the hop, and the "
-        "store barrier holds the prefill answer until the store ends. The barrier finds the prefill request by "
-        "its shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, "
-        "against about 4 seconds for NIXL over TCP. If someone asks if this is production quality: the one-token "
-        "request is, and the barrier is not. Under load on the A100 node, the barrier hit its half-second cap on "
-        "72% to 99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, "
-        "and two or more pods in each pool."))
+        " use this token: it writes the whole answer itself. Who does what in the hop: the llm-d scheduler "
+        "decides if a call hops, with the P/D decider, and it picks the prefill pod. The llm-d routing sidecar in"
+        " the decode pod runs the steps: first the prompt to the prefill pod, then the request to its own vLLM. "
+        "The LMCache connector inside each vLLM moves the KV bytes: the prefill vLLM stores a copy of the KV, and"
+        " the decode vLLM loads it. The LMCache server holds the copy in CPU RAM on the node. Our store barrier "
+        "in the prefill pod waits until LMCache has stored the copy. Our hop script records each hop from the "
+        "Envoy log. The connector moves the bytes through CUDA IPC, so this hop works only inside one node. The "
+        "barrier finds the prefill request by its shape: one token and no stream. In the hop test, the first "
+        "token came in 0.52 to 0.78 seconds, against about 4 seconds for NIXL over TCP. If someone asks if this "
+        "is production quality: the one-token request is, and the barrier is not. Under load on the A100 node, "
+        "the barrier hit its half-second cap on 72% to 99% of split calls. A production hop needs a store signal "
+        "for each request, RDMA between nodes, and two or more pods in each pool."))
 
     s.append(("warm", "".join([
         strip(["warm"]),

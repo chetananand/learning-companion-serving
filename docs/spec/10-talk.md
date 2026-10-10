@@ -58,7 +58,7 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 10 | `guard` | Guard and stay or leave happen before any GPU work | Dashboard 3: guard rejects. Dashboard 2: the leave gate. | 1:07 |
 | 11 | `admit` | Admit: we refuse work at the door, not in the engine | Dashboard 3: tenant rejects in the tenant test | 1:44 |
 | 12 | `place` | Place: prefix match first, then load | Dashboard 4: P/D decisions. Dashboard 5: queue depth for each pod. | 0:35 |
-| 13 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 1:42 |
+| 13 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 2:22 |
 | 14 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
 | 15 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
 | 16 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
@@ -67,7 +67,7 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 19 | `questions-2` | The handout questions: our answers and the evidence (2 of 2) | a table: the question, our answer, and a file or a scrape | 2:53 |
 | 20 | `changed` | What the data changed in our design | - | 0:41 |
 
-Total: 23 minutes 28 seconds of notes and 61 seconds of clips, so 24 minutes 29 seconds.
+Total: 24 minutes 8 seconds of notes and 61 seconds of clips, so 25 minutes 9 seconds.
 
 The appendix has 11 slides, in the order of the handout parts. First come place, queue, hop and warmth, the two hop slides, the scale test chart, and the traps of the handout. Then the evidence: a raw scrape, the faults, the demo check, and the cost.
 
