@@ -59,10 +59,10 @@ The time of each slide comes from the words of its notes, at 130 words each minu
 | 11 | `place` | Place: prefix match first, then load | Dashboard 4: P/D decisions. Dashboard 5: queue depth for each pod. | 0:35 |
 | 12 | `hop` | The hop: the KV moves through the LMCache server | Dashboard 7: LMCache lookups, and one hop record | 1:42 |
 | 13 | `warm` | A pod with its weights on the GPU is not warm yet | the restart test chart | 0:39 |
-| 14 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:32 |
+| 14 | `hypothesis` | The decode pod was the limit, not prefill compute | Dashboard 6: prompt tokens each second | 0:33 |
 | 15 | `topology` | For our traffic, two whole pods beat a P/D split | the layout test chart | 0:36 |
 | 16 | `scale` | Scale: the planner names the pool | Dashboard 8: desired against actual replicas, clip 2 | 0:47 and 0:34 |
-| 17 | `changed` | What the data changed in our design | - | 0:42 |
+| 17 | `changed` | What the data changed in our design | - | 0:41 |
 
 Total: 14 minutes 46 seconds of notes and 61 seconds of clips, so 15 minutes 47 seconds. The appendix has 10 slides. Two slides hold the 14 questions of Part 8. The others hold a raw scrape, the faults, the demo check, the Part 5 answers, the cost, the E4 chart, and the scale test chart. The last one shows the hop at production scale: what we keep and what we change.
 
@@ -81,6 +81,8 @@ Slide 6 also shows the KV cache that vLLM gave the decode pod, and the effect of
 The admit slide has a box: "Redis holds the tenant counts. The queue is in the flow control of llm-d. Flow control is the admit part of llm-d." Redis is not a queue. The notes of the guard slide say that edge keeps each guard verdict in Redis for 1 hour, and that Redis holds the overflow limits. The notes of the admit slide give the four jobs of Redis and the two priority bands of the llm-d queue.
 
 The llm-d box of the architecture diagram shows the two jobs of llm-d. Its flow control is the last admit check: it holds a call while the pods are full. Its scheduler decides where the call goes. The diagram, its notes, and the admit slide say "llm-d", not "the router". The README diagram shows the same two jobs.
+
+All slides and notes now say "llm-d", not "the router". Where the job matters, they say "the llm-d flow control" (admit) or "the llm-d scheduler" (where). Only the file paths in `control/router/` and the handout name "Dashboard 4 · Router" keep the word. Appendix A1 names the Envoy AI Gateway, not the Agent Router.
 
 Two checks run before each publish. The STE lint checks all slide text and notes (0 errors, 0 warnings). A number check finds each number of a slide in the report, or in a file that the slide names.
 

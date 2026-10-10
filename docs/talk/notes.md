@@ -72,11 +72,11 @@ The queue has two priority bands with a time limit: 10 seconds for an interactiv
 
 ### 11. Place: prefix match first, then load
 
-Stop four is place. The router scores each pod: the prefix match counts most, then the session, the queue depth, the KV use, and the ramp. A pod with metrics older than 2 seconds counts as full. In the stale-metrics test, a frozen copy of the metrics of an empty pod pulled 80% of the work to that pod. And after a cache clear, the router still sent the warm sessions to the cleared pod.
+Stop four is place. The llm-d scheduler scores each pod: the prefix match counts most, then the session, the queue depth, the KV use, and the ramp. A pod with metrics older than 2 seconds counts as full. In the stale-metrics test, a frozen copy of the metrics of an empty pod pulled 80% of the work to that pod. And after a cache clear, llm-d still sent the warm sessions to the cleared pod.
 
 ### 12. The hop: the KV moves through the LMCache server
 
-Stop five is the hop. The router splits a request only when 2,048 or more of its tokens are not in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. There is no vLLM request for a prefill only, and one token is the smallest request. The pass that computes the KV of the prompt also gives this token, so it costs almost nothing.
+Stop five is the hop. The llm-d scheduler splits a request only when 2,048 or more of its tokens are not in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. There is no vLLM request for a prefill only, and one token is the smallest request. The pass that computes the KV of the prompt also gives this token, so it costs almost nothing.
 
 The decode pod does not use this token: it writes the whole answer itself. The LMCache connector in vLLM copies the KV chunks to the LMCache server in CPU RAM, and the decode pod loads them. Our code only records the hop, and the store barrier holds the prefill answer until the store ends. The barrier finds the prefill request by its shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, against about 4 seconds for NIXL over TCP.
 
@@ -92,7 +92,7 @@ In the restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 second
 
 The handout asked which limit we expected first. We expected prefill compute for the RAG traffic and KV blocks for the agents. The answer: partly right. The decode pod was the limit. Most agent calls have fewer than 2,048 new tokens.
 
-The router does not split them, so the decode pod runs their prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550.
+The llm-d scheduler does not split them, so the decode pod runs their prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550.
 
 ### 15. For our traffic, two whole pods beat a P/D split
 
@@ -108,7 +108,7 @@ In the scale test, KEDA made the new pod 15 seconds after the request, in both p
 
 Five things changed in the design because of the data. Two whole pods for our traffic. A store barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU.
 
-And the router must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a lower split threshold. The GPU time cost 237 dollars. Thank you.
+And llm-d must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a lower split threshold. The GPU time cost 237 dollars. Thank you.
 
 ## Appendix (for questions only)
 

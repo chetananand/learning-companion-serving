@@ -201,7 +201,7 @@ def slides() -> list[tuple[str, str, str]]:
         f'<h1 style="font-size:88px;font-weight:600;line-height:1.05;color:{DARK_TEXT};letter-spacing:-1px">'
         "A learning companion on a scarce GPU</h1>",
         p("An agentic RAG app on our own vLLM cluster on Lambda GPUs. Admission control decides what enters, and "
-          "the router decides where it goes. vLLM runs the model.", 32, DARK_SOFT),
+          "llm-d decides where it goes. vLLM runs the model.", 32, DARK_SOFT),
         '<div style="flex:1"></div>',
         p("Chetan Anand", 32, DARK_TEXT, 600),
         p("2026-10-10", 24, DARK_SOFT),
@@ -339,7 +339,7 @@ def slides() -> list[tuple[str, str, str]]:
                     "vllm-prefill on GPU 0 and vllm-decode on GPU 1, each on a full GPU. The LMCache server: up to "
                     "250 GiB of the 450 GiB of CPU RAM."),
             callout("Node 2 · 1 × H100 80 GB · control and data",
-                    "HAMi slices of one GPU for the SIE and guard models. edge, guard, Envoy, the router, the app, "
+                    "HAMi slices of one GPU for the SIE and guard models. edge, guard, Envoy, llm-d, the app, "
                     "Qdrant, Redis, Prometheus, Grafana, and KEDA."),
             callout("2026-10-01 · one node · 8 × A100 80 GB",
                     "No H100 had stock. HAMi on all GPUs: each engine pod gets a full GPU, and the node 2 pods share "
@@ -448,18 +448,18 @@ def slides() -> list[tuple[str, str, str]]:
                      "at 100% load. We measured its share of the work."),
             proof("80% of the work", "went to that pod. With real metrics, it got 51%."),
             callout("What the data changed",
-                    "We cleared the prefix cache of one pod in a run. The router did not act on the clear, and "
-                    "all 15 warm sessions went to that pod again and missed the cache once."),
+                    "We cleared the prefix cache of one pod in a run. The llm-d scheduler did not act on the "
+                    "clear, and all 15 warm sessions went to that pod again and missed the cache once."),
         ], [
             image("pd", "Grafana panel: P/D decisions, decode-only and prefill-decode",
                   "Dashboard 4 · Router: the decision for each call at 150% load: decode only, or split", 680),
             image("queues", "Grafana panel: queue depth for each pod",
                   "Dashboard 5 · Queue depth by pod: decode up to 47, prefill up to 2", 680),
         ]),
-    ]), "Stop four is place. The router scores each pod: the prefix match counts most, then the session, the "
-        "queue depth, the KV use, and the ramp. A pod with metrics older than 2 seconds counts as full. In the "
-        "stale-metrics test, a frozen copy of the metrics of an empty pod pulled 80% of the work to that pod. And"
-        " after a cache clear, the router still sent the warm sessions to the cleared pod."))
+    ]), "Stop four is place. The llm-d scheduler scores each pod: the prefix match counts most, then the session,"
+        " the queue depth, the KV use, and the ramp. A pod with metrics older than 2 seconds counts as full. In "
+        "the stale-metrics test, a frozen copy of the metrics of an empty pod pulled 80% of the work to that pod."
+        " And after a cache clear, llm-d still sent the warm sessions to the cleared pod."))
 
     s.append(("hop", "".join([
         strip(["hop"]),
@@ -486,18 +486,18 @@ def slides() -> list[tuple[str, str, str]]:
             p("6,400 tokens are 25 full chunks of 256. The decode pod computes the KV of only the last 224 tokens.", 24,
               SOFT),
         ]),
-    ]), "Stop five is the hop. The router splits a request only when 2,048 or more of its tokens are not in a "
-        "cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. There is"
-        " no vLLM request for a prefill only, and one token is the smallest request. The pass that computes the "
-        "KV of the prompt also gives this token, so it costs almost nothing. The decode pod does not use this "
-        "token: it writes the whole answer itself. The LMCache connector in vLLM copies the KV chunks to the "
-        "LMCache server in CPU RAM, and the decode pod loads them. Our code only records the hop, and the store "
-        "barrier holds the prefill answer until the store ends. The barrier finds the prefill request by its "
-        "shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, against "
-        "about 4 seconds for NIXL over TCP. If someone asks if this is production quality: the one-token request "
-        "is, and the barrier is not. Under load on the A100 node, the barrier hit its half-second cap on 72% to "
-        "99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, and two "
-        "or more pods in each pool."))
+    ]), "Stop five is the hop. The llm-d scheduler splits a request only when 2,048 or more of its tokens are not"
+        " in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. "
+        "There is no vLLM request for a prefill only, and one token is the smallest request. The pass that "
+        "computes the KV of the prompt also gives this token, so it costs almost nothing. The decode pod does not"
+        " use this token: it writes the whole answer itself. The LMCache connector in vLLM copies the KV chunks "
+        "to the LMCache server in CPU RAM, and the decode pod loads them. Our code only records the hop, and the "
+        "store barrier holds the prefill answer until the store ends. The barrier finds the prefill request by "
+        "its shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, "
+        "against about 4 seconds for NIXL over TCP. If someone asks if this is production quality: the one-token "
+        "request is, and the barrier is not. Under load on the A100 node, the barrier hit its half-second cap on "
+        "72% to 99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, "
+        "and two or more pods in each pool."))
 
     s.append(("warm", "".join([
         strip(["warm"]),
@@ -525,7 +525,7 @@ def slides() -> list[tuple[str, str, str]]:
         two_columns([
             table(["What we expected first", "Result"], [
                 ["RAG: prefill compute", "Partly. Only for long prompts."],
-                ["Agents: KV blocks", "Partly. The router held KV at 90%."],
+                ["Agents: KV blocks", "Partly. The llm-d flow control held KV at 90%."],
                 ["Not the weights", "Right. 30.4 of 71.7 GiB."],
                 ["Not the interconnect", "Right for LMCache. Wrong for NIXL over TCP."],
                 ["Not the scheduler", "Wrong. The decode queue held 50 requests."],
@@ -538,8 +538,8 @@ def slides() -> list[tuple[str, str, str]]:
         ], left_w=760),
     ]), "The handout asked which limit we expected first. We expected prefill compute for the RAG traffic and KV "
         "blocks for the agents. The answer: partly right. The decode pod was the limit. Most agent calls have "
-        "fewer than 2,048 new tokens. The router does not split them, so the decode pod runs their prefill too. "
-        "At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550."))
+        "fewer than 2,048 new tokens. The llm-d scheduler does not split them, so the decode pod runs their "
+        "prefill too. At 100% load it processed 16,200 prompt tokens each second, and the prefill pod 4,550."))
 
     s.append(("topology", "".join([
         title("For our traffic, two whole pods beat a P/D split"),
@@ -590,7 +590,7 @@ def slides() -> list[tuple[str, str, str]]:
              ("A store barrier", "for the hop: completion is not visibility."),
              ("A cap for the ramp", "not only a score."),
              ("GPU values", "from the GPU: the planner capacity and the warm baseline."),
-             ("Apply a cache clear", "in the router, or each warm session misses the cache once.")]
+             ("Apply a cache clear", "in llm-d, or each warm session misses the cache once.")]
     card_html = "".join(
         f'<div style="flex:1;background:#2A3039;border-radius:14px;padding:18px 20px;display:flex;'
         f'flex-direction:column;gap:6px">{p(a, 28, DARK_BLUE, 600)}{p(b, 24, DARK_SOFT)}</div>' for a, b in cards)
@@ -605,10 +605,10 @@ def slides() -> list[tuple[str, str, str]]:
         (f'<div style="display:flex;flex-direction:row;justify-content:space-between;align-items:baseline">'
          f'{p("Questions?", 56, DARK_ORANGE, 600)}{p(REPO, 32, DARK_BLUE)}</div>'),
     ]), "Five things changed in the design because of the data. Two whole pods for our traffic. A store barrier "
-        "for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU. And the router"
-        " must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 "
-        "KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a"
-        " lower split threshold. The GPU time cost 237 dollars. Thank you."))
+        "for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU. And llm-d must"
+        " apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 KV, "
+        "and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a "
+        "lower split threshold. The GPU time cost 237 dollars. Thank you."))
 
     # ----------------------------------------------------------------------------------------------------------
     # The appendix (for questions only).
@@ -616,9 +616,9 @@ def slides() -> list[tuple[str, str, str]]:
           ["What dies at guard, admit, place, queue?", "400 prompt_injection, 429 tenant_tokens, 503",
            "docs/results.md"],
           ["Where do we stop work that will time out?", "band time limits: 10 s and 120 s", "policy.yaml:45"],
-          ["Where do we protect KV?", "the router stops the dispatch at 90%", "policy.yaml:57"],
+          ["Where do we protect KV?", "llm-d flow control holds the calls at 90% KV use", "policy.yaml:57"],
           ["Where do we give priority to interactive?", "priority bands, holdback policy", "policy.yaml:47"],
-          ["Where do we stop one tenant?", "Agent Router token windows", "policy.yaml:61"],
+          ["Where do we stop one tenant?", "Envoy AI Gateway token windows", "policy.yaml:61"],
           ["Where do we hop? What is not copied?", "2,048+ uncached tokens, and the last part chunk", "hops.jsonl"]]
     q2 = [["Where do we evict? What becomes a ghost?", "vLLM and LMCache evict, and a cleared prefix",
            "ghost_probe.py"],
@@ -741,8 +741,8 @@ def slides() -> list[tuple[str, str, str]]:
         p("Appendix", 24, ORANGE_TEXT, 600),
         title("The hop at production scale: what we keep, what we change"),
         two_columns([
-            callout("Keep", "The router decides, and the sidecar runs the two steps. The one-token prefill request: "
-                    "the smallest vLLM request that runs a full prefill."),
+            callout("Keep", "The llm-d scheduler decides, and the sidecar runs the two steps. The one-token prefill "
+                    "request: the smallest vLLM request that runs a full prefill."),
             measured("The store barrier on the A100 node, under load. It waits for every store that LMCache had at "
                      "that time, with a cap of 0.5 s."),
             table(["When", "Holds", "Hit the 0.5 s cap"],
