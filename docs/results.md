@@ -49,7 +49,7 @@ The load levels come from E2: 100% load is RATE100, 0.9 scripts each second. TTF
 
 ## E3 Latency: TTFT and ITL against SLO-1 and SLO-2 (H100)
 
-TTFT: the time to the first token that the app saw, for all interactive calls. ITL: the p95 of each minute on the pod `vllm-decode` (`vllm:inter_token_latency_seconds`), with the median and the maximum of these values over the run. SLO-1: TTFT p95 at most 1.5 s for prompts up to 8K tokens. SLO-2: ITL p95 at most 50 ms. One call at a time (Gate G1): TTFT 0.90 s (median), ITL p95 20.5 ms.
+TTFT: the time to the first token that the app saw, for the streaming interactive calls. ITL: the p95 of each minute on the pod `vllm-decode` (`vllm:inter_token_latency_seconds`), with the median and the maximum of these values over the run. SLO-1: TTFT p95 at most 1.5 s for prompts up to 8K tokens. SLO-2: ITL p95 at most 50 ms. One call at a time (Gate G1): TTFT 0.90 s (median), ITL p95 20.5 ms.
 
 | Layout and load | Run | TTFT p50 (s) | TTFT p95 (s) | ITL p95, median (ms) | ITL p95, max (ms) |
 |---|---|---|---|---|---|
@@ -73,18 +73,18 @@ The same streaming interactive calls at the client (the first answer token) and 
 | P/D, 150% | `e3-c-150` | 416 | 21.45 | 21.34 | 16.90 | 9.53 |
 | two colocated replicas, 150% | `e3-a-150` | 480 | 21.10 | 20.79 | 9.60 | 8.28 |
 
-## E3 The time between tokens at the client and in the engine (H100)
+## E3 TPOT at the client, and the time between tokens in the engine (H100)
 
-The client: for each streaming call, the time from the first token to the last token, divided by the output tokens minus 1. The table gives the median over the calls. The engine mean: the running sequences of the pod `vllm-decode`, divided by its generated tokens each second. The table gives the median over the run. This value also counts the calls that are still in prefill, so it reads a little high under heavy load.
+The client TPOT is the time per output token of each streaming call. It is the time from the first token to the last token, divided by the output tokens minus 1. The table gives its p50 and its p95 over the calls. The engine mean: the running sequences of the pod `vllm-decode`, divided by its generated tokens each second. The table gives the median over the run. This value also counts the calls that are still in prefill, so it reads a little high under heavy load.
 
-| Layout and load | Run | Streaming calls | Client mean time each token (ms) | Engine mean time each token (ms) | Engine ITL p95 (ms) |
-|---|---|---|---|---|---|
-| P/D, 50% | `e3-c-50` | 172 | 32 | 31 | 84 |
-| two colocated replicas, 50% | `e3-a-50` | 181 | 25 | 28 | 36 |
-| P/D, 100% | `e3-c-100` | 333 | 48 | 52 | 192 |
-| two colocated replicas, 100% | `e3-a-100` | 342 | 38 | 38 | 50 |
-| P/D, 150% | `e3-c-150` | 416 | 51 | 54 | 206 |
-| two colocated replicas, 150% | `e3-a-150` | 480 | 41 | 51 | 129 |
+| Layout and load | Run | Streaming calls | Client TPOT p50 (ms) | Client TPOT p95 (ms) | Engine mean time each token (ms) | Engine ITL p95 (ms) |
+|---|---|---|---|---|---|---|
+| P/D, 50% | `e3-c-50` | 172 | 32 | 40 | 31 | 84 |
+| two colocated replicas, 50% | `e3-a-50` | 181 | 25 | 33 | 28 | 36 |
+| P/D, 100% | `e3-c-100` | 333 | 48 | 58 | 52 | 192 |
+| two colocated replicas, 100% | `e3-a-100` | 342 | 38 | 58 | 38 | 50 |
+| P/D, 150% | `e3-c-150` | 416 | 51 | 63 | 54 | 206 |
+| two colocated replicas, 150% | `e3-a-150` | 480 | 41 | 53 | 51 | 129 |
 
 ## E4 The hop: LMCache server against NIXL
 

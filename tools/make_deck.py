@@ -626,8 +626,8 @@ def slides() -> list[tuple[str, str, str]]:
         title("TTFT and ITL: P/D missed both SLOs at each load"),
         two_columns([
             measured("The same recorded app traffic on the two layouts: P/D, and two colocated replicas. TTFT: what "
-                     "the app saw, for all interactive calls. ITL: the p95 of each minute on the decode pod, the "
-                     "median over the run."),
+                     "the app saw, for the streaming calls (the answers). ITL: the p95 of each minute on the decode "
+                     "pod, the median over the run."),
             table(["Load", "TTFT p95, P/D", "TTFT p95, colocated", "ITL p95, P/D", "ITL p95, colocated"], [
                 ["50%", "2.04 s", "1.05 s", "84 ms", "36 ms"],
                 ["100%", "15.95 s", "1.57 s", "192 ms", "50 ms"],
@@ -635,6 +635,8 @@ def slides() -> list[tuple[str, str, str]]:
                 ["SLO", "1.5 s", "1.5 s", "50 ms", "50 ms"],
             ], [16, 21, 21, 21, 21], size=22),
             p("One call at a time, in the gate test: TTFT 0.90 s, and ITL p95 20.5 ms.", 22),
+            p("TPOT at the client, the p50 of the calls: P/D 32 to 51 ms, colocated 25 to 41 ms. The "
+              "engine has the same means.", 22),
             callout("Why the ITL of P/D is high", "Most calls do not split, so the decode pod also computes their "
                     "prompts. These prefill chunks share each step with the decode streams."),
         ], [
@@ -656,9 +658,16 @@ def slides() -> list[tuple[str, str, str]]:
         "carries prefill chunks next to the decode streams, and each stream waits longer for its next token. The "
         "split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for"
         " an 8K prompt. The TTFT that the app saw also includes the wait in our queue. We measure the ITL at the "
-        "engine. A check at the client agrees. The mean time for each output token of a streaming call was the "
-        "same as in the engine. With two colocated replicas at 100% load, both were 38 milliseconds. So edge and "
-        "Envoy add no time between tokens. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod."))
+        "engine. A check at the client agrees. The TPOT is the time per output token of one streaming call. It is"
+        " the time from the first token to the last token, divided by the output tokens minus 1. ITL is each gap "
+        "between two tokens. TPOT is the mean gap of one call. The engine mean is the running sequences of the "
+        "decode pod, divided by its generated tokens each second. The TPOT p50 of the calls, against the engine "
+        "mean. P/D at 50% load: 32 milliseconds at the client, and 31 in the engine. Colocated at 50%: 25 and 28."
+        " P/D at 100%: 48 and 52. Colocated at 100%: 38 and 38. P/D at 150%: 51 and 54. Colocated at 150%: 41 and"
+        " 51. At this load, the engine value also counts the calls that are still in prefill. So edge and Envoy "
+        "add no time between tokens. A mean is always lower than the p95, because the p95 catches the slow steps."
+        " So P/D has a mean near 50 milliseconds, but a p95 near 200. Over the calls, the TPOT p95 was 33 to 63 "
+        "milliseconds. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod."))
 
     s.append(("ttft-points", "".join([
         title("TTFT at three points: under load, calls wait before the engine"),

@@ -167,8 +167,9 @@ def latency() -> str:
             rows.append([f"{name}, {load}%", f"`{run_id}`", i.get("ttft_p50_s"), i.get("ttft_p95_s"),
                          round(statistics.median(itl) * 1000) if itl else None,
                          round(max(itl) * 1000) if itl else None])
-    return ("TTFT: the time to the first token that the app saw, for all interactive calls. ITL: the p95 of each "
-            "minute on the pod `vllm-decode` (`vllm:inter_token_latency_seconds`), with the median and the maximum "
+    return ("TTFT: the time to the first token that the app saw, for the streaming interactive calls. ITL: the "
+            "p95 of each minute on the pod `vllm-decode` (`vllm:inter_token_latency_seconds`), with the median and "
+            "the maximum "
             "of these values over the run. SLO-1: TTFT p95 at most 1.5 s for prompts up to 8K tokens. SLO-2: ITL "
             "p95 at most 50 ms. One call at a time (Gate G1): TTFT 0.90 s (median), ITL p95 20.5 ms.\n\n"
             + table(["Layout and load", "Run", "TTFT p50 (s)", "TTFT p95 (s)", "ITL p95, median (ms)",
@@ -253,14 +254,16 @@ def itl_client_check() -> str:
             mean = [running[k] / gen[k] for k in running if k in gen and gen[k] > 1 and running[k] > 0]
             itl = list(decode_series(r, "vllm_itl_p95").values())
             rows.append([f"{name}, {load}%", f"`{run_id}`", len(tpot), round(percentile(tpot, 0.5) * 1000),
+                         round(percentile(tpot, 0.95) * 1000),
                          round(statistics.median(mean) * 1000) if mean else None,
                          round(statistics.median(itl) * 1000) if itl else None])
-    return ("The client: for each streaming call, the time from the first token to the last token, divided by the "
-            "output tokens minus 1. The table gives the median over the calls. The engine mean: the running "
+    return ("The client TPOT is the time per output token of each streaming call. It is the time from the first "
+            "token to the last token, divided by the output tokens minus 1. The table gives its p50 and its p95 "
+            "over the calls. The engine mean: the running "
             "sequences of the pod `vllm-decode`, divided by its generated tokens each second. The table gives the "
             "median over the run. This value also counts the calls that are still in prefill, so it reads a little "
             "high under heavy load.\n\n"
-            + table(["Layout and load", "Run", "Streaming calls", "Client mean time each token (ms)",
+            + table(["Layout and load", "Run", "Streaming calls", "Client TPOT p50 (ms)", "Client TPOT p95 (ms)",
                      "Engine mean time each token (ms)", "Engine ITL p95 (ms)"], rows))
 
 
@@ -444,7 +447,7 @@ def build() -> str:
             for load in (50, 100, 150) for arm in ("c", "a")])),
         ("E3 Latency: TTFT and ITL against SLO-1 and SLO-2 (H100)", latency()),
         ("E3 TTFT at three points: the client, the gateway, and the engine (H100)", ttft_points()),
-        ("E3 The time between tokens at the client and in the engine (H100)", itl_client_check()),
+        ("E3 TPOT at the client, and the time between tokens in the engine (H100)", itl_client_check()),
         ("E4 The hop: LMCache server against NIXL", e4()),
         ("E5 The split decision", e5()),
         ("E6 Prefix cache and KV format (M2, 100%)", e6()),

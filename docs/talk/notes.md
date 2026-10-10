@@ -142,9 +142,15 @@ One call at a time, the gate test gave a TTFT of 0.90 seconds and an ITL p95 of 
 
 At 100% load, they were a little above the TTFT limit, at 1.57 seconds, and at the ITL limit, 50 milliseconds. At 150% load, both layouts missed both SLOs. Why is the ITL of P/D high? Most calls do not split, so the decode pod also computes their prompts. Each step of the decode pod then carries prefill chunks next to the decode streams, and each stream waits longer for its next token.
 
-The split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for an 8K prompt. The TTFT that the app saw also includes the wait in our queue. We measure the ITL at the engine. A check at the client agrees. The mean time for each output token of a streaming call was the same as in the engine.
+The split test showed the other side: a split cut the ITL of the other streams from 0.24 to 0.07 seconds for an 8K prompt. The TTFT that the app saw also includes the wait in our queue. We measure the ITL at the engine. A check at the client agrees. The TPOT is the time per output token of one streaming call.
 
-With two colocated replicas at 100% load, both were 38 milliseconds. So edge and Envoy add no time between tokens. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod.
+It is the time from the first token to the last token, divided by the output tokens minus 1. ITL is each gap between two tokens. TPOT is the mean gap of one call. The engine mean is the running sequences of the decode pod, divided by its generated tokens each second. The TPOT p50 of the calls, against the engine mean.
+
+P/D at 50% load: 32 milliseconds at the client, and 31 in the engine. Colocated at 50%: 25 and 28. P/D at 100%: 48 and 52. Colocated at 100%: 38 and 38. P/D at 150%: 51 and 54.
+
+Colocated at 150%: 41 and 51. At this load, the engine value also counts the calls that are still in prefill. So edge and Envoy add no time between tokens. A mean is always lower than the p95, because the p95 catches the slow steps. So P/D has a mean near 50 milliseconds, but a p95 near 200.
+
+Over the calls, the TPOT p95 was 33 to 63 milliseconds. Dashboard 6 has these panels: TTFT p95 and ITL p95 for each pod.
 
 ### 19. TTFT at three points: under load, calls wait before the engine
 
