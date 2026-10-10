@@ -271,14 +271,15 @@ def slides() -> list[tuple[str, str, str]]:
     s.append(("search", "".join([
         title("The bookmark search: ingest once, then search in each turn"),
         two_columns([
-            steps("Ingest: once, on 2026-09-28, before all tests", [
+            steps("Ingest: a job in the cluster, before all tests", [
                 "Read the Notion rows, and fetch each page",
                 "OCR on SIE when a page has little text",
                 "Cut the text into chunks of 500 to 800 tokens",
-                "Page check: remove injected text (Prompt Guard 2)",
+                "Page check (Prompt Guard 2): hide text that gives orders to the LLM",
                 "SIE embeds each chunk (bge-m3), into Qdrant",
             ]),
-            p("910 of 1,000 rows gave 4,112 chunks. Each later session restored a snapshot of Qdrant.", 24),
+            p("It ran on 2026-09-28: 910 of 1,000 rows gave 4,112 chunks. Each later session restored a snapshot of "
+              "Qdrant from the laptop.", 24),
         ], [
             steps("Search: in each turn, a tool of the agent", [
                 "SIE embeds the question (bge-m3)",
@@ -289,9 +290,10 @@ def slides() -> list[tuple[str, str, str]]:
             callout("SIE and Qdrant", "SIE is the model server for the small models: embed, rerank, and OCR. Qdrant "
                     "stores the vectors and searches them. The search makes no LLM call."),
         ], left_w=760),
-    ]), "This is the bookmark search. The ingest ran once, before all tests. It fetched each bookmarked page and "
-        "cut the text into chunks, and SIE turned each chunk into a vector in Qdrant. In each turn, SIE turns the"
-        " question into a vector. Qdrant finds 30 chunks by vector and by keyword, and SIE reranks them. The "
+    ]), "This is the bookmark search. The ingest ran once, as a job in the cluster, before all tests. It fetched "
+        "each bookmarked page and cut the text into chunks. The page check hid any part of a page that looked "
+        "like an order to the LLM. Then SIE turned each chunk into a vector in Qdrant. In each turn, SIE turns "
+        "the question into a vector. Qdrant finds 30 chunks by vector and by keyword, and SIE reranks them. The "
         "agent gets the top 8. SIE serves only the small models, so the search makes no LLM call."))
 
     s.append(("deploy", "".join([
