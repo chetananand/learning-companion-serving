@@ -452,7 +452,10 @@ def slides() -> list[tuple[str, str, str]]:
         "LMCache server in CPU RAM, and the decode pod loads them. Our code only records the hop, and the store "
         "barrier holds the prefill answer until the store ends. The barrier finds the prefill request by its "
         "shape: one token and no stream. In the hop test, the first token came in 0.52 to 0.78 seconds, against "
-        "about 4 seconds for NIXL over TCP."))
+        "about 4 seconds for NIXL over TCP. If someone asks if this is production quality: the one-token request "
+        "is, and the barrier is not. Under load on the A100 node, the barrier hit its half-second cap on 72% to "
+        "99% of split calls. A production hop needs a store signal for each request, RDMA between nodes, and two "
+        "or more pods in each pool."))
 
     s.append(("warm", "".join([
         strip(["warm"]),
