@@ -30,7 +30,7 @@ These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM.
 
 The time between tokens with 8 calls at the same time: 20.5 milliseconds at p95. The prefix cache with 2,000 calls: no bad answer, and a hit ratio of 84.5%. One P/D split call: the decode pod loaded 8,448 of 8,500 prompt tokens. The CPU tier: a prefix came back from LMCache, also after a pod restart. The rule of the gate: the challenger, Muse Glimmer 30B, replaces Gemma 4 only if Gemma 4 fails a test that the challenger passes.
 
-Gemma 4 failed none. Small models do the rest: two guard models, and the search and OCR models in SIE.
+Gemma 4 failed none. We dropped Qwen3.8-27B for its open vLLM bugs in the prefix cache. Small models do the rest: two guard models, and the search and OCR models in SIE.
 
 ### 5. The bookmark search: ingest once, then search in each turn
 
@@ -44,7 +44,7 @@ In each turn, SIE turns the question into a vector. Qdrant finds 30 chunks by ve
 
 Before the cluster, we did the KV math. Gemma 4 31B has two kinds of KV. The full-attention layers need 40,960 bytes for each token. The sliding-window layers add 800 MiB for each sequence, after 1,024 tokens. At the length that our app sends, about 5,000 tokens, one H100 fits 36 sequences, and 17 at the 32K max_len.
 
-FP8 KV doubles both. We kept the model, because it passed all gate tests. With Muse Glimmer, the KV of an 8K sequence is 83% smaller.
+FP8 KV doubles both. We tested FP8 KV in one arm, but the base runs used BF16 KV. We kept the model, because it passed all gate tests. With Muse Glimmer, the KV of an 8K sequence is 83% smaller.
 
 ### 7. The deployment: two nodes, and an A100 fallback
 
@@ -86,9 +86,9 @@ Stop three is admit. The policy file holds our numbers. The Envoy AI Gateway cou
 
 Redis is not a queue. It has four jobs: the tenant counts, the guard verdicts, the overflow limits, and the web search results of the app. The queue is in the flow control of llm-d, in its own memory. Flow control is the admit part of llm-d: it decides if and when a call goes to a pod. Then the scheduler of llm-d decides which pod, and the place slide shows it.
 
-The queue has two priority bands with a time limit: 10 seconds for an interactive call, and 120 seconds for a batch call. The pods are full at 5 queued requests or 90% KV use. Then the flow control holds the calls in the queue. In all load tests the engine preempted nothing, because the flow control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and no other tenant got one.
+The queue has two priority bands with a time limit: 10 seconds for an interactive call, and 120 seconds for a batch call. A pod is full at 5 queued requests or 90% KV use. The flow control holds the calls when the average fullness of the pods reaches full, so one pod can have more queued requests. This is how the decode queue reached 50 at 150% load. Then the flow control holds the calls in the queue.
 
-But the TTFT p95 of the others stayed near 10 seconds, because at 100% load the P/D layout is above the limit of the engine.
+In all load tests the engine preempted nothing, because the flow control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and no other tenant got one. But the TTFT p95 of the others stayed near 10 seconds, because at 100% load the P/D layout is above the limit of the engine.
 
 ### 12. Place: prefix match first, then load
 
@@ -112,9 +112,9 @@ Under load on the A100 node, the barrier hit its half-second cap on 72% to 99% o
 
 ### 14. A pod with its weights on the GPU is not warm yet
 
-Stop six is declare warm. A pod with its weights on the GPU is not warm yet. The warm controller sends our system prompts, the shapes of our app, and a 4,000-token probe. The pod gets the warm label only if the probe is fast enough. Then it gets 10% of the traffic weight, and more while the TTFT holds.
+Stop six is declare warm. A pod with its weights on the GPU is not warm yet. The warm controller sends our system prompts and the shapes of our app. A new decode pod also gets one split call through the prefill pod, so the hop path is warm too. Then a 4,000-token probe runs.
 
-In the restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. The ramp cut it from 57.3 to 14.6 seconds.
+The pod gets the warm label only if the probe is fast enough. Then it gets 10% of the traffic weight, and more while the TTFT holds. In the restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. In minutes 2 to 4, both arms had a p95 near 12.7 seconds, so the warmup helps only the first minute. The ramp cut it from 57.3 to 14.6 seconds.
 
 ### 15. Scale: the planner names the pool
 
@@ -166,7 +166,7 @@ A lower split threshold, because each split pays the prefill, the hold, and the 
 
 Five things changed in the design because of the data. Two colocated replicas for our traffic. A store barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU.
 
-And llm-d must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, fp8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a lower split threshold. The GPU time cost 237 dollars. Thank you.
+And llm-d must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, FP8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, and a lower split threshold. The GPU time cost 237 dollars. Thank you.
 
 ## Appendix (for questions only)
 

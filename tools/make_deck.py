@@ -273,17 +273,18 @@ def slides() -> list[tuple[str, str, str]]:
                ["Text in figures (OCR)", "LightOnOCR-2, 1B", "node 2: SIE, a GPU slice of 20,000 MiB"]],
               [30, 38, 32]),
         p("HAMi cuts one H100 of node 2 into these slices. On the A100 node, the small models shared one GPU.", 24),
-        callout("Why Gemma 4 31B", "A tested FP8 checkpoint that fits one H100. It passed all 7 of our gate tests, "
-                "with 97.5% correct tool calls. We dropped Qwen3.8-27B for its open vLLM bugs in the prefix "
-                "cache."),
+        callout("Why Gemma 4 31B", "A tested FP8 checkpoint that fits one H100. It passed all 7 of our gate "
+                "tests. They test tool calls (39 of 40, so 97.5%), TTFT, decode speed, the prefix cache, a P/D "
+                "split, and the CPU tier. We dropped Qwen3.8-27B for its open vLLM bugs in the prefix cache."),
     ]), "These are the models. One LLM, Gemma 4 31B in FP8, runs all agent steps on vLLM. It fits one H100, and "
         "it passed all 7 of our gate tests on 2026-09-29. Tool calls from our agent: 39 of 40 correct, so 97.5%. "
         "The TTFT of one 8K prompt: 0.90 seconds. The time between tokens with 8 calls at the same time: 20.5 "
         "milliseconds at p95. The prefix cache with 2,000 calls: no bad answer, and a hit ratio of 84.5%. One P/D"
         " split call: the decode pod loaded 8,448 of 8,500 prompt tokens. The CPU tier: a prefix came back from "
         "LMCache, also after a pod restart. The rule of the gate: the challenger, Muse Glimmer 30B, replaces "
-        "Gemma 4 only if Gemma 4 fails a test that the challenger passes. Gemma 4 failed none. Small models do "
-        "the rest: two guard models, and the search and OCR models in SIE."))
+        "Gemma 4 only if Gemma 4 fails a test that the challenger passes. Gemma 4 failed none. We dropped "
+        "Qwen3.8-27B for its open vLLM bugs in the prefix cache. Small models do the rest: two guard models, and "
+        "the search and OCR models in SIE."))
 
     s.append(("search", "".join([
         title("The bookmark search: ingest once, then search in each turn"),
@@ -335,14 +336,14 @@ def slides() -> list[tuple[str, str, str]]:
             proof("173,657 tokens", "with BF16 KV, and 345,235 tokens with FP8 KV"),
             callout("Model switch", "We kept Gemma 4 31B, because it passed all 7 gate tests. With Muse Glimmer 30B, "
                     "the KV of an 8K sequence is 83% smaller, and 189 sequences fit at 8K, not 32. We changed the KV "
-                    "to FP8 instead: it halves the bytes for each token."),
+                    "to FP8 in a test instead: it halves the bytes for each token. The base runs used BF16 KV."),
             p("Later in the talk: which limiter came first, and if our guess was right.", 24, MUTED),
         ], left_w=860),
     ]), "Before the cluster, we did the KV math. Gemma 4 31B has two kinds of KV. The full-attention layers need "
         "40,960 bytes for each token. The sliding-window layers add 800 MiB for each sequence, after 1,024 "
         "tokens. At the length that our app sends, about 5,000 tokens, one H100 fits 36 sequences, and 17 at the "
-        "32K max_len. FP8 KV doubles both. We kept the model, because it passed all gate tests. With Muse "
-        "Glimmer, the KV of an 8K sequence is 83% smaller."))
+        "32K max_len. FP8 KV doubles both. We tested FP8 KV in one arm, but the base runs used BF16 KV. We kept "
+        "the model, because it passed all gate tests. With Muse Glimmer, the KV of an 8K sequence is 83% smaller."))
 
     s.append(("deploy", "".join([
         title("The deployment: two nodes, and an A100 fallback"),
@@ -446,11 +447,13 @@ def slides() -> list[tuple[str, str, str]]:
         "queue is in the flow control of llm-d, in its own memory. Flow control is the admit part of llm-d: it "
         "decides if and when a call goes to a pod. Then the scheduler of llm-d decides which pod, and the place "
         "slide shows it. The queue has two priority bands with a time limit: 10 seconds for an interactive call, "
-        "and 120 seconds for a batch call. The pods are full at 5 queued requests or 90% KV use. Then the flow "
-        "control holds the calls in the queue. In all load tests the engine preempted nothing, because the flow "
-        "control refused the extra work first. In the tenant test the noisy tenant got 55 429 replies, and no "
-        "other tenant got one. But the TTFT p95 of the others stayed near 10 seconds, because at 100% load the "
-        "P/D layout is above the limit of the engine."))
+        "and 120 seconds for a batch call. A pod is full at 5 queued requests or 90% KV use. The flow control "
+        "holds the calls when the average fullness of the pods reaches full, so one pod can have more queued "
+        "requests. This is how the decode queue reached 50 at 150% load. Then the flow control holds the calls in"
+        " the queue. In all load tests the engine preempted nothing, because the flow control refused the extra "
+        "work first. In the tenant test the noisy tenant got 55 429 replies, and no other tenant got one. But the"
+        " TTFT p95 of the others stayed near 10 seconds, because at 100% load the P/D layout is above the limit "
+        "of the engine."))
 
     s.append(("place", "".join([
         strip(["place"]),
@@ -498,6 +501,7 @@ def slides() -> list[tuple[str, str, str]]:
              '"backend": "lmcache"}</p></div>'),
             p("6,400 tokens are 25 full chunks of 256. The decode pod computes the KV of only the last 224 tokens.", 24,
               SOFT),
+            p("Why not Mooncake: no Gemma 4 test, and no RDMA on our Lambda nodes.", 24, INK),
         ]),
     ]), "Stop five is the hop. The llm-d scheduler splits a request only when 2,048 or more of its tokens are not"
         " in a cache. The sidecar then sends the prompt to the prefill pod and asks for only one output token. "
@@ -541,11 +545,13 @@ def slides() -> list[tuple[str, str, str]]:
             image("warm", "Chart: first-minute TTFT p95 with and without the warmup, and ramp against jump",
                   "The TTFT p95 of the calls on the new pod, in its first minute (H100)", 896),
         ], left_w=700),
-    ]), "Stop six is declare warm. A pod with its weights on the GPU is not warm yet. The warm controller sends our "
-        "system prompts, the shapes of our app, and a 4,000-token probe. The pod gets the warm label only if the "
-        "probe is fast enough. Then it gets 10% of the traffic weight, and more while the TTFT holds. In the "
-        "restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. The ramp cut it from 57.3 to "
-        "14.6 seconds."))
+    ]), "Stop six is declare warm. A pod with its weights on the GPU is not warm yet. The warm controller sends "
+        "our system prompts and the shapes of our app. A new decode pod also gets one split call through the "
+        "prefill pod, so the hop path is warm too. Then a 4,000-token probe runs. The pod gets the warm label "
+        "only if the probe is fast enough. Then it gets 10% of the traffic weight, and more while the TTFT holds."
+        " In the restart test, the warmup cut the first-minute p95 from 10.9 to 7.3 seconds. In minutes 2 to 4, "
+        "both arms had a p95 near 12.7 seconds, so the warmup helps only the first minute. The ramp cut it from "
+        "57.3 to 14.6 seconds."))
 
     s.append(("hypothesis", "".join([
         title("The decode pod was the limit, not prefill compute"),
@@ -624,7 +630,7 @@ def slides() -> list[tuple[str, str, str]]:
     s.append(("changed", "".join([
         title("What the data changed in our design", DARK_TEXT),
         f'<div style="display:flex;flex-direction:row;gap:16px">{card_html}</div>',
-        p("10 times the traffic: more decode capacity first, 32 sequences and fp8 KV, and more RAM for LMCache. The "
+        p("10 times the traffic: more decode capacity first, 32 sequences and FP8 KV, and more RAM for LMCache. The "
           "wrong knobs: more prefill pods, longer queues, and a lower split threshold.", 28, DARK_TEXT),
         p("GPU cost: 237 USD of the 400 USD credit. The repo has the report, the notebooks, and each run.", 28,
           DARK_SOFT),
@@ -634,7 +640,7 @@ def slides() -> list[tuple[str, str, str]]:
     ]), "Five things changed in the design because of the data. Two colocated replicas for our traffic. A store "
         "barrier for the hop. A cap for the ramp. Values like the planner capacity must come from the GPU. And "
         "llm-d must apply a cache clear. At 10 times the traffic I add decode capacity first, with 32 sequences, "
-        "fp8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, "
+        "FP8 KV, and more CPU RAM for the LMCache server. The wrong knobs are more prefill pods, longer queues, "
         "and a lower split threshold. The GPU time cost 237 dollars. Thank you."))
 
     # ----------------------------------------------------------------------------------------------------------
@@ -656,7 +662,7 @@ def slides() -> list[tuple[str, str, str]]:
          "At 8K, 32 sequences fit, and at 24K, about 20. At 24, the time between tokens stays near 20 ms.",
          "With 32 sequences, the TTFT p50 fell from 4.59 s to 2.10 s."],
         ["Hop backend", "The LMCache server (our name: lmcache), with our store barrier",
-         "Gemma 4 runs on it. NIXL over TCP took 4.1 to 4.3 s. Mooncake had no Gemma 4 test.",
+         "Gemma 4 runs on it. Mooncake: no Gemma 4 test, no RDMA on our nodes. NIXL over TCP: 4.1 to 4.3 s.",
          f"Hop TTFT: 0.52 to 0.78 s (slide {num['hop']})"],
         ["Overflow", "qwen3.8-27b on the Superlinked API, only for an interactive 503 or 529",
          "Quality near ours, the same API, and a Redis limiter on the cost. It was off in all runs.",
