@@ -15,8 +15,8 @@ Status: draft of 2026-10-02. It has all runs: 2026-09-29 and 2026-09-30 on H100,
 1. The app is an agentic RAG learning companion over the Notion bookmarks of its owner (4,501 chunks in Qdrant). It has a quick mode (one agent) and a verified mode (a fact-check agent with a live web search).
 2. The cluster has two nodes. Node 1 (2 x H100 SXM 80 GB) runs the engine: vLLM v0.30.0 with Gemma 4 31B FP8. Node 2 (1 x H100 80 GB) runs the control plane, the data plane, and the guard models. On 2026-10-01, no H100 had stock. Then one node with 8 x A100 80 GB ran all pods, and HAMi gave each engine pod a full GPU (ADR-005, revision 2).
 3. Topology: two colocated replicas (layout A) beat one prefill pod and one decode pod (layout C) at each load of our app traffic. In layout A, each vLLM pod does the prefill and the decode of its calls. At 100% load, the interactive TTFT p50 was 0.84 s against 4.59 s (E3). On the A100 node, with 32 decode sequences in both layouts, layout A had about half of the TTFT p50 of layout C, or less.
-4. Latency against the SLOs (E3, H100): P/D missed SLO-1 and SLO-2 at each load. At 50% load, its TTFT p95 was 2.04 s and its ITL p95 84 ms. Two colocated replicas met both at 50% load (1.05 s and 36 ms). At 100% load, they were at the limit (1.57 s and 50 ms). One call at a time, the engine gave 0.90 s and 20.5 ms (Gate G1).
-5. TTFT at three points: the client and the gateway (edge) differ by only 0.1 to 0.3 s at p95. Under load, the calls wait before the engine. With P/D at 100% load, the gateway saw a TTFT p95 of 15.67 s and the engine 4.38 s. The llm-d queue alone held interactive calls up to 2.25 s.
+4. Latency against the SLOs (E3, H100): P/D missed SLO-1 and SLO-2 at each load. At 50% load, its TTFT p95 was 2.04 s and its ITL p95 84 ms. Two colocated replicas met both at 50% load (1.05 s and 36 ms). At 100% load, they were at the limit (1.57 s and 50 ms). One call at a time, the engine gave 0.90 s and 20.5 ms (Gate G1). At the client, the TPOT p50 of the streaming calls was 32 to 51 ms with P/D, and 25 to 41 ms with colocated replicas. TPOT is the time per output token.
+5. TTFT at three points: the client and the gateway (edge) differ by only 0.1 to 0.3 s at p95. Under load, the calls wait before the engine. With P/D at 100% load, the gateway saw a TTFT p95 of 15.67 s and the engine 4.38 s. The llm-d queue alone held interactive calls up to 2.25 s. After the first token, the client TPOT was the same as the mean time for each token in the engine. So the proxies add no time between tokens.
 6. The split still helps in two cases. It cuts the ITL of the other streams (E5, 8K tokens: p95 0.07 s against 0.24 s). Short agent steps also start sooner behind a long retrieve (E14: 0.25 s against 1.26 s). Even with the split, 16 decode streams had an ITL p95 above SLO-2 (50 ms).
 7. The hop goes through the LMCache server (a copy of the KV in CPU RAM), with a store barrier. Its TTFT was 0.52 s (shared prefix) and 0.78 s (unshared). NIXL over TCP took 4.1 to 4.3 s (E4).
 8. We shed at the door. No run preempted a request. The llm-d flow control stops the dispatch at a KV use of 90% (E2, E3).
@@ -95,26 +95,29 @@ Warmup is a budget (R-05). The warmup routine added about 15 s to the outage. In
 
 What limited concurrency on this GPU for this app (H-104): the decode pod. Most agent calls have fewer than 2,048 new tokens, so the llm-d scheduler does not split them. The decode pod then computes their prompts too, and it held 24 running sequences (`--max-num-seqs`). At 100% load, it computed up to 16,200 prompt tokens each second. The prefill pod computed up to 4,550 (Grafana, vLLM dashboard of `e3-c-100`). With 32 decode sequences, the TTFT p50 fell from 4.59 s to 2.10 s (E15).
 
-### Latency against the SLOs: TTFT and ITL (E3, H100)
+### Latency against the SLOs: TTFT, ITL, and TPOT (E3, H100)
 
-SLO-1: TTFT p95 at most 1.5 s for prompts up to 8K tokens. SLO-2: ITL p95 at most 50 ms. The TTFT is the value that the client saw, for the streaming calls. The ITL is the p95 of each minute on the decode pod, as the median over the run. `docs/results.md` has the full tables.
+SLO-1: TTFT p95 at most 1.5 s for prompts up to 8K tokens. SLO-2: ITL p95 at most 50 ms. The TTFT is the value that the client saw, for the streaming calls. The ITL is the p95 of each minute on the decode pod, as the median over the run. The TPOT is the time per output token of one streaming call. It is the time from the first token to the last token, divided by the output tokens minus 1.
 
-| Load | TTFT p95, P/D | TTFT p95, colocated | ITL p95, P/D | ITL p95, colocated |
-|---|---|---|---|---|
-| 50% | 2.04 s | 1.05 s | 84 ms | 36 ms |
-| 100% | 15.95 s | 1.57 s | 192 ms | 50 ms |
-| 150% | 21.45 s | 21.10 s | 206 ms | 129 ms |
+The ITL is each gap between two tokens, and the TPOT is the mean gap of one call. Our SLO-2 is on the ITL. `docs/results.md` has the full tables.
+
+| Load | TTFT p95, P/D | TTFT p95, colocated | ITL p95, P/D | ITL p95, colocated | TPOT p50, P/D | TPOT p50, colocated |
+|---|---|---|---|---|---|---|
+| 50% | 2.04 s | 1.05 s | 84 ms | 36 ms | 32 ms | 25 ms |
+| 100% | 15.95 s | 1.57 s | 192 ms | 50 ms | 48 ms | 38 ms |
+| 150% | 21.45 s | 21.10 s | 206 ms | 129 ms | 51 ms | 41 ms |
 
 - P/D missed both SLOs at each load. Most calls do not split, so the decode pod also computes their prompts. These prefill chunks share each step with the decode streams, so the ITL grows. A split cuts this effect (E5, 8K tokens: ITL p95 0.07 s against 0.24 s).
 - Two colocated replicas met both SLOs at 50% load. At 100% load, the TTFT was a little above SLO-1, and the ITL was at SLO-2.
+- The TPOT p50 is lower than the ITL p95, because a mean is lower than a p95. The ITL p95 catches the slow steps, when a long prefill shares a step with the decode streams. Over the calls, the TPOT p95 was 33 to 63 ms. A reviewer can ask about a TPOT p95 above 50 ms. SLO-2 is on the ITL, and the TPOT p95 is the mean pace of the slowest calls.
 - One call at a time, the engine gave a TTFT of 0.90 s and an ITL p95 of 20.5 ms (Gate G1). So the misses come from the load, not from the model or the GPU.
 
-The TTFT at three points, for the same streaming calls (p95):
+The TTFT at three points, for the same streaming calls (p95), and the TPOT at the client (p50):
 
-| Layout and load | Client | Gateway (edge) | Engine (decode pod) | llm-d queue wait |
-|---|---|---|---|---|
-| P/D, 100% | 15.95 s | 15.67 s | 4.38 s | 2.25 s |
-| colocated, 100% | 1.57 s | 1.35 s | 0.90 s | 0.00 s |
+| Layout and load | Client | Gateway (edge) | Engine (decode pod) | llm-d queue wait | TPOT, client |
+|---|---|---|---|---|---|
+| P/D, 100% | 15.95 s | 15.67 s | 4.38 s | 2.25 s | 48 ms |
+| colocated, 100% | 1.57 s | 1.35 s | 0.90 s | 0.00 s | 38 ms |
 
 - The client and the gateway differ by 0.1 to 0.3 s: the relay of the first answer token.
 - Between the gateway and the engine are the guard, the llm-d queue, and the hop. When the pods are full, most of the TTFT is this wait before the engine.
