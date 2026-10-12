@@ -111,3 +111,11 @@ The runbooks (`docs/runbooks/`) give the bring-up and each experiment. The noteb
 ## Note on course material
 
 `docs/spec/source/` holds an extract of the handout for line references. Git ignores it. Do not publish it.
+
+## License
+
+Copyright 2026 Chetan Anand.
+
+The code and the documents in this repo are under the Apache License 2.0. The file [LICENSE](LICENSE) has the full text.
+
+The license does not apply to the course material. It also does not apply to the models, the container images, and the other projects that the system uses. Each of them has its own license.

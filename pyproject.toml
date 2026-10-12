@@ -2,6 +2,7 @@
 name = "learning-companion-serving"
 version = "0.1.0"
 description = "Learning companion over Notion bookmarks, served on a vLLM P/D cluster with llm-d"
+license = "Apache-2.0"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",
